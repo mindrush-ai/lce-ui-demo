@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive } from "lucide-react";
@@ -62,6 +62,25 @@ export default function ProductInputPage() {
       destinationPort: "",
     },
   });
+
+  // Auto-set origin port when country of origin changes
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === "countryOfOrigin") {
+        const selectedCountry = value.countryOfOrigin;
+        if (selectedCountry) {
+          const matchingCountry = countries.find(country => country.code === selectedCountry);
+          if (matchingCountry) {
+            form.setValue("originPort", matchingCountry.port);
+          }
+        } else {
+          // Clear origin port if no country is selected
+          form.setValue("originPort", "");
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -577,41 +596,27 @@ export default function ProductInputPage() {
                               <FormField
                                 control={form.control}
                                 name="originPort"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <Label htmlFor="originPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
-                                      Origin Port <span className="text-red-400">*</span>
-                                    </Label>
-                                    <FormControl>
-                                      <div className="relative">
-                                        <select
-                                          {...field}
-                                          id="originPort"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-origin-port"
-                                        >
-                                          <option value="" className="bg-slate-700 text-slate-400">
-                                            Select origin port
-                                          </option>
-                                          <option value="Le Havre (FR)" className="bg-slate-700 text-slate-100">
-                                            Le Havre (FR)
-                                          </option>
-                                          <option value="Livorno (IT)" className="bg-slate-700 text-slate-100">
-                                            Livorno (IT)
-                                          </option>
-                                          <option value="Leixões (PT)" className="bg-slate-700 text-slate-100">
-                                            Leixões (PT)
-                                          </option>
-                                          <option value="Barcelona (ES)" className="bg-slate-700 text-slate-100">
-                                            Barcelona (ES)
-                                          </option>
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
-                                    </FormControl>
-                                    <FormMessage className="text-red-400 text-sm mt-1" />
-                                  </FormItem>
-                                )}
+                                render={({ field }) => {
+                                  const selectedCountry = form.watch("countryOfOrigin");
+                                  const matchingCountry = countries.find(country => country.code === selectedCountry);
+                                  
+                                  return (
+                                    <FormItem>
+                                      <Label htmlFor="originPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                        Origin Port <span className="text-red-400">*</span>
+                                      </Label>
+                                      <FormControl>
+                                        <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 !rounded-xl text-slate-100 dark:text-slate-100 flex items-center">
+                                          {matchingCountry ? matchingCountry.port : (selectedCountry ? "Loading..." : "Select country of origin first")}
+                                        </div>
+                                      </FormControl>
+                                      <FormMessage className="text-red-400 text-sm mt-1" />
+                                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                        Port automatically matches selected country of origin
+                                      </p>
+                                    </FormItem>
+                                  );
+                                }}
                               />
 
                               {/* Destination Port */}

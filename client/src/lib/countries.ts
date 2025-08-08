@@ -2,13 +2,14 @@ export interface Country {
   code: string;
   name: string;
   flag: string;
+  port: string;
 }
 
 export const countries: Country[] = [
-  { code: "FR", name: "France", flag: "🇫🇷" },
-  { code: "IT", name: "Italy", flag: "🇮🇹" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" },
-  { code: "ES", name: "Spain", flag: "🇪🇸" }
+  { code: "FR", name: "France", flag: "🇫🇷", port: "Le Havre (FR)" },
+  { code: "IT", name: "Italy", flag: "🇮🇹", port: "Livorno (IT)" },
+  { code: "PT", name: "Portugal", flag: "🇵🇹", port: "Leixões (PT)" },
+  { code: "ES", name: "Spain", flag: "🇪🇸", port: "Barcelona (ES)" }
 ];
 
 export const getCountryByCode = (code: string): Country | undefined => {

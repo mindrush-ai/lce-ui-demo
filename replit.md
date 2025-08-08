@@ -26,9 +26,14 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Added Section 3 with four required fields: Container Size, Incoterms, Origin Port, Destination Port
 - Container Size dropdown with "40 Feet" option
 - Incoterms dropdown with EXW, FCA, FOB options including full descriptions
-- Origin Port dropdown with Le Havre (FR), Livorno (IT), Leixões (PT), Barcelona (ES)
+- Dynamic Origin Port field that automatically populates based on Country of Origin selection:
+  - France → Le Havre (FR)
+  - Italy → Livorno (IT)
+  - Portugal → Leixões (PT)
+  - Spain → Barcelona (ES)
 - Destination Port dropdown with New York (US), New Jersey (US)
 - Maintains consistent 50px field height and sectioned form behavior
+- Enhanced countries.ts with port mapping for automatic origin port selection
 
 ## User Preferences
 
