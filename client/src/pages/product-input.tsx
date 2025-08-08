@@ -891,8 +891,8 @@ export default function ProductInputPage() {
                         return (
                           <>
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Customs Units:</span>
-                              <span className="text-slate-100 font-medium">{Math.round(customsUnits)} L</span>
+                              <span className="text-slate-400 font-bold">Customs Units:</span>
+                              <span className="text-slate-100 font-bold">{Math.round(customsUnits)} L</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-slate-400">Customs Value:</span>
@@ -950,7 +950,7 @@ export default function ProductInputPage() {
                         
                         return (
                           <>
-                            <div className="text-sm text-slate-400 mb-3">
+                            <div className="text-sm text-slate-400 font-bold mb-3">
                               {originCountryCode} to {destCountryCode}
                             </div>
                             <div className="flex justify-between">
