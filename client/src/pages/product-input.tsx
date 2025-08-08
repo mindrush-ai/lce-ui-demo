@@ -892,11 +892,11 @@ export default function ProductInputPage() {
                           <>
                             <div className="flex justify-between">
                               <span className="text-slate-400">Customs Units:</span>
-                              <span className="text-slate-100 font-medium">{customsUnits.toFixed(2)} L</span>
+                              <span className="text-slate-100 font-medium">{Math.round(customsUnits)} L</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-slate-400">Customs Value:</span>
-                              <span className="text-slate-100 font-medium">${customsValue.toFixed(2)}</span>
+                              <span className="text-slate-100 font-medium">${Math.round(customsValue).toLocaleString()}</span>
                             </div>
                             <div className="flex justify-between">
                               <span className="text-slate-400">HTS Code:</span>
