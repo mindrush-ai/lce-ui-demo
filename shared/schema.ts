@@ -11,6 +11,8 @@ export const users = pgTable("users", {
   companyName: varchar("company_name").notNull(),
   isGoogleAuth: boolean("is_google_auth").default(false),
   googleId: varchar("google_id"),
+  resetToken: varchar("reset_token"),
+  resetTokenExpires: timestamp("reset_token_expires"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -41,7 +43,28 @@ export const signupStep2Schema = z.object({
   }),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Reset token is required"),
+  password: z.string().min(8, "Password must be at least 8 characters"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+export const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type SignupStep1Data = z.infer<typeof signupStep1Schema>;
 export type SignupStep2Data = z.infer<typeof signupStep2Schema>;
+export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+export type LoginData = z.infer<typeof loginSchema>;

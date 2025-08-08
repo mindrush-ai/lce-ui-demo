@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByResetToken(token: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, user: Partial<User>): Promise<User | undefined>;
 }
@@ -25,11 +26,24 @@ export class MemStorage implements IStorage {
     );
   }
 
+  async getUserByResetToken(token: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.resetToken === token && user.resetTokenExpires && user.resetTokenExpires > new Date(),
+    );
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = randomUUID();
     const user: User = { 
-      ...insertUser, 
       id,
+      email: insertUser.email,
+      password: insertUser.password || null,
+      fullName: insertUser.fullName,
+      companyName: insertUser.companyName,
+      isGoogleAuth: insertUser.isGoogleAuth || null,
+      googleId: insertUser.googleId || null,
+      resetToken: null,
+      resetTokenExpires: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

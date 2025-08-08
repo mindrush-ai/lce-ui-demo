@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { Link } from "wouter";
 
 interface SignupStep1Props {
   onNext: (data: SignupStep1Data) => void;
@@ -214,13 +215,11 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
         <div className="mt-6 text-center">
           <p className="text-sm text-slate-400 dark:text-slate-400">
             Already have an account?{" "}
-            <a 
-              href="#" 
-              className="text-blue-400 dark:text-blue-400 hover:text-blue-300 dark:hover:text-blue-300 font-medium transition-colors duration-200"
-              data-testid="link-signin"
-            >
-              Sign in
-            </a>
+            <Link href="/login">
+              <span className="text-blue-400 dark:text-blue-400 hover:text-blue-300 dark:hover:text-blue-300 font-medium transition-colors duration-200 cursor-pointer" data-testid="link-signin">
+                Sign in
+              </span>
+            </Link>
           </p>
         </div>
       </div>

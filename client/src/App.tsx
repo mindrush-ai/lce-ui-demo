@@ -3,10 +3,13 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeProvider } from "@/hooks/use-theme";
 import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/landing";
 import SignupPage from "@/pages/signup";
+import LoginPage from "@/pages/login";
+import ForgotPasswordPage from "@/pages/forgot-password";
+import ResetPasswordPage from "@/pages/reset-password";
 import HomePage from "@/pages/home";
 
 function Router() {
@@ -14,6 +17,9 @@ function Router() {
     <Switch>
       <Route path="/" component={LandingPage} />
       <Route path="/signup" component={SignupPage} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/forgot-password" component={ForgotPasswordPage} />
+      <Route path="/reset-password" component={ResetPasswordPage} />
       <Route path="/home" component={HomePage} />
       <Route component={NotFound} />
     </Switch>
