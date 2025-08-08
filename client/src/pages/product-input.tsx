@@ -66,11 +66,21 @@ export default function ProductInputPage() {
   };
 
   const markSectionCompleted = (sectionId: string) => {
-    setSections(prev => prev.map(section => 
-      section.id === sectionId 
-        ? { ...section, isCompleted: true, isCollapsed: true }
-        : section
-    ));
+    setSections(prev => {
+      const currentIndex = prev.findIndex(s => s.id === sectionId);
+      const nextIndex = currentIndex + 1;
+      
+      return prev.map((section, index) => {
+        if (section.id === sectionId) {
+          // Mark the current section as completed and collapsed
+          return { ...section, isCompleted: true, isCollapsed: true };
+        } else if (index === nextIndex && nextIndex < prev.length) {
+          // Expand the next section after the completed one
+          return { ...section, isCollapsed: false };
+        }
+        return section;
+      });
+    });
   };
 
   const formatHtsCode = (value: string): string => {
