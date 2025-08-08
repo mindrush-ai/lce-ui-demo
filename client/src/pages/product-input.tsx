@@ -171,7 +171,7 @@ export default function ProductInputPage() {
               {sections.map((section) => (
                 <div
                   key={section.id}
-                  className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 dark:border-slate-700/50 overflow-hidden"
+                  className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 dark:border-slate-700/50"
                   data-testid={`section-${section.id}`}
                 >
                   {/* Section Header */}
@@ -212,11 +212,11 @@ export default function ProductInputPage() {
 
                   {/* Section Content */}
                   {!section.isCollapsed && (
-                    <div className="p-6 pt-0" data-testid={`content-${section.id}`}>
+                    <div className="p-6 pt-0 overflow-visible" data-testid={`content-${section.id}`}>
                       {section.id === "product-details" && (
                         <Form {...form}>
                           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-visible">
                               {/* Name/ID Field */}
                               <FormField
                                 control={form.control}
@@ -278,7 +278,7 @@ export default function ProductInputPage() {
                                 control={form.control}
                                 name="countryOfOrigin"
                                 render={({ field }) => (
-                                  <FormItem>
+                                  <FormItem className="relative">
                                     <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
@@ -307,7 +307,7 @@ export default function ProductInputPage() {
                                         </div>
                                         
                                         {showCountryDropdown && (
-                                          <div className="absolute top-full left-0 right-0 mt-2 bg-slate-700 border border-slate-600 rounded-xl shadow-xl z-50 max-h-60 overflow-hidden">
+                                          <div className="absolute top-full left-0 right-0 mt-2 bg-slate-700 border border-slate-600 rounded-xl shadow-2xl z-[9999] max-h-60 overflow-hidden" style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}>
                                             <div className="p-3 border-b border-slate-600">
                                               <Input
                                                 type="text"
