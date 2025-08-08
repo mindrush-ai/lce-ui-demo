@@ -1,6 +1,15 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import session from "express-session";
+
+// Extend the session interface
+declare module "express-session" {
+  interface SessionData {
+    userId?: string;
+    isAuthenticated?: boolean;
+  }
+}
 import { 
   insertUserSchema, 
   signupStep1Schema, 
@@ -13,6 +22,37 @@ import bcrypt from "bcrypt";
 import { randomUUID } from "crypto";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Check authentication status
+  app.get("/api/auth/me", async (req, res) => {
+    try {
+      if (!req.session.isAuthenticated || !req.session.userId) {
+        return res.status(401).json({ message: "Not authenticated" });
+      }
+      
+      const user = await storage.getUser(req.session.userId);
+      if (!user) {
+        req.session.destroy(() => {});
+        return res.status(401).json({ message: "User not found" });
+      }
+      
+      const { password, ...userResponse } = user;
+      res.json({ user: userResponse });
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      res.status(500).json({ message: "Failed to check authentication" });
+    }
+  });
+
+  // Logout
+  app.post("/api/auth/logout", (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error destroying session:", err);
+        return res.status(500).json({ message: "Failed to logout" });
+      }
+      res.json({ message: "Logged out successfully" });
+    });
+  });
   // Check if email exists
   app.get("/api/auth/check-email/:email", async (req, res) => {
     try {
@@ -57,6 +97,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Remove password from response
       const { password, ...userResponse } = newUser;
       
+      // Auto-login the user after successful signup
+      req.session.userId = newUser.id;
+      req.session.isAuthenticated = true;
+      
       res.status(201).json({ 
         user: userResponse,
         message: "Account created successfully" 
@@ -92,6 +136,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Remove password from response
       const { password, ...userResponse } = user;
+      
+      // Set session
+      req.session.userId = user.id;
+      req.session.isAuthenticated = true;
       
       res.json({ 
         user: userResponse,

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/use-theme";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { Link, useLocation } from "wouter";
 
 export default function LoginPage() {
@@ -32,13 +32,16 @@ export default function LoginPage() {
     try {
       await apiRequest("POST", "/api/auth/login", data);
       
+      // Invalidate auth queries to refresh authentication state
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      
       toast({
         title: "Success!",
         description: "You've been logged in successfully.",
       });
       
       // Redirect to home page
-      setLocation("/home");
+      setLocation("/");
     } catch (error: any) {
       console.error("Login error:", error);
       toast({

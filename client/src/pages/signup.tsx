@@ -6,8 +6,9 @@ import { SignupStep2 } from "@/components/signup/signup-step-2";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import type { SignupStep1Data, SignupStep2Data } from "@shared/schema";
+import { useLocation } from "wouter";
 
 export default function SignupPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -16,6 +17,7 @@ export default function SignupPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const { theme, setTheme } = useTheme();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const handleStep1Next = (data: SignupStep1Data) => {
     setStep1Data(data);
@@ -55,18 +57,21 @@ export default function SignupPage() {
         step2Data,
       });
 
+      // Invalidate auth queries to refresh authentication state
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      
       setShowSuccess(true);
       
-      // Simulate redirect after success
-      setTimeout(() => {
-        // TODO: Redirect to dashboard or login
-        window.location.href = "/";
-      }, 3000);
-
       toast({
         title: "Success!",
         description: "Your account has been created successfully.",
       });
+      
+      // Redirect to home after success
+      setTimeout(() => {
+        setLocation("/");
+      }, 2000);
+
     } catch (error) {
       console.error("Signup error:", error);
       toast({
