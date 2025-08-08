@@ -211,7 +211,7 @@ export default function ProductInputPage() {
                       {section.id === "product-details" && (
                         <Form {...form}>
                           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 overflow-visible">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-visible">
                               {/* Name/ID Field */}
                               <FormField
                                 control={form.control}
@@ -226,7 +226,7 @@ export default function ProductInputPage() {
                                         id="nameId"
                                         type="text"
                                         placeholder="Enter product name or ID"
-                                        className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-name-id"
                                         {...field}
                                       />
@@ -250,7 +250,7 @@ export default function ProductInputPage() {
                                         id="htsCode"
                                         type="text"
                                         placeholder="xxxx.xx.xx.xx"
-                                        className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-hts-code"
                                         value={field.value}
                                         onChange={(e) => {
@@ -281,7 +281,7 @@ export default function ProductInputPage() {
                                       <select
                                         {...field}
                                         id="countryOfOrigin"
-                                        className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="select-country"
                                       >
                                         <option value="" className="bg-slate-700 text-slate-400">
@@ -322,7 +322,7 @@ export default function ProductInputPage() {
                                           step="0.0001"
                                           min="0"
                                           max="999999.9999"
-                                          className="w-full pl-8 pr-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                           data-testid="input-unit-cost"
                                           value={field.value || ''}
                                           onChange={(e) => {
