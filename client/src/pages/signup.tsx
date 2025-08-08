@@ -31,15 +31,38 @@ export default function SignupPage() {
   const handleGoogleSignup = async () => {
     setIsLoading(true);
     try {
-      // TODO: Implement Google OAuth integration
+      // Mock Google OAuth integration
+      const mockGoogleUser = {
+        step1Data: {
+          email: "google.user@example.com",
+          password: "mock-google-password"
+        },
+        step2Data: {
+          fullName: "Google Test User",
+          companyName: "Test Company Inc."
+        }
+      };
+
+      await apiRequest("POST", "/api/auth/signup", mockGoogleUser);
+
+      // Invalidate auth queries to refresh authentication state
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      
       toast({
-        title: "Coming Soon",
-        description: "Google authentication will be available soon.",
+        title: "Success!",
+        description: "Google account created successfully.",
       });
+      
+      // Redirect to home after success
+      setTimeout(() => {
+        setLocation("/");
+      }, 1000);
+
     } catch (error) {
+      console.error("Google signup error:", error);
       toast({
         title: "Error",
-        description: "Failed to initiate Google signup. Please try again.",
+        description: "Failed to create Google account. Please try again.",
         variant: "destructive",
       });
     } finally {

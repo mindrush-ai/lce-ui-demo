@@ -57,15 +57,29 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      // TODO: Implement Google OAuth integration
+      // Mock Google OAuth login
+      const mockLoginData = {
+        email: "google.user@example.com",
+        password: "mock-google-password"
+      };
+
+      await apiRequest("POST", "/api/auth/login", mockLoginData);
+      
+      // Invalidate auth queries to refresh authentication state
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      
       toast({
-        title: "Coming Soon",
-        description: "Google authentication will be available soon.",
+        title: "Success!",
+        description: "Google login successful.",
       });
-    } catch (error) {
+      
+      // Redirect to home page
+      setLocation("/");
+    } catch (error: any) {
+      console.error("Google login error:", error);
       toast({
-        title: "Error",
-        description: "Failed to initiate Google login. Please try again.",
+        title: "Google Login Failed",
+        description: "Failed to login with Google. Please try again.",
         variant: "destructive",
       });
     } finally {
