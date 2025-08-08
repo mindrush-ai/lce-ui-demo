@@ -34,7 +34,7 @@ export default function ProductInputPage() {
     },
     {
       id: "item-details",
-      title: "Item Details",
+      title: "Units and Dimensions",
       isCompleted: false,
       isCollapsed: true,
     },
