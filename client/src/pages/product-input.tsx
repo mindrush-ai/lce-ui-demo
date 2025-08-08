@@ -91,7 +91,12 @@ export default function ProductInputPage() {
     ? searchCountries(countrySearch.trim()).slice(0, 20)
     : countries.slice(0, 20);
 
-  const selectedCountry = countries.find(c => c.code === form.watch("countryOfOrigin"));
+  const selectedCountryCode = form.watch("countryOfOrigin");
+  const selectedCountry = countries.find(c => c.code === selectedCountryCode);
+  
+  // Debug logging
+  console.log("Selected country code:", selectedCountryCode);
+  console.log("Selected country:", selectedCountry);
 
   // Handle clicking outside dropdown to close it
   useEffect(() => {
@@ -362,6 +367,7 @@ export default function ProductInputPage() {
                                                     className="px-4 py-3 hover:bg-slate-600 cursor-pointer flex items-center space-x-3 transition-colors duration-200"
                                                     onClick={(e) => {
                                                       e.stopPropagation();
+                                                      console.log("Selecting country:", country.code, country.name);
                                                       field.onChange(country.code);
                                                       setShowCountryDropdown(false);
                                                       setCountrySearch("");
