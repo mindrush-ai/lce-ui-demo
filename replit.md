@@ -16,6 +16,20 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Fixed form field alignment and consistent 50px height across all inputs
 - Replaced custom dropdown with reliable native select element for better UX
 
+### Authentication System
+- Fixed signup redirection with complete session management using express-session
+- Added useAuth hook and authentication-based routing for proper login/logout state management
+- Implemented mocked Google Sign Up and Google Login functionality for testing purposes
+- Auto-login users after successful signup with proper authentication state refresh
+
+### Section 3 - Shipment Details
+- Added Section 3 with four required fields: Container Size, Incoterms, Origin Port, Destination Port
+- Container Size dropdown with "40 Feet" option
+- Incoterms dropdown with EXW, FCA, FOB options including full descriptions
+- Origin Port dropdown with Le Havre (FR), Livorno (IT), Leixões (PT), Barcelona (ES)
+- Destination Port dropdown with New York (US), New Jersey (US)
+- Maintains consistent 50px field height and sectioned form behavior
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

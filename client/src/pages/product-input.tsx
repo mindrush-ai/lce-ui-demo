@@ -38,6 +38,12 @@ export default function ProductInputPage() {
       isCompleted: false,
       isCollapsed: true,
     },
+    {
+      id: "shipment-details",
+      title: "Shipment Details",
+      isCompleted: false,
+      isCollapsed: true,
+    },
   ]);
 
 
@@ -50,6 +56,10 @@ export default function ProductInputPage() {
       countryOfOrigin: "",
       unitCost: 0,
       numberOfWineCases: 0,
+      containerSize: "",
+      incoterms: "",
+      originPort: "",
+      destinationPort: "",
     },
   });
 
@@ -217,6 +227,7 @@ export default function ProductInputPage() {
                     <div className="flex items-center space-x-3">
                       {section.id === "product-details" && <Package className="w-5 h-5 text-blue-500" />}
                       {section.id === "item-details" && <Archive className="w-5 h-5 text-blue-500" />}
+                      {section.id === "shipment-details" && <Package className="w-5 h-5 text-blue-500" />}
                       <h2 className="text-xl font-semibold text-slate-100 dark:text-slate-100">
                         {section.title}
                       </h2>
@@ -477,6 +488,194 @@ export default function ProductInputPage() {
                                 }}
                                 className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
                                 data-testid="button-save-item-details"
+                              >
+                                Save & Continue
+                              </Button>
+                            </div>
+                          </div>
+                        </Form>
+                      )}
+
+                      {section.id === "shipment-details" && (
+                        <Form {...form}>
+                          <div className="space-y-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              {/* Container Size */}
+                              <FormField
+                                control={form.control}
+                                name="containerSize"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="containerSize" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Container Size <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="containerSize"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-container-size"
+                                        >
+                                          <option value="" className="bg-slate-700 text-slate-400">
+                                            Select container size
+                                          </option>
+                                          <option value="40-feet" className="bg-slate-700 text-slate-100">
+                                            40 Feet
+                                          </option>
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                  </FormItem>
+                                )}
+                              />
+
+                              {/* Incoterms */}
+                              <FormField
+                                control={form.control}
+                                name="incoterms"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="incoterms" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Incoterms <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="incoterms"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-incoterms"
+                                        >
+                                          <option value="" className="bg-slate-700 text-slate-400">
+                                            Select Incoterms
+                                          </option>
+                                          <option value="EXW" className="bg-slate-700 text-slate-100">
+                                            EXW (EX Works)
+                                          </option>
+                                          <option value="FCA" className="bg-slate-700 text-slate-100">
+                                            FCA (Free Carrier)
+                                          </option>
+                                          <option value="FOB" className="bg-slate-700 text-slate-100">
+                                            FOB (Free on Board)
+                                          </option>
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                      International Commercial Terms for shipping responsibilities
+                                    </p>
+                                  </FormItem>
+                                )}
+                              />
+
+                              {/* Origin Port */}
+                              <FormField
+                                control={form.control}
+                                name="originPort"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="originPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Origin Port <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="originPort"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-origin-port"
+                                        >
+                                          <option value="" className="bg-slate-700 text-slate-400">
+                                            Select origin port
+                                          </option>
+                                          <option value="Le Havre (FR)" className="bg-slate-700 text-slate-100">
+                                            Le Havre (FR)
+                                          </option>
+                                          <option value="Livorno (IT)" className="bg-slate-700 text-slate-100">
+                                            Livorno (IT)
+                                          </option>
+                                          <option value="Leixões (PT)" className="bg-slate-700 text-slate-100">
+                                            Leixões (PT)
+                                          </option>
+                                          <option value="Barcelona (ES)" className="bg-slate-700 text-slate-100">
+                                            Barcelona (ES)
+                                          </option>
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                  </FormItem>
+                                )}
+                              />
+
+                              {/* Destination Port */}
+                              <FormField
+                                control={form.control}
+                                name="destinationPort"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="destinationPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Destination Port <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="destinationPort"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-destination-port"
+                                        >
+                                          <option value="" className="bg-slate-700 text-slate-400">
+                                            Select destination port
+                                          </option>
+                                          <option value="New York (US)" className="bg-slate-700 text-slate-100">
+                                            New York (US)
+                                          </option>
+                                          <option value="New Jersey (US)" className="bg-slate-700 text-slate-100">
+                                            New Jersey (US)
+                                          </option>
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+
+                            <div className="flex justify-end pt-6">
+                              <Button
+                                type="button"
+                                onClick={() => {
+                                  // Validate Section 3 fields
+                                  const containerSize = form.getValues("containerSize");
+                                  const incoterms = form.getValues("incoterms");
+                                  const originPort = form.getValues("originPort");
+                                  const destinationPort = form.getValues("destinationPort");
+                                  
+                                  if (containerSize && incoterms && originPort && destinationPort) {
+                                    markSectionCompleted("shipment-details");
+                                    toast({
+                                      title: "Success!",
+                                      description: "Shipment details saved successfully.",
+                                    });
+                                  } else {
+                                    toast({
+                                      title: "Validation Error",
+                                      description: "Please fill in all shipment details fields.",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                }}
+                                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
+                                data-testid="button-save-shipment-details"
                               >
                                 Save & Continue
                               </Button>

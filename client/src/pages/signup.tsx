@@ -35,11 +35,13 @@ export default function SignupPage() {
       const mockGoogleUser = {
         step1Data: {
           email: "google.user@example.com",
-          password: "mock-google-password"
+          password: "mock-google-password",
+          confirmPassword: "mock-google-password"
         },
         step2Data: {
           fullName: "Google Test User",
-          companyName: "Test Company Inc."
+          companyName: "Test Company Inc.",
+          acceptedTerms: true
         }
       };
 

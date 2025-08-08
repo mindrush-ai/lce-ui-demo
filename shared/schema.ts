@@ -82,7 +82,12 @@ export const productInfoSchema = z.object({
   numberOfWineCases: z.number()
     .int("Number must be a whole number")
     .min(1, "Number of wine cases must be at least 1")
-    .max(1260, "Number of wine cases cannot exceed 1260")
+    .max(1260, "Number of wine cases cannot exceed 1260"),
+  // Section 3 - Shipment Details
+  containerSize: z.string().min(1, "Container size is required"),
+  incoterms: z.string().min(1, "Incoterms is required"),
+  originPort: z.string().min(1, "Origin port is required"),
+  destinationPort: z.string().min(1, "Destination port is required")
 });
 
 export type ProductInfo = z.infer<typeof productInfoSchema>;
