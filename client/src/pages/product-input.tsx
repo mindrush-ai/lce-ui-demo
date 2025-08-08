@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/use-theme";
 import { Link } from "wouter";
@@ -60,6 +61,8 @@ export default function ProductInputPage() {
       incoterms: "",
       originPort: "",
       destinationPort: "",
+      useIndexRates: false,
+      freightCost: undefined,
     },
   });
 
@@ -655,17 +658,132 @@ export default function ProductInputPage() {
                               />
                             </div>
 
+                            {/* Horizontal line and Freight Charges subsection */}
+                            <div className="pt-6">
+                              <hr className="border-slate-600/50 dark:border-slate-600/50 mb-6" />
+                              <h3 className="text-lg font-semibold text-slate-200 dark:text-slate-200 mb-6">
+                                Freight Charges
+                              </h3>
+                              
+                              <div className="space-y-6">
+                                {/* Use Index Rates Toggle */}
+                                <FormField
+                                  control={form.control}
+                                  name="useIndexRates"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <div className="flex items-center space-x-3">
+                                        <FormControl>
+                                          <Switch
+                                            checked={field.value}
+                                            onCheckedChange={field.onChange}
+                                            data-testid="switch-use-index-rates"
+                                          />
+                                        </FormControl>
+                                        <Label htmlFor="useIndexRates" className="text-sm font-medium text-slate-300 dark:text-slate-300">
+                                          Use Index Rates
+                                        </Label>
+                                      </div>
+                                      <FormMessage className="text-red-400 text-sm mt-1" />
+                                    </FormItem>
+                                  )}
+                                />
+
+                                {/* Index Rates Display or Custom Freight Input */}
+                                {form.watch("useIndexRates") ? (
+                                  <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-4">
+                                    <h4 className="text-sm font-medium text-slate-300 mb-3">Index Rates by Country:</h4>
+                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                      <div className="flex justify-between">
+                                        <span className="text-slate-400">France:</span>
+                                        <span className="text-slate-100 font-medium">$6,000</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-slate-400">Italy:</span>
+                                        <span className="text-slate-100 font-medium">$6,100</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-slate-400">Portugal:</span>
+                                        <span className="text-slate-100 font-medium">$6,200</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-slate-400">Spain:</span>
+                                        <span className="text-slate-100 font-medium">$6,300</span>
+                                      </div>
+                                    </div>
+                                    {(() => {
+                                      const countryOfOrigin = form.watch("countryOfOrigin");
+                                      const getRateForCountry = (countryCode: string) => {
+                                        switch (countryCode) {
+                                          case "FR": return 6000;
+                                          case "IT": return 6100;
+                                          case "PT": return 6200;
+                                          case "ES": return 6300;
+                                          default: return null;
+                                        }
+                                      };
+                                      const rate = getRateForCountry(countryOfOrigin);
+                                      return rate ? (
+                                        <div className="mt-3 pt-3 border-t border-slate-600/50">
+                                          <div className="flex justify-between items-center">
+                                            <span className="text-slate-300 font-medium">Selected Rate:</span>
+                                            <span className="text-emerald-400 font-bold text-lg">${rate.toLocaleString()}</span>
+                                          </div>
+                                        </div>
+                                      ) : countryOfOrigin ? (
+                                        <div className="mt-3 pt-3 border-t border-slate-600/50">
+                                          <p className="text-yellow-400 text-sm">No index rate available for selected country</p>
+                                        </div>
+                                      ) : null;
+                                    })()}
+                                  </div>
+                                ) : (
+                                  <FormField
+                                    control={form.control}
+                                    name="freightCost"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                          Freight Cost (USD) <span className="text-red-400">*</span>
+                                        </Label>
+                                        <FormControl>
+                                          <Input
+                                            id="freightCost"
+                                            type="number"
+                                            placeholder="Enter freight cost"
+                                            className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            data-testid="input-freight-cost"
+                                            value={field.value || ""}
+                                            onChange={(e) => {
+                                              const value = e.target.value;
+                                              field.onChange(value === "" ? undefined : Number(value));
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormMessage className="text-red-400 text-sm mt-1" />
+                                      </FormItem>
+                                    )}
+                                  />
+                                )}
+                              </div>
+                            </div>
+
                             <div className="flex justify-end pt-6">
                               <Button
                                 type="button"
                                 onClick={() => {
-                                  // Validate Section 3 fields
+                                  // Validate Section 3 fields including freight
                                   const containerSize = form.getValues("containerSize");
                                   const incoterms = form.getValues("incoterms");
                                   const originPort = form.getValues("originPort");
                                   const destinationPort = form.getValues("destinationPort");
+                                  const useIndexRates = form.getValues("useIndexRates");
+                                  const freightCost = form.getValues("freightCost");
                                   
-                                  if (containerSize && incoterms && originPort && destinationPort) {
+                                  // Check if freight is properly filled
+                                  const freightValid = useIndexRates || (freightCost && freightCost > 0);
+                                  
+                                  if (containerSize && incoterms && originPort && destinationPort && freightValid) {
                                     markSectionCompleted("shipment-details");
                                     toast({
                                       title: "Success!",
@@ -674,7 +792,7 @@ export default function ProductInputPage() {
                                   } else {
                                     toast({
                                       title: "Validation Error",
-                                      description: "Please fill in all shipment details fields.",
+                                      description: "Please fill in all shipment details fields and configure freight charges.",
                                       variant: "destructive",
                                     });
                                   }

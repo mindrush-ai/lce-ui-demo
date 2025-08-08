@@ -87,7 +87,10 @@ export const productInfoSchema = z.object({
   containerSize: z.string().min(1, "Container size is required"),
   incoterms: z.string().min(1, "Incoterms is required"),
   originPort: z.string().min(1, "Origin port is required"),
-  destinationPort: z.string().min(1, "Destination port is required")
+  destinationPort: z.string().min(1, "Destination port is required"),
+  // Freight Charges
+  useIndexRates: z.boolean().default(false),
+  freightCost: z.number().optional()
 });
 
 export type ProductInfo = z.infer<typeof productInfoSchema>;

@@ -35,6 +35,15 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Maintains consistent 50px field height and sectioned form behavior
 - Enhanced countries.ts with port mapping for automatic origin port selection
 
+### Freight Charges Subsection (Section 3 Update)
+- Added horizontal line separator and "Freight Charges" heading in Section 3
+- Implemented toggle switch for "Use Index Rates" option
+- Index rates by country: France ($6,000), Italy ($6,100), Portugal ($6,200), Spain ($6,300)
+- Dynamic rate display shows selected rate based on Country of Origin
+- Custom freight input field when Index Rates is disabled
+- Updated validation to require either Index Rates or custom freight cost
+- Freight charges integrated into shipment details form validation
+
 ### Calculate Total Landed Costs Feature
 - Added "Calculate Total Landed Costs" button that appears after all three sections are completed
 - Button uses emerald gradient styling to distinguish it as the primary action
