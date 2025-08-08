@@ -2,7 +2,7 @@
 
 ## Overview
 
-Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing and calculating total landed costs. The application provides a modular cost management solution with user authentication, company management, and a modern web interface. Built as a full-stack application with a React frontend and Express backend, it offers a scalable foundation for cost management workflows.
+Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing and calculating total landed costs. The application provides a modular cost management solution with user authentication, company management, interactive form sections, and a modern web interface. Built as a full-stack application with a React frontend and Express backend, it offers a scalable foundation for cost management workflows with an intuitive step-by-step user input system.
 
 ## User Preferences
 
@@ -40,10 +40,17 @@ Preferred communication style: Simple, everyday language.
 
 ### Project Structure
 - **Monorepo Layout**: Unified codebase with separate client, server, and shared directories
-- **Shared Code**: Common TypeScript types and Zod schemas in `/shared` directory
-- **Client**: React application in `/client` with component-based architecture
+- **Shared Code**: Common TypeScript types and Zod schemas in `/shared` directory including product information schemas
+- **Client**: React application in `/client` with component-based architecture including interactive form components
 - **Server**: Express API in `/server` with modular route organization
 - **Build**: Unified build process outputting to `/dist` for production deployment
+
+### Interactive Form System
+- **Collapsible Sections**: Dynamic form sections that collapse when completed to maintain clean UI
+- **Progressive Disclosure**: Users work through sections sequentially with visual progress indicators
+- **Real-time Validation**: Form validation with formatted input fields (HTS Code formatting)
+- **State Management**: Section completion state tracking with summary displays for completed sections
+- **User Experience**: Smooth animations and transitions between section states
 
 ## External Dependencies
 

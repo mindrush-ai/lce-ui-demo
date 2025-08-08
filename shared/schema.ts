@@ -45,3 +45,11 @@ export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type SignupStep1Data = z.infer<typeof signupStep1Schema>;
 export type SignupStep2Data = z.infer<typeof signupStep2Schema>;
+
+// Product Information Schema
+export const productInfoSchema = z.object({
+  nameId: z.string().min(1, "Product name/ID is required"),
+  htsCode: z.string().regex(/^\d{4}\.\d{3}$/, "HTS Code must follow format XXXX.XXX (10 digits)"),
+});
+
+export type ProductInfo = z.infer<typeof productInfoSchema>;
