@@ -47,6 +47,8 @@ export default function ProductInputPage() {
     },
   ]);
 
+  const [showResults, setShowResults] = useState(false);
+
 
 
   const form = useForm<ProductInfo>({
@@ -818,11 +820,19 @@ export default function ProductInputPage() {
                 <Button
                   type="button"
                   onClick={() => {
-                    // TODO: Implement actual TLC calculation logic
+                    // Show results and scroll to them
+                    setShowResults(true);
                     toast({
-                      title: "Calculating...",
-                      description: "Total Landed Costs calculation will be implemented here.",
+                      title: "Calculation Complete",
+                      description: "Total Landed Costs results displayed below.",
                     });
+                    // Scroll to results after a short delay
+                    setTimeout(() => {
+                      const resultsElement = document.getElementById('results-section');
+                      if (resultsElement) {
+                        resultsElement.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }, 100);
                   }}
                   className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-emerald-500/25"
                   data-testid="button-calculate-tlc"
@@ -831,6 +841,134 @@ export default function ProductInputPage() {
                     <span>Calculate Total Landed Costs</span>
                   </span>
                 </Button>
+              </div>
+            )}
+
+            {/* Results Section */}
+            {showResults && (
+              <div id="results-section" className="mt-12 mb-8">
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+                    Total Landed Costs Results
+                  </h2>
+                  <p className="text-slate-400 dark:text-slate-400">
+                    Your calculated costs breakdown
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Box 1 - HERO Box: Landed Cost per Item */}
+                  <div className="lg:col-span-1 bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-700/50 p-6">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-emerald-300 mb-4">
+                        Landed Cost per Item
+                      </h3>
+                      <div className="text-4xl font-bold text-emerald-100 mb-2">
+                        {/* Placeholder - will be calculated later */}
+                        --
+                      </div>
+                      <p className="text-sm text-emerald-400">
+                        Per wine case (USD)
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Box 2 - Customs Calculation */}
+                  <div className="lg:col-span-1 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
+                      Customs Calculation
+                    </h3>
+                    <div className="space-y-4">
+                      {(() => {
+                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const unitCost = form.getValues("unitCost") || 0;
+                        const htsCode = form.getValues("htsCode") || "";
+                        
+                        const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
+                        const customsValue = numberOfWineCases * unitCost; // in USD
+                        const customDutyPerItem = 2.00; // placeholder
+                        
+                        return (
+                          <>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400 font-bold">Customs Units:</span>
+                              <span className="text-slate-100 font-bold">{Math.round(customsUnits)} L</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Customs Value:</span>
+                              <span className="text-slate-100 font-medium">${Math.round(customsValue).toLocaleString()}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">HTS Code:</span>
+                              <span className="text-slate-100 font-medium">{htsCode}</span>
+                            </div>
+                            <div className="border-t border-slate-600/50 pt-3">
+                              <div className="flex justify-between">
+                                <span className="text-slate-300 font-medium">Custom Duty per Item:</span>
+                                <span className="text-slate-100 font-bold">${customDutyPerItem.toFixed(2)}</span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Box 3 - Freight Costs */}
+                  <div className="lg:col-span-1 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
+                      Freight Costs
+                    </h3>
+                    <div className="space-y-4">
+                      {(() => {
+                        const originPort = form.getValues("originPort") || "";
+                        const destinationPort = form.getValues("destinationPort") || "";
+                        const useIndexRates = form.getValues("useIndexRates");
+                        const freightCost = form.getValues("freightCost");
+                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const countryOfOrigin = form.getValues("countryOfOrigin");
+                        
+                        // Get index rate based on country
+                        const getIndexRate = (countryCode: string) => {
+                          switch (countryCode) {
+                            case "FR": return 6000;
+                            case "IT": return 6100;
+                            case "PT": return 6200;
+                            case "ES": return 6300;
+                            default: return 0;
+                          }
+                        };
+                        
+                        const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
+                        const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
+                        
+                        // Extract country codes for display
+                        const originCountryMatch = originPort.match(/\(([A-Z]{2})\)/);
+                        const destCountryMatch = destinationPort.match(/\(([A-Z]{2})\)/);
+                        const originCountryCode = originCountryMatch ? originCountryMatch[1] : "";
+                        const destCountryCode = destCountryMatch ? destCountryMatch[1] : "";
+                        
+                        return (
+                          <>
+                            <div className="text-sm text-slate-400 font-bold mb-3">
+                              {originCountryCode} to {destCountryCode}
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Total Freight Costs:</span>
+                              <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
+                            </div>
+                            <div className="border-t border-slate-600/50 pt-3">
+                              <div className="flex justify-between">
+                                <span className="text-slate-300 font-medium">Freight per Item:</span>
+                                <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

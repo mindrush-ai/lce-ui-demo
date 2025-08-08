@@ -47,9 +47,17 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 ### Calculate Total Landed Costs Feature
 - Added "Calculate Total Landed Costs" button that appears after all three sections are completed
 - Button uses emerald gradient styling to distinguish it as the primary action
-- Currently shows placeholder toast notification (ready for TLC calculation implementation)
 - Only displays when all sections have been marked as completed
 - Positioned prominently below the form sections with centered alignment
+
+### Landed Costs Results Display
+- Results section displays after clicking Calculate Total Landed Costs button
+- Organized in responsive grid layout with three main result boxes
+- Box 1 (HERO): Landed Cost per Item with emerald gradient styling (placeholder for now)
+- Box 2 (Customs): Dynamic calculations for customs units (cases × 12 × 0.75L), customs value (cases × unit cost), HTS code display, and $2.00 placeholder duty per item
+- Box 3 (Freight): Port-to-port display with country codes, total freight costs (index rates or custom), and calculated freight per item
+- Auto-scroll to results section with smooth scrolling behavior
+- Fully responsive design with mobile-first approach
 
 ## User Preferences
 
