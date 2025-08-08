@@ -67,4 +67,18 @@ export type SignupStep1Data = z.infer<typeof signupStep1Schema>;
 export type SignupStep2Data = z.infer<typeof signupStep2Schema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+
+// Product Information Schema
+export const productInfoSchema = z.object({
+  nameId: z.string().min(1, "Name/ID is required"),
+  htsCode: z.string()
+    .regex(/^\d{4}\.\d{2}\.\d{2}\.\d{2}$/, "HTS Code must follow format xxxx.xx.xx.xx")
+    .refine((code) => !code.startsWith("0"), "First digit cannot be 0"),
+  countryOfOrigin: z.string().min(2, "Country of origin is required"),
+  unitCost: z.number()
+    .positive("Unit cost must be positive")
+    .max(999999.9999, "Unit cost too large")
+});
+
+export type ProductInfo = z.infer<typeof productInfoSchema>;
 export type LoginData = z.infer<typeof loginSchema>;

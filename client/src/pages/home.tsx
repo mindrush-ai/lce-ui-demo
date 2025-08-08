@@ -1,6 +1,7 @@
-import { Moon, Sun, LogOut } from "lucide-react";
+import { Moon, Sun, LogOut, Calculator, TrendingUp, FileText, Package, BarChart3, Users, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
+import { Link } from "wouter";
 
 export default function HomePage() {
   const { theme, setTheme } = useTheme();
@@ -70,8 +71,21 @@ export default function HomePage() {
             </div>
             
             <div className="space-y-6">
+              <div className="flex justify-center mb-8">
+                <Link href="/product-input">
+                  <Button 
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-4 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02] text-lg"
+                    data-testid="button-start-calculation"
+                  >
+                    <Calculator className="w-5 h-5 mr-2" />
+                    Start Cost Calculation
+                  </Button>
+                </Link>
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <Calculator className="w-8 h-8 text-blue-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Cost Calculator</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Calculate comprehensive landed costs for your products
@@ -82,6 +96,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <Package className="w-8 h-8 text-emerald-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Inventory Management</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Track and manage your inventory with cost insights
@@ -92,6 +107,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <BarChart3 className="w-8 h-8 text-purple-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Analytics Dashboard</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Visualize cost trends and business insights
@@ -102,6 +118,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <Users className="w-8 h-8 text-orange-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Supplier Management</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Manage supplier relationships and costs
@@ -112,6 +129,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <FileText className="w-8 h-8 text-cyan-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Reporting Suite</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Generate comprehensive cost reports
@@ -122,6 +140,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
+                  <Zap className="w-8 h-8 text-yellow-500 mb-4" />
                   <h3 className="text-lg font-semibold text-card-foreground dark:text-card-foreground mb-2">Integration Hub</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Connect with your existing business tools

@@ -10,6 +10,7 @@ import SignupPage from "@/pages/signup";
 import LoginPage from "@/pages/login";
 import ForgotPasswordPage from "@/pages/forgot-password";
 import ResetPasswordPage from "@/pages/reset-password";
+import ProductInputPage from "@/pages/product-input";
 import HomePage from "@/pages/home";
 
 function Router() {
@@ -20,6 +21,7 @@ function Router() {
       <Route path="/login" component={LoginPage} />
       <Route path="/forgot-password" component={ForgotPasswordPage} />
       <Route path="/reset-password" component={ResetPasswordPage} />
+      <Route path="/product-input" component={ProductInputPage} />
       <Route path="/home" component={HomePage} />
       <Route component={NotFound} />
     </Switch>

@@ -2,7 +2,17 @@
 
 ## Overview
 
-Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing and calculating total landed costs. The application provides a modular cost management solution with user authentication, company management, and a modern web interface. Built as a full-stack application with a React frontend and Express backend, it offers a scalable foundation for cost management workflows.
+Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing and calculating total landed costs. The application provides a modular cost management solution with user authentication, company management, interactive product input forms, and a modern web interface. Built as a full-stack application with a React frontend and Express backend, it offers a scalable foundation for cost management workflows.
+
+## Recent Changes (January 2025)
+
+### Interactive Product Input System
+- Added comprehensive product information form with collapsible sections
+- Implemented HTS Code validation with automatic formatting (xxxx.xx.xx.xx format)
+- Integrated complete country selection with ISO codes and flag display
+- Added unit cost input with USD currency formatting (4 decimal places)
+- Created interactive sectioned form that collapses completed sections
+- Enhanced form validation using Zod schemas for all product fields
 
 ## User Preferences
 
