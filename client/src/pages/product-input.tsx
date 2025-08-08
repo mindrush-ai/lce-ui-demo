@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun } from "lucide-react";
@@ -36,6 +36,7 @@ export default function ProductInputPage() {
 
   const [countrySearch, setCountrySearch] = useState("");
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const countryDropdownRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<ProductInfo>({
     resolver: zodResolver(productInfoSchema),
@@ -86,11 +87,26 @@ export default function ProductInputPage() {
     }
   };
 
-  const filteredCountries = countrySearch 
-    ? searchCountries(countrySearch).slice(0, 10)
-    : countries.slice(0, 10);
+  const filteredCountries = countrySearch.trim() 
+    ? searchCountries(countrySearch.trim()).slice(0, 20)
+    : countries.slice(0, 20);
 
   const selectedCountry = countries.find(c => c.code === form.watch("countryOfOrigin"));
+
+  // Handle clicking outside dropdown to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
+        setShowCountryDropdown(false);
+        setCountrySearch("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const onSubmit = async (data: ProductInfo) => {
     try {
@@ -307,34 +323,57 @@ export default function ProductInputPage() {
                                         </div>
                                         
                                         {showCountryDropdown && (
-                                          <div className="absolute top-full left-0 right-0 mt-2 bg-slate-700 border border-slate-600 rounded-xl shadow-2xl z-[9999] max-h-60 overflow-hidden" style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}>
+                                          <div 
+                                            ref={countryDropdownRef}
+                                            className="absolute top-full left-0 right-0 mt-2 bg-slate-700 border border-slate-600 rounded-xl shadow-2xl z-[9999] max-h-80 overflow-hidden" 
+                                            style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}
+                                          >
                                             <div className="p-3 border-b border-slate-600">
                                               <Input
                                                 type="text"
                                                 placeholder="Search countries..."
-                                                className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-slate-100 placeholder-slate-400"
+                                                className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                                 value={countrySearch}
-                                                onChange={(e) => setCountrySearch(e.target.value)}
+                                                onChange={(e) => {
+                                                  e.stopPropagation();
+                                                  setCountrySearch(e.target.value);
+                                                }}
+                                                onClick={(e) => e.stopPropagation()}
+                                                onKeyDown={(e) => {
+                                                  e.stopPropagation();
+                                                  if (e.key === 'Escape') {
+                                                    setShowCountryDropdown(false);
+                                                    setCountrySearch("");
+                                                  }
+                                                }}
+                                                autoFocus
                                                 data-testid="input-country-search"
                                               />
                                             </div>
-                                            <div className="max-h-40 overflow-y-auto">
-                                              {filteredCountries.map((country) => (
-                                                <div
-                                                  key={country.code}
-                                                  className="px-4 py-3 hover:bg-slate-600 cursor-pointer flex items-center space-x-3 transition-colors duration-200"
-                                                  onClick={() => {
-                                                    field.onChange(country.code);
-                                                    setShowCountryDropdown(false);
-                                                    setCountrySearch("");
-                                                  }}
-                                                  data-testid={`option-country-${country.code}`}
-                                                >
-                                                  <span className="text-xl">{country.flag}</span>
-                                                  <span className="text-slate-100">{country.name}</span>
-                                                  <span className="text-slate-400 text-sm">({country.code})</span>
+                                            <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-700">
+                                              {filteredCountries.length === 0 ? (
+                                                <div className="px-4 py-3 text-slate-400 text-center">
+                                                  No countries found
                                                 </div>
-                                              ))}
+                                              ) : (
+                                                filteredCountries.map((country) => (
+                                                  <div
+                                                    key={country.code}
+                                                    className="px-4 py-3 hover:bg-slate-600 cursor-pointer flex items-center space-x-3 transition-colors duration-200"
+                                                    onClick={(e) => {
+                                                      e.stopPropagation();
+                                                      field.onChange(country.code);
+                                                      setShowCountryDropdown(false);
+                                                      setCountrySearch("");
+                                                    }}
+                                                    data-testid={`option-country-${country.code}`}
+                                                  >
+                                                    <span className="text-xl flex-shrink-0">{country.flag}</span>
+                                                    <span className="text-slate-100 flex-1">{country.name}</span>
+                                                    <span className="text-slate-400 text-sm flex-shrink-0">({country.code})</span>
+                                                  </div>
+                                                ))
+                                              )}
                                             </div>
                                           </div>
                                         )}
