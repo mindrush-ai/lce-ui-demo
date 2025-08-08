@@ -278,25 +278,28 @@ export default function ProductInputPage() {
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <select
-                                        {...field}
-                                        id="countryOfOrigin"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        data-testid="select-country"
-                                      >
-                                        <option value="" className="bg-slate-700 text-slate-400">
-                                          Select country
-                                        </option>
-                                        {countries.map((country) => (
-                                          <option 
-                                            key={country.code} 
-                                            value={country.code}
-                                            className="bg-slate-700 text-slate-100"
-                                          >
-                                            {country.flag} {country.name} ({country.code})
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="countryOfOrigin"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-country"
+                                        >
+                                          <option value="" className="bg-slate-700 text-slate-400">
+                                            Select country
                                           </option>
-                                        ))}
-                                      </select>
+                                          {countries.map((country) => (
+                                            <option 
+                                              key={country.code} 
+                                              value={country.code}
+                                              className="bg-slate-700 text-slate-100"
+                                            >
+                                              {country.flag} {country.name} ({country.code})
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
