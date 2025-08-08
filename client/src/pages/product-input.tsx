@@ -181,7 +181,7 @@ export default function ProductInputPage() {
     <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300 relative">
       {/* Wine Cases Background */}
       <div 
-        className="fixed bottom-0 right-0 w-96 h-72 opacity-15 pointer-events-none z-0"
+        className="fixed bottom-0 right-0 w-[500px] h-96 opacity-35 pointer-events-none z-0"
         style={{
           backgroundImage: `url(${wineCasesBg})`,
           backgroundRepeat: 'no-repeat',
