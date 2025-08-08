@@ -693,6 +693,28 @@ export default function ProductInputPage() {
                 </div>
               ))}
             </div>
+
+            {/* Calculate Total Landed Costs Button - Show when all sections are completed */}
+            {sections.every(section => section.isCompleted) && (
+              <div className="mt-8 text-center">
+                <Button
+                  type="button"
+                  onClick={() => {
+                    // TODO: Implement actual TLC calculation logic
+                    toast({
+                      title: "Calculating...",
+                      description: "Total Landed Costs calculation will be implemented here.",
+                    });
+                  }}
+                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-emerald-500/25"
+                  data-testid="button-calculate-tlc"
+                >
+                  <span className="flex items-center space-x-2">
+                    <span>Calculate Total Landed Costs</span>
+                  </span>
+                </Button>
+              </div>
+            )}
           </div>
         </main>
 

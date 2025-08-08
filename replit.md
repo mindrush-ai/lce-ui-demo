@@ -35,6 +35,13 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Maintains consistent 50px field height and sectioned form behavior
 - Enhanced countries.ts with port mapping for automatic origin port selection
 
+### Calculate Total Landed Costs Feature
+- Added "Calculate Total Landed Costs" button that appears after all three sections are completed
+- Button uses emerald gradient styling to distinguish it as the primary action
+- Currently shows placeholder toast notification (ready for TLC calculation implementation)
+- Only displays when all sections have been marked as completed
+- Positioned prominently below the form sections with centered alignment
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
