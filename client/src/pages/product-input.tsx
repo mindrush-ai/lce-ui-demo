@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronRight, Check, Moon, Sun } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, Moon, Sun, Package } from "lucide-react";
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -188,6 +188,7 @@ export default function ProductInputPage() {
                       ) : (
                         <div className="w-6 h-6 border-2 border-slate-500 rounded-full" />
                       )}
+                      <Package className="w-5 h-5 text-blue-500" />
                       <h2 className="text-xl font-semibold text-slate-100 dark:text-slate-100">
                         {section.title}
                       </h2>
