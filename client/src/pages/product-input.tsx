@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun } from "lucide-react";
@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/use-theme";
 import { Link } from "wouter";
-import { countries, searchCountries } from "@/lib/countries";
+import { countries } from "@/lib/countries";
 import { cn } from "@/lib/utils";
 
 interface Section {
@@ -34,9 +34,7 @@ export default function ProductInputPage() {
     },
   ]);
 
-  const [countrySearch, setCountrySearch] = useState("");
-  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
-  const countryDropdownRef = useRef<HTMLDivElement>(null);
+
 
   const form = useForm<ProductInfo>({
     resolver: zodResolver(productInfoSchema),
@@ -87,27 +85,7 @@ export default function ProductInputPage() {
     }
   };
 
-  const filteredCountries = countrySearch.trim() 
-    ? searchCountries(countrySearch.trim()).slice(0, 20)
-    : countries.slice(0, 20);
 
-  const selectedCountryCode = form.watch("countryOfOrigin");
-  const selectedCountry = countries.find(c => c.code === selectedCountryCode);
-
-  // Handle clicking outside dropdown to close it
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (countryDropdownRef.current && !countryDropdownRef.current.contains(event.target as Node)) {
-        setShowCountryDropdown(false);
-        setCountrySearch("");
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   const onSubmit = async (data: ProductInfo) => {
     try {
@@ -295,90 +273,30 @@ export default function ProductInputPage() {
                                 control={form.control}
                                 name="countryOfOrigin"
                                 render={({ field }) => (
-                                  <FormItem className="relative">
+                                  <FormItem>
                                     <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
-                                        <div 
-                                          className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 cursor-pointer flex items-center justify-between focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all duration-200"
-                                          onClick={() => setShowCountryDropdown(!showCountryDropdown)}
-                                          data-testid="select-country"
-                                        >
-                                          <div className="flex items-center space-x-2">
-                                            {selectedCountry ? (
-                                              <>
-                                                <span className="text-xl">{selectedCountry.flag}</span>
-                                                <span>{selectedCountry.name}</span>
-                                                <span className="text-slate-400 text-sm">({selectedCountry.code})</span>
-                                              </>
-                                            ) : (
-                                              <span className="text-slate-400">Select country</span>
-                                            )}
-                                          </div>
-                                          <ChevronDown className={cn(
-                                            "w-5 h-5 text-slate-400 transition-transform duration-200",
-                                            showCountryDropdown && "rotate-180"
-                                          )} />
-                                        </div>
-                                        
-                                        {showCountryDropdown && (
-                                          <div 
-                                            ref={countryDropdownRef}
-                                            className="absolute top-full left-0 right-0 mt-2 bg-slate-700 border border-slate-600 rounded-xl shadow-2xl z-[9999] max-h-80 overflow-hidden" 
-                                            style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}
+                                      <select
+                                        {...field}
+                                        id="countryOfOrigin"
+                                        className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        data-testid="select-country"
+                                      >
+                                        <option value="" className="bg-slate-700 text-slate-400">
+                                          Select country
+                                        </option>
+                                        {countries.map((country) => (
+                                          <option 
+                                            key={country.code} 
+                                            value={country.code}
+                                            className="bg-slate-700 text-slate-100"
                                           >
-                                            <div className="p-3 border-b border-slate-600">
-                                              <Input
-                                                type="text"
-                                                placeholder="Search countries..."
-                                                className="w-full px-3 py-2 bg-slate-600 border border-slate-500 rounded-lg text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                value={countrySearch}
-                                                onChange={(e) => {
-                                                  e.stopPropagation();
-                                                  setCountrySearch(e.target.value);
-                                                }}
-                                                onClick={(e) => e.stopPropagation()}
-                                                onKeyDown={(e) => {
-                                                  e.stopPropagation();
-                                                  if (e.key === 'Escape') {
-                                                    setShowCountryDropdown(false);
-                                                    setCountrySearch("");
-                                                  }
-                                                }}
-                                                autoFocus
-                                                data-testid="input-country-search"
-                                              />
-                                            </div>
-                                            <div className="max-h-60 overflow-y-auto custom-scrollbar">
-                                              {filteredCountries.length === 0 ? (
-                                                <div className="px-4 py-3 text-slate-400 text-center">
-                                                  No countries found
-                                                </div>
-                                              ) : (
-                                                filteredCountries.map((country) => (
-                                                  <div
-                                                    key={country.code}
-                                                    className="px-4 py-3 hover:bg-slate-600 cursor-pointer flex items-center space-x-3 transition-colors duration-200"
-                                                    onClick={(e) => {
-                                                      e.stopPropagation();
-                                                      form.setValue("countryOfOrigin", country.code);
-                                                      setShowCountryDropdown(false);
-                                                      setCountrySearch("");
-                                                    }}
-                                                    data-testid={`option-country-${country.code}`}
-                                                  >
-                                                    <span className="text-xl flex-shrink-0">{country.flag}</span>
-                                                    <span className="text-slate-100 flex-1">{country.name}</span>
-                                                    <span className="text-slate-400 text-sm flex-shrink-0">({country.code})</span>
-                                                  </div>
-                                                ))
-                                              )}
-                                            </div>
-                                          </div>
-                                        )}
-                                      </div>
+                                            {country.flag} {country.name} ({country.code})
+                                          </option>
+                                        ))}
+                                      </select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
@@ -452,16 +370,7 @@ export default function ProductInputPage() {
         </footer>
       </div>
 
-      {/* Click outside to close country dropdown */}
-      {showCountryDropdown && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => {
-            setShowCountryDropdown(false);
-            setCountrySearch("");
-          }}
-        />
-      )}
+
     </div>
   );
 }
