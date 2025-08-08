@@ -137,7 +137,7 @@ export default function SignupPage() {
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
-                <p>&copy; 2024 Total Landed Costs. All rights reserved.</p>
+                <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
             </div>
           </footer>
@@ -202,7 +202,7 @@ export default function SignupPage() {
         <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="text-center text-sm text-slate-400 dark:text-slate-400">
-              <p>&copy; 2024 Total Landed Costs. All rights reserved.</p>
+              <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>
         </footer>

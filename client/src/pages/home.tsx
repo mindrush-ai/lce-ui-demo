@@ -138,7 +138,7 @@ export default function HomePage() {
         <footer className="border-t border-border dark:border-border bg-background/50 dark:bg-background/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="text-center text-sm text-muted-foreground dark:text-muted-foreground">
-              <p>&copy; 2024 Total Landed Costs. All rights reserved.</p>
+              <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>
         </footer>
