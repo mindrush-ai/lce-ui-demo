@@ -181,13 +181,6 @@ export default function ProductInputPage() {
                     data-testid={`button-toggle-${section.id}`}
                   >
                     <div className="flex items-center space-x-3">
-                      {section.isCompleted ? (
-                        <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
-                          <Check className="w-4 h-4 text-white" />
-                        </div>
-                      ) : (
-                        <div className="w-6 h-6 border-2 border-slate-500 rounded-full" />
-                      )}
                       <Package className="w-5 h-5 text-blue-500" />
                       <h2 className="text-xl font-semibold text-slate-100 dark:text-slate-100">
                         {section.title}
