@@ -7,8 +7,8 @@ export interface Country {
 export const countries: Country[] = [
   { code: "FR", name: "France", flag: "🇫🇷" },
   { code: "IT", name: "Italy", flag: "🇮🇹" },
-  { code: "NL", name: "Netherlands", flag: "🇳🇱" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹" }
+  { code: "PT", name: "Portugal", flag: "🇵🇹" },
+  { code: "ES", name: "Spain", flag: "🇪🇸" }
 ];
 
 export const getCountryByCode = (code: string): Country | undefined => {
