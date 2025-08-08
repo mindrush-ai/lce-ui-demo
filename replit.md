@@ -64,6 +64,12 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Logo displays at consistent 40px height for professional branding
 - Responsive positioning maintains visual balance across different screen sizes
 
+### Visual Enhancement - Wine Cases Background
+- Created custom SVG wine cases illustration for product input page background
+- Positioned wine cases in bottom-right corner with 15% opacity for subtle branding
+- Fixed positioning ensures background doesn't interfere with form functionality
+- Maintains professional appearance while adding thematic wine industry context
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.

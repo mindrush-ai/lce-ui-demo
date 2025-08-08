@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive } from "lucide-react";
 import mgxLogoPath from "@assets/mgx logo_1754655534840.png";
+import wineCasesBg from "@/assets/wine-cases-bg.svg";
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,8 +178,18 @@ export default function ProductInputPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
-      <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300 relative">
+      {/* Wine Cases Background */}
+      <div 
+        className="fixed bottom-0 right-0 w-96 h-72 opacity-15 pointer-events-none z-0"
+        style={{
+          backgroundImage: `url(${wineCasesBg})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'bottom right',
+          backgroundSize: 'contain'
+        }}
+      />
+      <div className="min-h-screen flex flex-col relative z-10">
         <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
