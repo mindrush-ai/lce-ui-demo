@@ -351,7 +351,7 @@ export default function ProductInputPage() {
                                                 data-testid="input-country-search"
                                               />
                                             </div>
-                                            <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-700">
+                                            <div className="max-h-60 overflow-y-auto custom-scrollbar">
                                               {filteredCountries.length === 0 ? (
                                                 <div className="px-4 py-3 text-slate-400 text-center">
                                                   No countries found
@@ -363,7 +363,7 @@ export default function ProductInputPage() {
                                                     className="px-4 py-3 hover:bg-slate-600 cursor-pointer flex items-center space-x-3 transition-colors duration-200"
                                                     onClick={(e) => {
                                                       e.stopPropagation();
-                                                      field.onChange(country.code);
+                                                      form.setValue("countryOfOrigin", country.code);
                                                       setShowCountryDropdown(false);
                                                       setCountrySearch("");
                                                     }}
