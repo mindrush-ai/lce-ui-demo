@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive } from "lucide-react";
+import mgxLogoPath from "@assets/mgx logo_1754655534840.png";
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -190,6 +191,15 @@ export default function ProductInputPage() {
                   <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
                 </div>
               </Link>
+              
+              {/* MGX Logo in center */}
+              <div className="flex-1 flex justify-center">
+                <img 
+                  src={mgxLogoPath} 
+                  alt="MGX Beverage Group" 
+                  className="h-10 w-auto"
+                />
+              </div>
               
               <div className="flex items-center space-x-4">
                 <Button

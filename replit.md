@@ -59,6 +59,11 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Auto-scroll to results section with smooth scrolling behavior
 - Fully responsive design with mobile-first approach
 
+### MGX Branding Integration
+- Added MGX Beverage Group logo to header center on all pages (home and product-input)
+- Logo displays at consistent 40px height for professional branding
+- Responsive positioning maintains visual balance across different screen sizes
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
