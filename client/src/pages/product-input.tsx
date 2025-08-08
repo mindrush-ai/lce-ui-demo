@@ -94,6 +94,23 @@ export default function ProductInputPage() {
 
 
 
+  const validateSection1 = () => {
+    const values = form.getValues();
+    const section1Schema = productInfoSchema.pick({
+      nameId: true,
+      htsCode: true,
+      countryOfOrigin: true,
+      unitCost: true
+    });
+    
+    try {
+      section1Schema.parse(values);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  };
+
   const onSubmit = async (data: ProductInfo) => {
     try {
       console.log("Product data:", data);
@@ -212,7 +229,7 @@ export default function ProductInputPage() {
                     <div className="p-6 pt-4 overflow-visible" data-testid={`content-${section.id}`}>
                       {section.id === "product-details" && (
                         <Form {...form}>
-                          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                          <div className="space-y-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-visible">
                               {/* Name/ID Field */}
                               <FormField
@@ -348,14 +365,31 @@ export default function ProductInputPage() {
 
                             <div className="flex justify-end pt-6">
                               <Button
-                                type="submit"
+                                type="button"
+                                onClick={() => {
+                                  if (validateSection1()) {
+                                    markSectionCompleted("product-details");
+                                    toast({
+                                      title: "Success!",
+                                      description: "Product information saved successfully.",
+                                    });
+                                  } else {
+                                    // Trigger form validation to show errors
+                                    form.trigger(['nameId', 'htsCode', 'countryOfOrigin', 'unitCost']);
+                                    toast({
+                                      title: "Validation Error",
+                                      description: "Please fill in all required fields correctly.",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                }}
                                 className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
                                 data-testid="button-save-product"
                               >
                                 Save & Continue
                               </Button>
                             </div>
-                          </form>
+                          </div>
                         </Form>
                       )}
 
