@@ -209,7 +209,7 @@ export default function ProductInputPage() {
 
                   {/* Section Content */}
                   {!section.isCollapsed && (
-                    <div className="p-6 pt-0 overflow-visible" data-testid={`content-${section.id}`}>
+                    <div className="p-6 pt-4 overflow-visible" data-testid={`content-${section.id}`}>
                       {section.id === "product-details" && (
                         <Form {...form}>
                           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -228,7 +228,7 @@ export default function ProductInputPage() {
                                         id="nameId"
                                         type="text"
                                         placeholder="Enter product name or ID"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-name-id"
                                         {...field}
                                       />
@@ -252,7 +252,7 @@ export default function ProductInputPage() {
                                         id="htsCode"
                                         type="text"
                                         placeholder="xxxx.xx.xx.xx"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-hts-code"
                                         value={field.value}
                                         onChange={(e) => {
@@ -284,7 +284,7 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="countryOfOrigin"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-country"
                                         >
                                           <option value="" className="bg-slate-700 text-slate-400">
@@ -327,7 +327,7 @@ export default function ProductInputPage() {
                                           step="0.0001"
                                           min="0"
                                           max="999999.9999"
-                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                           data-testid="input-unit-cost"
                                           value={field.value || ''}
                                           onChange={(e) => {
@@ -368,7 +368,7 @@ export default function ProductInputPage() {
                                 <Label className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
                                   Description
                                 </Label>
-                                <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 rounded-xl text-slate-400 dark:text-slate-400 flex items-center">
+                                <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 !rounded-xl text-slate-400 dark:text-slate-400 flex items-center">
                                   {form.watch("htsCode") || "HTS Code from previous section will appear here"}
                                 </div>
                                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
@@ -393,7 +393,7 @@ export default function ProductInputPage() {
                                         min="1"
                                         max="1260"
                                         step="1"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-wine-cases"
                                         value={field.value || ''}
                                         onChange={(e) => {
