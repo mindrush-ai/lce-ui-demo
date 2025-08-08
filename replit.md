@@ -9,10 +9,12 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 ### Interactive Product Input System
 - Added comprehensive product information form with collapsible sections
 - Implemented HTS Code validation with automatic formatting (xxxx.xx.xx.xx format)
-- Integrated complete country selection with ISO codes and flag display
+- Integrated complete country selection with ISO codes and flag display using native HTML select
 - Added unit cost input with USD currency formatting (4 decimal places)
 - Created interactive sectioned form that collapses completed sections
 - Enhanced form validation using Zod schemas for all product fields
+- Fixed form field alignment and consistent 50px height across all inputs
+- Replaced custom dropdown with reliable native select element for better UX
 
 ## User Preferences
 
