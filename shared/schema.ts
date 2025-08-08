@@ -77,7 +77,12 @@ export const productInfoSchema = z.object({
   countryOfOrigin: z.string().min(2, "Country of origin is required"),
   unitCost: z.number()
     .positive("Unit cost must be positive")
-    .max(999999.9999, "Unit cost too large")
+    .max(999999.9999, "Unit cost too large"),
+  // Section 2 - Item Details
+  numberOfWineCases: z.number()
+    .int("Number must be a whole number")
+    .min(1, "Number of wine cases must be at least 1")
+    .max(1260, "Number of wine cases cannot exceed 1260")
 });
 
 export type ProductInfo = z.infer<typeof productInfoSchema>;

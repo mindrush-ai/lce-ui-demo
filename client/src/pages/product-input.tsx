@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronRight, Check, Moon, Sun, Package } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive } from "lucide-react";
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,12 @@ export default function ProductInputPage() {
       isCompleted: false,
       isCollapsed: false,
     },
+    {
+      id: "item-details",
+      title: "Item Details",
+      isCompleted: false,
+      isCollapsed: true,
+    },
   ]);
 
 
@@ -43,6 +49,7 @@ export default function ProductInputPage() {
       htsCode: "",
       countryOfOrigin: "",
       unitCost: 0,
+      numberOfWineCases: 0,
     },
   });
 
@@ -181,7 +188,8 @@ export default function ProductInputPage() {
                     data-testid={`button-toggle-${section.id}`}
                   >
                     <div className="flex items-center space-x-3">
-                      <Package className="w-5 h-5 text-blue-500" />
+                      {section.id === "product-details" && <Package className="w-5 h-5 text-blue-500" />}
+                      {section.id === "item-details" && <Archive className="w-5 h-5 text-blue-500" />}
                       <h2 className="text-xl font-semibold text-slate-100 dark:text-slate-100">
                         {section.title}
                       </h2>
@@ -348,6 +356,88 @@ export default function ProductInputPage() {
                               </Button>
                             </div>
                           </form>
+                        </Form>
+                      )}
+
+                      {section.id === "item-details" && (
+                        <Form {...form}>
+                          <div className="space-y-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              {/* Description (Display HTS Code) */}
+                              <div>
+                                <Label className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                  Description
+                                </Label>
+                                <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 rounded-xl text-slate-400 dark:text-slate-400 flex items-center">
+                                  {form.watch("htsCode") || "HTS Code from previous section will appear here"}
+                                </div>
+                                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                  This displays the HTS Code from the previous section
+                                </p>
+                              </div>
+
+                              {/* Number of Wine Cases */}
+                              <FormField
+                                control={form.control}
+                                name="numberOfWineCases"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="numberOfWineCases" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Number of Wine Cases <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <Input
+                                        id="numberOfWineCases"
+                                        type="number"
+                                        placeholder="Enter number of cases"
+                                        min="1"
+                                        max="1260"
+                                        step="1"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        data-testid="input-wine-cases"
+                                        value={field.value || ''}
+                                        onChange={(e) => {
+                                          const value = parseInt(e.target.value) || 0;
+                                          field.onChange(value);
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                      Item quantity per container (1-1260, whole numbers only)
+                                    </p>
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+
+                            <div className="flex justify-end pt-6">
+                              <Button
+                                type="button"
+                                onClick={() => {
+                                  // Validate Section 2 fields
+                                  const numberOfWineCases = form.getValues("numberOfWineCases");
+                                  if (numberOfWineCases && numberOfWineCases >= 1 && numberOfWineCases <= 1260) {
+                                    markSectionCompleted("item-details");
+                                    toast({
+                                      title: "Success!",
+                                      description: "Item details saved successfully.",
+                                    });
+                                  } else {
+                                    toast({
+                                      title: "Validation Error",
+                                      description: "Please enter a valid number of wine cases (1-1260).",
+                                      variant: "destructive",
+                                    });
+                                  }
+                                }}
+                                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-8 rounded-xl transition-all duration-200 transform hover:scale-[1.02]"
+                                data-testid="button-save-item-details"
+                              >
+                                Save & Continue
+                              </Button>
+                            </div>
+                          </div>
                         </Form>
                       )}
                     </div>
