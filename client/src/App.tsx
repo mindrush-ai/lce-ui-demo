@@ -8,7 +8,6 @@ import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/landing";
 import SignupPage from "@/pages/signup";
 import HomePage from "@/pages/home";
-import UserInputsPage from "@/pages/user-inputs";
 
 function Router() {
   return (
@@ -16,7 +15,6 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/signup" component={SignupPage} />
       <Route path="/home" component={HomePage} />
-      <Route path="/inputs" component={UserInputsPage} />
       <Route component={NotFound} />
     </Switch>
   );

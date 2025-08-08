@@ -1,7 +1,6 @@
 import { Moon, Sun, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
-import { Link } from "wouter";
 
 export default function HomePage() {
   const { theme, setTheme } = useTheme();
@@ -77,11 +76,9 @@ export default function HomePage() {
                   <p className="text-muted-foreground dark:text-muted-foreground mb-4">
                     Calculate comprehensive landed costs for your products
                   </p>
-                  <Link href="/inputs">
-                    <Button className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white" size="sm" data-testid="button-cost-calculator">
-                      Start Calculator
-                    </Button>
-                  </Link>
+                  <Button variant="outline" size="sm" data-testid="button-cost-calculator">
+                    Coming Soon
+                  </Button>
                 </div>
                 
                 <div className="p-6 bg-card dark:bg-card border border-border dark:border-border rounded-xl hover:shadow-lg transition-shadow duration-200">
