@@ -181,7 +181,6 @@ export default function ProductInputPage() {
 
   return (
     <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300 relative">
-
       <div className="min-h-screen flex flex-col relative z-10">
         <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -236,9 +235,7 @@ export default function ProductInputPage() {
         <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">
-                Product Cost Calculation
-              </h1>
+              <h1 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">Landed Cost Calculator</h1>
               <p className="text-slate-400 dark:text-slate-400">
                 Enter your product information to calculate total landed costs
               </p>
