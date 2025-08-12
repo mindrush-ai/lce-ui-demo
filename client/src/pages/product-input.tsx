@@ -180,9 +180,9 @@ export default function ProductInputPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300 relative">
       <div className="min-h-screen flex flex-col relative z-10">
-        <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <Link href="/">
@@ -190,8 +190,8 @@ export default function ProductInputPage() {
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-sm">T</span>
                   </div>
-                  <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Cost</span>
+                  <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
+                  <span className="text-sm text-slate-500 dark:text-slate-400 hidden sm:inline">Total Landed Cost</span>
                 </div>
               </Link>
               
@@ -202,13 +202,13 @@ export default function ProductInputPage() {
                   variant="ghost"
                   size="sm"
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg bg-slate-800 dark:bg-slate-800 hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors duration-200 group"
+                  className="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors duration-200 group"
                   data-testid="button-theme-toggle"
                 >
                   {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   ) : (
-                    <Moon className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   )}
                 </Button>
                 
@@ -228,15 +228,15 @@ export default function ProductInputPage() {
         <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">US Landed Cost Calculator</h1>
-              <p className="text-slate-400 dark:text-slate-400">Enter your product information to calculate total landed cost</p>
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">US Landed Cost Calculator</h1>
+              <p className="text-slate-600 dark:text-slate-400">Enter your product information to calculate total landed cost</p>
             </div>
 
             <div className="space-y-6">
               {sections.map((section) => (
                 <div
                   key={section.id}
-                  className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 dark:border-slate-700/50"
+                  className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50"
                   data-testid={`section-${section.id}`}
                 >
                   {/* Section Header */}
@@ -244,8 +244,8 @@ export default function ProductInputPage() {
                     className={cn(
                       "flex items-center justify-between p-6 cursor-pointer transition-colors duration-200",
                       section.isCompleted 
-                        ? "bg-emerald-900/30 border-b border-emerald-700/50" 
-                        : "hover:bg-slate-700/30"
+                        ? "bg-emerald-100/30 dark:bg-emerald-900/30 border-b border-emerald-300/50 dark:border-emerald-700/50" 
+                        : "hover:bg-slate-100/30 dark:hover:bg-slate-700/30"
                     )}
                     onClick={() => toggleSection(section.id)}
                     data-testid={`button-toggle-${section.id}`}
@@ -254,7 +254,7 @@ export default function ProductInputPage() {
                       {section.id === "product-details" && <Package className="w-5 h-5 text-blue-500" />}
                       {section.id === "item-details" && <Archive className="w-5 h-5 text-blue-500" />}
                       {section.id === "shipment-details" && <Package className="w-5 h-5 text-blue-500" />}
-                      <h2 className="text-xl font-semibold text-slate-100 dark:text-slate-100">
+                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
                         {section.title}
                       </h2>
                     </div>
@@ -264,9 +264,9 @@ export default function ProductInputPage() {
                         <span className="text-sm text-emerald-400 font-medium">Completed</span>
                       )}
                       {section.isCollapsed ? (
-                        <ChevronRight className="w-5 h-5 text-slate-400" />
+                        <ChevronRight className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-slate-400" />
+                        <ChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                       )}
                     </div>
                   </div>
@@ -284,7 +284,7 @@ export default function ProductInputPage() {
                                 name="itemNumber"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="itemNumber" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="itemNumber" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Item Number <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -292,7 +292,7 @@ export default function ProductInputPage() {
                                         id="itemNumber"
                                         type="text"
                                         placeholder="Enter item number"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-item-number"
                                         {...field}
                                       />
@@ -308,7 +308,7 @@ export default function ProductInputPage() {
                                 name="nameId"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="nameId" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="nameId" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Item Name/Description <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -332,7 +332,7 @@ export default function ProductInputPage() {
                                 name="htsCode"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="htsCode" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="htsCode" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       HTS Code <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -340,13 +340,13 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="htsCode"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-hts-code"
                                         >
-                                          <option value="2204.21.50.40" className="bg-slate-700 text-slate-100">
+                                          <option value="2204.21.50.40" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             2204.21.50.40
                                           </option>
-                                          <option value="2204.10.00.75" className="bg-slate-700 text-slate-100">
+                                          <option value="2204.10.00.75" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             2204.10.00.75
                                           </option>
                                         </select>
@@ -977,9 +977,9 @@ export default function ProductInputPage() {
                   </div>
 
                   {/* Box 2 - Customs and Duties (Full Width) */}
-                  <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-slate-200 mb-6 text-center text-[20px]">DUTIES</h3>
-                    <hr className="border-slate-600/50 dark:border-slate-600/50 mb-6" />
+                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-6 text-center text-[20px]">DUTIES</h3>
+                    <hr className="border-slate-300/50 dark:border-slate-600/50 mb-6" />
                     <div className="space-y-4">
                       {(() => {
                         const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
@@ -1081,8 +1081,8 @@ export default function ProductInputPage() {
                   </div>
 
                   {/* Box 3 - Freight Costs */}
-                  <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-slate-200 mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
+                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
                     <div className="space-y-4">
                       {(() => {
                         const useIndexRates = form.getValues("useIndexRates");
@@ -1144,9 +1144,9 @@ export default function ProductInputPage() {
           </div>
         </main>
 
-        <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
+        <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="text-center text-sm text-slate-400 dark:text-slate-400">
+            <div className="text-center text-sm text-slate-600 dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>
