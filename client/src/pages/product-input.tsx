@@ -1061,7 +1061,7 @@ export default function ProductInputPage() {
                                 
                                 {/* ROW 5 - Total Customs & Duties */}
                                 <tr className="border-t-2 border-slate-500">
-                                  <td className="py-3 text-slate-300 font-bold">Total Customs & Duties</td>
+                                  <td className="py-3 text-slate-300 font-bold">Total Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
