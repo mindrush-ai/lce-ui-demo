@@ -65,7 +65,7 @@ export default function HomePage() {
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">Welcome - MGX Team</h1>
+              <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">Welcome - TCL User</h1>
               <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">Your Total Landed Cost dashboard is ready. Start managing your business costs with precision.</p>
             </div>
             
