@@ -316,7 +316,7 @@ export default function ProductInputPage() {
                                         id="nameId"
                                         type="text"
                                         placeholder="Enter item name or description"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-name-id"
                                         {...field}
                                       />
@@ -364,7 +364,7 @@ export default function ProductInputPage() {
                                 name="countryOfOrigin"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -372,17 +372,17 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="countryOfOrigin"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-country"
                                         >
-                                          <option value="" className="bg-slate-700 text-slate-400">
+                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select country
                                           </option>
                                           {countries.map((country) => (
                                             <option 
                                               key={country.code} 
                                               value={country.code}
-                                              className="bg-slate-700 text-slate-100"
+                                              className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                                             >
                                               {country.flag} {country.name} ({country.code})
                                             </option>
@@ -402,7 +402,7 @@ export default function ProductInputPage() {
                                 name="unitCost"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="unitCost" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="unitCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Unit Cost (USD) <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -415,7 +415,7 @@ export default function ProductInputPage() {
                                           step="0.0001"
                                           min="0"
                                           max="999999.9999"
-                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                           data-testid="input-unit-cost"
                                           value={field.value || ''}
                                           onChange={(e) => {
@@ -470,10 +470,10 @@ export default function ProductInputPage() {
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                               {/* HTS Code Description */}
                               <div>
-                                <Label className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                <Label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                   HTS Code Description
                                 </Label>
-                                <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 !rounded-xl text-slate-400 dark:text-slate-400 flex items-center">
+                                <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-slate-600 dark:text-slate-400 flex items-center">
                                   {(() => {
                                     const htsCode = form.watch("htsCode");
                                     const descriptions = {
@@ -494,7 +494,7 @@ export default function ProductInputPage() {
                                 name="numberOfWineCases"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="numberOfWineCases" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="numberOfWineCases" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Number of Wine Cases <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -505,7 +505,7 @@ export default function ProductInputPage() {
                                         min="1"
                                         max="1260"
                                         step="1"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-wine-cases"
                                         value={field.value || ''}
                                         onChange={(e) => {
@@ -563,7 +563,7 @@ export default function ProductInputPage() {
                                 name="containerSize"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="containerSize" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="containerSize" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Container Size <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -571,13 +571,13 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="containerSize"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-container-size"
                                         >
-                                          <option value="" className="bg-slate-700 text-slate-400">
+                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select container size
                                           </option>
-                                          <option value="40-feet" className="bg-slate-700 text-slate-100">
+                                          <option value="40-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             40 Feet
                                           </option>
                                         </select>
@@ -595,7 +595,7 @@ export default function ProductInputPage() {
                                 name="incoterms"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="incoterms" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="incoterms" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Incoterms Rule <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -603,16 +603,16 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="incoterms"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-incoterms"
                                         >
-                                          <option value="" className="bg-slate-700 text-slate-400">
+                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select Incoterms Rule
                                           </option>
-                                          <option value="FCA-SUPPLIER" className="bg-slate-700 text-slate-100">
+                                          <option value="FCA-SUPPLIER" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             FCA (Supplier Facility)
                                           </option>
-                                          <option value="FCA-PORT" className="bg-slate-700 text-slate-100">
+                                          <option value="FCA-PORT" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             FCA (Port of Loading)
                                           </option>
                                         </select>
@@ -637,11 +637,11 @@ export default function ProductInputPage() {
                                   
                                   return (
                                     <FormItem>
-                                      <Label htmlFor="originPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      <Label htmlFor="originPort" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                         Origin Port <span className="text-red-400">*</span>
                                       </Label>
                                       <FormControl>
-                                        <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 !rounded-xl text-slate-100 dark:text-slate-100 flex items-center">
+                                        <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-slate-600 dark:text-slate-100 flex items-center">
                                           {matchingCountry ? matchingCountry.port : (selectedCountry ? "Loading..." : "Select country of origin first")}
                                         </div>
                                       </FormControl>
@@ -660,7 +660,7 @@ export default function ProductInputPage() {
                                 name="destinationPort"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="destinationPort" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="destinationPort" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                       Destination Port <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -668,16 +668,16 @@ export default function ProductInputPage() {
                                         <select
                                           {...field}
                                           id="destinationPort"
-                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-destination-port"
                                         >
-                                          <option value="" className="bg-slate-700 text-slate-400">
+                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select destination port
                                           </option>
-                                          <option value="New York (US)" className="bg-slate-700 text-slate-100">
+                                          <option value="New York (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             New York (US)
                                           </option>
-                                          <option value="New Jersey (US)" className="bg-slate-700 text-slate-100">
+                                          <option value="New Jersey (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             New Jersey (US)
                                           </option>
                                         </select>
@@ -799,7 +799,7 @@ export default function ProductInputPage() {
                                     name="freightCost"
                                     render={({ field }) => (
                                       <FormItem>
-                                        <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                        <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                           Freight Cost (USD) <span className="text-red-400">*</span>
                                         </Label>
                                         <FormControl>
@@ -807,7 +807,7 @@ export default function ProductInputPage() {
                                             id="freightCost"
                                             type="number"
                                             placeholder="Enter freight cost"
-                                            className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             data-testid="input-freight-cost"
                                             value={field.value || ""}
                                             onChange={(e) => {
@@ -902,10 +902,10 @@ export default function ProductInputPage() {
             {showResults && (
               <div id="results-section" className="mt-12 mb-8">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                     Total Landed Costs Results
                   </h2>
-                  <p className="text-slate-400 dark:text-slate-400">
+                  <p className="text-slate-600 dark:text-slate-400">
                     Your calculated costs breakdown
                   </p>
                 </div>
@@ -1022,54 +1022,54 @@ export default function ProductInputPage() {
                             <table className="w-full">
                               <tbody>
                                 {/* ROW 1 - Unit of Measure */}
-                                <tr className="border-b border-slate-600/30">
-                                  <td className="py-3 text-slate-400 font-medium">Unit of Measure</td>
+                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Unit of Measure</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-400 font-medium">Liters</td>
-                                  <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)}</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Liters</td>
+                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">{Math.round(customsUnits)}</td>
                                 </tr>
                                 
                                 {/* ROW 2 - Entered Value */}
-                                <tr className="border-b border-slate-600/30">
-                                  <td className="py-3 text-slate-400 font-medium">Entered Value</td>
-                                  <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
+                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Entered Value</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 3 - HTS Code Output */}
-                                <tr className="border-b border-slate-600/30">
-                                  <td className="py-3 font-medium text-[#8997ad]">{htsCode}</td>
-                                  <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
-                                  <td className="py-3 text-slate-400 font-medium">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
-                                  <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <td className="py-3 font-medium text-blue-600 dark:text-[#8997ad]">{htsCode}</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
+                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 4 - Chapter 99 Duty (only show for EU countries) */}
                                 {isEUCountry && (
-                                  <tr className="border-b border-slate-600/30">
-                                    <td className="py-3 text-slate-400 font-medium">9903.02.20</td>
-                                    <td className="py-3 text-slate-400 font-medium">IEEPA European Union - &lt;15% base duty</td>
-                                    <td className="py-3 text-slate-400 font-medium">{chapter99DutyPercentage.toFixed(2)}%</td>
-                                    <td className="py-3 text-slate-100 font-bold text-right">${chapter99Duty.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">9903.02.20</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">IEEPA European Union - &lt;15% base duty</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{chapter99DutyPercentage.toFixed(2)}%</td>
+                                    <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${chapter99Duty.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                   </tr>
                                 )}
                                 
                                 {/* ROW 5 - Total Customs & Duties */}
-                                <tr className="border-t-2 border-slate-500">
-                                  <td className="py-3 text-slate-300 font-bold">Total Duties</td>
+                                <tr className="border-t-2 border-slate-400 dark:border-slate-500">
+                                  <td className="py-3 text-slate-700 dark:text-slate-300 font-bold">Total Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                               </tbody>
                             </table>
                             {/* Highlighted Duty Per Item Section */}
-                            <div className="mt-6 pt-6 border-t border-slate-600/50">
-                              <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-xl p-4">
+                            <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-600/50">
+                              <div className="bg-emerald-100 dark:bg-emerald-900/20 border border-emerald-300 dark:border-emerald-700/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
-                                  <span className="text-emerald-300 font-bold text-lg">Duty Per Item (Case)</span>
-                                  <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                  <span className="text-emerald-700 dark:text-emerald-300 font-bold text-lg">Duty Per Item (Case)</span>
+                                  <span className="text-emerald-800 dark:text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
                                 
                               </div>
@@ -1120,17 +1120,17 @@ export default function ProductInputPage() {
                         
                         return (
                           <>
-                            <div className="text-sm text-slate-400 font-bold mb-3">
+                            <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
                               {originCountryName} to {destinationCountryName}
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-400">Total Freight Costs:</span>
-                              <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
+                              <span className="text-slate-600 dark:text-slate-400">Total Freight Costs:</span>
+                              <span className="text-slate-900 dark:text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
                             </div>
-                            <div className="border-t border-slate-600/50 pt-3">
+                            <div className="border-t border-slate-300 dark:border-slate-600/50 pt-3">
                               <div className="flex justify-between">
-                                <span className="text-slate-300 font-medium">Freight Per Item (Case):</span>
-                                <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                                <span className="text-slate-700 dark:text-slate-300 font-medium">Freight Per Item (Case):</span>
+                                <span className="text-slate-900 dark:text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
                               </div>
                             </div>
                           </>
