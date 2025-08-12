@@ -66,9 +66,7 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
               <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">Welcome - MGX Team</h1>
-              <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">
-                Your Total Landed Costs dashboard is ready. Start managing your business costs with precision.
-              </p>
+              <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">Your Total Landed Cost dashboard is ready. Start managing your business costs with precision.</p>
             </div>
             
             <div className="space-y-6">
