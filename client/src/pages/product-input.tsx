@@ -905,9 +905,7 @@ export default function ProductInputPage() {
                   <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                     Total Landed Costs Results
                   </h2>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Your calculated costs breakdown
-                  </p>
+                  <p className="text-slate-600 dark:text-slate-400">Your calculated cost breakdown</p>
                 </div>
 
                 <div className="space-y-6">
