@@ -1066,7 +1066,7 @@ export default function ProductInputPage() {
                                 
                                 {/* ROW 3 - HTS Code Output */}
                                 <tr className="border-b border-slate-600/30">
-                                  <td className="py-3 text-slate-100 font-bold">{htsCode}</td>
+                                  <td className="py-3 font-medium text-[#8997ad]">{htsCode}</td>
                                   <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
@@ -1091,7 +1091,6 @@ export default function ProductInputPage() {
                                 </tr>
                               </tbody>
                             </table>
-                            
                             {/* Highlighted Duty Per Item Section */}
                             <div className="mt-6 pt-6 border-t border-slate-600/50">
                               <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-xl p-4">
@@ -1184,8 +1183,6 @@ export default function ProductInputPage() {
           </div>
         </footer>
       </div>
-
-
     </div>
   );
 }
