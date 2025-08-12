@@ -1084,9 +1084,7 @@ export default function ProductInputPage() {
 
                   {/* Box 3 - Freight Costs */}
                   <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
-                      Freight Costs
-                    </h3>
+                    <h3 className="font-semibold text-slate-200 mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
                     <div className="space-y-4">
                       {(() => {
                         const useIndexRates = form.getValues("useIndexRates");
