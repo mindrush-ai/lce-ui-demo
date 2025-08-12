@@ -1070,7 +1070,7 @@ export default function ProductInputPage() {
                             <div className="mt-6 pt-6 border-t border-slate-600/50">
                               <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
-                                  <span className="text-emerald-300 font-bold text-lg">Duty Per Item (Case):</span>
+                                  <span className="text-emerald-300 font-bold text-lg">Duty Per Item (Case)</span>
                                   <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
                                 
