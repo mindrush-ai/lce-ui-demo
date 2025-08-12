@@ -70,10 +70,11 @@ export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
 
 // Product Information Schema
 export const productInfoSchema = z.object({
-  nameId: z.string().min(1, "Name/ID is required"),
-  htsCode: z.string()
-    .regex(/^\d{4}\.\d{2}\.\d{2}\.\d{2}$/, "HTS Code must follow format xxxx.xx.xx.xx")
-    .refine((code) => !code.startsWith("0"), "First digit cannot be 0"),
+  itemNumber: z.string().min(1, "Item Number is required"),
+  nameId: z.string().min(1, "Item Name/Description is required"),
+  htsCode: z.enum(["2204.21.50.40", "2204.10.00.75"], {
+    required_error: "Please select an HTS Code"
+  }),
   countryOfOrigin: z.string().min(2, "Country of origin is required"),
   unitCost: z.number()
     .positive("Unit cost must be positive")

@@ -56,8 +56,9 @@ export default function ProductInputPage() {
   const form = useForm<ProductInfo>({
     resolver: zodResolver(productInfoSchema),
     defaultValues: {
+      itemNumber: "",
       nameId: "",
-      htsCode: "",
+      htsCode: "2204.21.50.40",
       countryOfOrigin: "",
       unitCost: 0,
       numberOfWineCases: 0,
@@ -143,6 +144,7 @@ export default function ProductInputPage() {
   const validateSection1 = () => {
     const values = form.getValues();
     const section1Schema = productInfoSchema.pick({
+      itemNumber: true,
       nameId: true,
       htsCode: true,
       countryOfOrigin: true,
@@ -297,20 +299,44 @@ export default function ProductInputPage() {
                         <Form {...form}>
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 overflow-visible">
-                              {/* Name/ID Field */}
+                              {/* Item Number Field */}
+                              <FormField
+                                control={form.control}
+                                name="itemNumber"
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <Label htmlFor="itemNumber" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                                      Item Number <span className="text-red-400">*</span>
+                                    </Label>
+                                    <FormControl>
+                                      <Input
+                                        id="itemNumber"
+                                        type="text"
+                                        placeholder="Enter item number"
+                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        data-testid="input-item-number"
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                    <FormMessage className="text-red-400 text-sm mt-1" />
+                                  </FormItem>
+                                )}
+                              />
+
+                              {/* Item Name/Description Field */}
                               <FormField
                                 control={form.control}
                                 name="nameId"
                                 render={({ field }) => (
                                   <FormItem>
                                     <Label htmlFor="nameId" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
-                                      Product Name/ID <span className="text-red-400">*</span>
+                                      Item Name/Description <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
                                       <Input
                                         id="nameId"
                                         type="text"
-                                        placeholder="Enter product name or ID"
+                                        placeholder="Enter item name or description"
                                         className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-name-id"
                                         {...field}
@@ -331,24 +357,24 @@ export default function ProductInputPage() {
                                       HTS Code <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <Input
-                                        id="htsCode"
-                                        type="text"
-                                        placeholder="xxxx.xx.xx.xx"
-                                        className="w-full h-[50px] px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        data-testid="input-hts-code"
-                                        value={field.value}
-                                        onChange={(e) => {
-                                          const formatted = formatHtsCode(e.target.value);
-                                          field.onChange(formatted);
-                                        }}
-                                        maxLength={13} // xxxx.xx.xx.xx = 13 characters
-                                      />
+                                      <div className="relative">
+                                        <select
+                                          {...field}
+                                          id="htsCode"
+                                          className="w-full h-[50px] px-4 py-0 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 !rounded-xl text-slate-100 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          data-testid="select-hts-code"
+                                        >
+                                          <option value="2204.21.50.40" className="bg-slate-700 text-slate-100">
+                                            2204.21.50.40
+                                          </option>
+                                          <option value="2204.10.00.75" className="bg-slate-700 text-slate-100">
+                                            2204.10.00.75
+                                          </option>
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                                      </div>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
-                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                                      10-digit harmonized tariff schedule code (first digit cannot be 0)
-                                    </p>
                                   </FormItem>
                                 )}
                               />
@@ -441,7 +467,7 @@ export default function ProductInputPage() {
                                     });
                                   } else {
                                     // Trigger form validation to show errors
-                                    form.trigger(['nameId', 'htsCode', 'countryOfOrigin', 'unitCost']);
+                                    form.trigger(['itemNumber', 'nameId', 'htsCode', 'countryOfOrigin', 'unitCost']);
                                     toast({
                                       title: "Validation Error",
                                       description: "Please fill in all required fields correctly.",
@@ -463,16 +489,23 @@ export default function ProductInputPage() {
                         <Form {...form}>
                           <div className="space-y-6">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                              {/* Description (Display HTS Code) */}
+                              {/* HTS Code Description */}
                               <div>
                                 <Label className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
-                                  Description
+                                  HTS Code Description
                                 </Label>
                                 <div className="w-full h-[50px] px-4 py-3 bg-slate-700/30 border border-slate-600/50 !rounded-xl text-slate-400 dark:text-slate-400 flex items-center">
-                                  {form.watch("htsCode") || "HTS Code from previous section will appear here"}
+                                  {(() => {
+                                    const htsCode = form.watch("htsCode");
+                                    const descriptions = {
+                                      "2204.21.50.40": "Wine > Red > Not Certified Organic",
+                                      "2204.10.00.75": "Wine > Sparkling"
+                                    };
+                                    return descriptions[htsCode as keyof typeof descriptions] || "Select HTS Code in previous section";
+                                  })()}
                                 </div>
                                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                                  This displays the HTS Code from the previous section
+                                  This displays the description for the selected HTS Code
                                 </p>
                               </div>
 
@@ -595,16 +628,13 @@ export default function ProductInputPage() {
                                           data-testid="select-incoterms"
                                         >
                                           <option value="" className="bg-slate-700 text-slate-400">
-                                            Select Incoterms
+                                            Select Incoterms Rule
                                           </option>
-                                          <option value="EXW" className="bg-slate-700 text-slate-100">
-                                            EXW (EX Works)
+                                          <option value="FCA-SUPPLIER" className="bg-slate-700 text-slate-100">
+                                            FCA (Supplier Facility)
                                           </option>
-                                          <option value="FCA" className="bg-slate-700 text-slate-100">
-                                            FCA (Free Carrier)
-                                          </option>
-                                          <option value="FOB" className="bg-slate-700 text-slate-100">
-                                            FOB (Free on Board)
+                                          <option value="FCA-PORT" className="bg-slate-700 text-slate-100">
+                                            FCA (Port of Loading)
                                           </option>
                                         </select>
                                         <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
@@ -689,23 +719,47 @@ export default function ProductInputPage() {
                               </h3>
                               
                               <div className="space-y-6">
-                                {/* Use Index Rates Toggle */}
+                                {/* Freight Rate Selection */}
                                 <FormField
                                   control={form.control}
                                   name="useIndexRates"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <div className="flex items-center space-x-3">
-                                        <FormControl>
-                                          <Switch
-                                            checked={field.value}
-                                            onCheckedChange={field.onChange}
-                                            data-testid="switch-use-index-rates"
-                                          />
-                                        </FormControl>
-                                        <Label htmlFor="useIndexRates" className="text-sm font-medium text-slate-300 dark:text-slate-300">
-                                          Use Index Rates
-                                        </Label>
+                                      <div className="space-y-3">
+                                        <div 
+                                          className="flex items-center space-x-3 cursor-pointer"
+                                          onClick={() => field.onChange(true)}
+                                        >
+                                          <div className="relative">
+                                            <input
+                                              type="radio"
+                                              checked={field.value === true}
+                                              onChange={() => field.onChange(true)}
+                                              className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500"
+                                              data-testid="radio-use-index-rates"
+                                            />
+                                          </div>
+                                          <Label className="text-sm font-medium text-slate-300 dark:text-slate-300 cursor-pointer">
+                                            Use Index Rates
+                                          </Label>
+                                        </div>
+                                        <div 
+                                          className="flex items-center space-x-3 cursor-pointer"
+                                          onClick={() => field.onChange(false)}
+                                        >
+                                          <div className="relative">
+                                            <input
+                                              type="radio"
+                                              checked={field.value === false}
+                                              onChange={() => field.onChange(false)}
+                                              className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500"
+                                              data-testid="radio-use-my-rate"
+                                            />
+                                          </div>
+                                          <Label className="text-sm font-medium text-slate-300 dark:text-slate-300 cursor-pointer">
+                                            Use My Rate
+                                          </Label>
+                                        </div>
                                       </div>
                                       <FormMessage className="text-red-400 text-sm mt-1" />
                                     </FormItem>
@@ -877,116 +931,124 @@ export default function ProductInputPage() {
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Box 1 - HERO Box: Landed Cost per Item */}
-                  <div className="lg:col-span-1 bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-700/50 p-6">
+                <div className="space-y-6">
+                  {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
+                  <div className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-700/50 p-6">
                     <div className="text-center">
                       <h3 className="text-lg font-semibold text-emerald-300 mb-4">
-                        Landed Cost per Item
+                        ITEM LANDED COST
                       </h3>
                       <div className="text-4xl font-bold text-emerald-100 mb-2">
                         {/* Placeholder - will be calculated later */}
                         --
                       </div>
                       <p className="text-sm text-emerald-400">
-                        Per wine case (USD)
+                        USD
                       </p>
                     </div>
                   </div>
 
-                  {/* Box 2 - Customs Calculation */}
-                  <div className="lg:col-span-1 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
-                      Customs Calculation
-                    </h3>
-                    <div className="space-y-4">
-                      {(() => {
-                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
-                        const unitCost = form.getValues("unitCost") || 0;
-                        const htsCode = form.getValues("htsCode") || "";
-                        
-                        const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
-                        const customsValue = numberOfWineCases * unitCost; // in USD
-                        const customDutyPerItem = 2.00; // placeholder
-                        
-                        return (
-                          <>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400 font-bold">Customs Units:</span>
-                              <span className="text-slate-100 font-bold">{Math.round(customsUnits)} L</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Customs Value:</span>
-                              <span className="text-slate-100 font-medium">${Math.round(customsValue).toLocaleString()}</span>
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">HTS Code:</span>
-                              <span className="text-slate-100 font-medium">{htsCode}</span>
-                            </div>
-                            <div className="border-t border-slate-600/50 pt-3">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Box 2 - Customs Calculation */}
+                    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                      <h3 className="text-lg font-semibold text-slate-200 mb-4">
+                        Customs Calculation
+                      </h3>
+                      <div className="space-y-4">
+                        {(() => {
+                          const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                          const unitCost = form.getValues("unitCost") || 0;
+                          const htsCode = form.getValues("htsCode") || "";
+                          
+                          const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
+                          const customsValue = numberOfWineCases * unitCost; // in USD
+                          const customDutyPerItem = 2.00; // placeholder
+                          
+                          return (
+                            <>
                               <div className="flex justify-between">
-                                <span className="text-slate-300 font-medium">Custom Duty per Item:</span>
-                                <span className="text-slate-100 font-bold">${customDutyPerItem.toFixed(2)}</span>
+                                <span className="text-slate-400 font-bold">Unit of Measure:</span>
+                                <span className="text-slate-100 font-bold">{Math.round(customsUnits)} L</span>
                               </div>
-                            </div>
-                          </>
-                        );
-                      })()}
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Entered Value:</span>
+                                <span className="text-slate-100 font-medium">${Math.round(customsValue).toLocaleString()}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">HTS Code:</span>
+                                <span className="text-slate-100 font-medium">{htsCode}</span>
+                              </div>
+                              <div className="border-t border-slate-600/50 pt-3">
+                                <div className="flex justify-between">
+                                  <span className="text-slate-300 font-medium">Duty per Item:</span>
+                                  <span className="text-slate-100 font-bold">${customDutyPerItem.toFixed(2)}</span>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
                     </div>
-                  </div>
 
-                  {/* Box 3 - Freight Costs */}
-                  <div className="lg:col-span-1 bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
-                      Freight Costs
-                    </h3>
-                    <div className="space-y-4">
-                      {(() => {
-                        const originPort = form.getValues("originPort") || "";
-                        const destinationPort = form.getValues("destinationPort") || "";
-                        const useIndexRates = form.getValues("useIndexRates");
-                        const freightCost = form.getValues("freightCost");
-                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
-                        const countryOfOrigin = form.getValues("countryOfOrigin");
-                        
-                        // Get index rate based on country
-                        const getIndexRate = (countryCode: string) => {
-                          switch (countryCode) {
-                            case "FR": return 6000;
-                            case "IT": return 6100;
-                            case "PT": return 6200;
-                            case "ES": return 6300;
-                            default: return 0;
-                          }
-                        };
-                        
-                        const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
-                        const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
-                        
-                        // Extract country codes for display
-                        const originCountryMatch = originPort.match(/\(([A-Z]{2})\)/);
-                        const destCountryMatch = destinationPort.match(/\(([A-Z]{2})\)/);
-                        const originCountryCode = originCountryMatch ? originCountryMatch[1] : "";
-                        const destCountryCode = destCountryMatch ? destCountryMatch[1] : "";
-                        
-                        return (
-                          <>
-                            <div className="text-sm text-slate-400 font-bold mb-3">
-                              {originCountryCode} to {destCountryCode}
-                            </div>
-                            <div className="flex justify-between">
-                              <span className="text-slate-400">Total Freight Costs:</span>
-                              <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
-                            </div>
-                            <div className="border-t border-slate-600/50 pt-3">
-                              <div className="flex justify-between">
-                                <span className="text-slate-300 font-medium">Freight per Item:</span>
-                                <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                    {/* Box 3 - Freight Costs */}
+                    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                      <h3 className="text-lg font-semibold text-slate-200 mb-4">
+                        Freight Costs
+                      </h3>
+                      <div className="space-y-4">
+                        {(() => {
+                          const useIndexRates = form.getValues("useIndexRates");
+                          const freightCost = form.getValues("freightCost");
+                          const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                          const countryOfOrigin = form.getValues("countryOfOrigin");
+                          
+                          // Get index rate based on country
+                          const getIndexRate = (countryCode: string) => {
+                            switch (countryCode) {
+                              case "FR": return 6000;
+                              case "IT": return 6100;
+                              case "PT": return 6200;
+                              case "ES": return 6300;
+                              default: return 0;
+                            }
+                          };
+                          
+                          const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
+                          const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
+                          
+                          // Get country names for display
+                          const getCountryName = (code: string) => {
+                            const countryNames = {
+                              "FR": "France",
+                              "IT": "Italy", 
+                              "PT": "Portugal",
+                              "ES": "Spain"
+                            };
+                            return countryNames[code as keyof typeof countryNames] || code;
+                          };
+                          
+                          const originCountryName = getCountryName(countryOfOrigin);
+                          const destinationCountryName = "United States"; // Based on destination ports
+                          
+                          return (
+                            <>
+                              <div className="text-sm text-slate-400 font-bold mb-3">
+                                {originCountryName} to {destinationCountryName}
                               </div>
-                            </div>
-                          </>
-                        );
-                      })()}
+                              <div className="flex justify-between">
+                                <span className="text-slate-400">Total Freight Costs:</span>
+                                <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
+                              </div>
+                              <div className="border-t border-slate-600/50 pt-3">
+                                <div className="flex justify-between">
+                                  <span className="text-slate-300 font-medium">Freight per Item:</span>
+                                  <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                                </div>
+                              </div>
+                            </>
+                          );
+                        })()}
+                      </div>
                     </div>
                   </div>
                 </div>

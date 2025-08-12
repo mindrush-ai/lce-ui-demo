@@ -7,8 +7,12 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 ## Recent Changes (January 2025)
 
 ### Interactive Product Input System
-- Added comprehensive product information form with collapsible sections
-- Implemented HTS Code validation with automatic formatting (xxxx.xx.xx.xx format)
+- Added Item Number field at the start of Product Details section for alphanumeric inputs
+- Changed "Product Name/ID" to "Item Name/Description" for clearer labeling
+- Converted HTS Code to dropdown with specific options: 2204.21.50.40 and 2204.10.00.75
+- HTS Code Description field displays dynamic text based on selected code:
+  - 2204.21.50.40: "Wine > Red > Not Certified Organic"
+  - 2204.10.00.75: "Wine > Sparkling"
 - Integrated complete country selection with ISO codes and flag display using native HTML select
 - Added unit cost input with USD currency formatting (4 decimal places)
 - Created interactive sectioned form that collapses completed sections
@@ -25,7 +29,10 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 ### Section 3 - Shipment Details
 - Added Section 3 with four required fields: Container Size, Incoterms, Origin Port, Destination Port
 - Container Size dropdown with "40 Feet" option
-- Incoterms dropdown with EXW, FCA, FOB options including full descriptions
+- Updated Incoterms field with new options:
+  - FCA (Supplier Facility)
+  - FCA (Port of Loading)
+- Changed Incoterms helper text to "Select Incoterms Rule"
 - Dynamic Origin Port field that automatically populates based on Country of Origin selection:
   - France → Le Havre (FR)
   - Italy → Livorno (IT)
@@ -37,10 +44,12 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 
 ### Freight Charges Subsection (Section 3 Update)
 - Added horizontal line separator and "Freight Charges" heading in Section 3
-- Implemented toggle switch for "Use Index Rates" option
+- Replaced toggle switch with radio button selection for freight rate method:
+  - "Use Index Rates" - shows predefined country rates
+  - "Use My Rate" - provides custom freight input field
 - Index rates by country: France ($6,000), Italy ($6,100), Portugal ($6,200), Spain ($6,300)
 - Dynamic rate display shows selected rate based on Country of Origin
-- Custom freight input field when Index Rates is disabled
+- Custom freight input field when "Use My Rate" is selected
 - Updated validation to require either Index Rates or custom freight cost
 - Freight charges integrated into shipment details form validation
 
@@ -52,10 +61,15 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 
 ### Landed Costs Results Display
 - Results section displays after clicking Calculate Total Landed Costs button
-- Organized in responsive grid layout with three main result boxes
-- Box 1 (HERO): Landed Cost per Item with emerald gradient styling (placeholder for now)
-- Box 2 (Customs): Dynamic calculations for customs units (cases × 12 × 0.75L), customs value (cases × unit cost), HTS code display, and $2.00 placeholder duty per item
-- Box 3 (Freight): Port-to-port display with country codes, total freight costs (index rates or custom), and calculated freight per item
+- Reorganized layout with full-width hero box and two-column layout for detail boxes
+- Box 1 (HERO): "ITEM LANDED COST" - full width, emerald gradient styling, USD currency display
+- Box 2 (Customs): Updated field labels:
+  - "Unit of Measure" (previously Customs Units)
+  - "Entered Value" (previously Customs Value) 
+  - "Duty per Item" (previously Custom Duty per Item)
+- Box 3 (Freight): Updated routing display format:
+  - Changed from port codes to full country names: "France to United States"
+  - Maintains total freight costs and freight per item calculations
 - Auto-scroll to results section with smooth scrolling behavior
 - Fully responsive design with mobile-first approach
 
