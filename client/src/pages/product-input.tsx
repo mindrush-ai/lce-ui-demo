@@ -191,7 +191,7 @@ export default function ProductInputPage() {
                     <span className="text-white font-bold text-sm">T</span>
                   </div>
                   <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Cost</span>
                 </div>
               </Link>
               
