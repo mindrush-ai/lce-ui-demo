@@ -115,30 +115,30 @@ export default function SignupPage() {
 
   if (showSuccess) {
     return (
-      <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
-          <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+          <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
                     <span className="text-white font-bold text-sm">T</span>
                   </div>
-                  <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                  <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
+                  <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
                 </div>
                 
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg bg-slate-800 dark:bg-slate-800 hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors duration-200 group"
+                  className="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors duration-200 group"
                   data-testid="button-theme-toggle"
                 >
                   {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   ) : (
-                    <Moon className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   )}
                 </Button>
               </div>
@@ -154,8 +154,8 @@ export default function SignupPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">Welcome to TLC!</h3>
-                  <p className="text-slate-400 dark:text-slate-400 mb-6">Your account has been created successfully. You'll be redirected to your dashboard shortly.</p>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Welcome to TLC!</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6">Your account has been created successfully. You'll be redirected to your dashboard shortly.</p>
                   <div className="flex justify-center">
                     <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
                   </div>
@@ -164,9 +164,9 @@ export default function SignupPage() {
             </div>
           </main>
 
-          <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
+          <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-              <div className="text-center text-sm text-slate-400 dark:text-slate-400">
+              <div className="text-center text-sm text-slate-600 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
             </div>
@@ -177,30 +177,30 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300">
       <div className="min-h-screen flex flex-col">
-        <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">T</span>
                 </div>
-                <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
+                <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
               </div>
               
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleTheme}
-                className="p-2 rounded-lg bg-slate-800 dark:bg-slate-800 hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors duration-200 group"
+                className="p-2 rounded-lg bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors duration-200 group"
                 data-testid="button-theme-toggle"
               >
                 {theme === "dark" ? (
-                  <Sun className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                  <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors duration-200" />
                 ) : (
-                  <Moon className="w-5 h-5 text-slate-400 dark:text-slate-400 group-hover:text-slate-200 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                  <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors duration-200" />
                 )}
               </Button>
             </div>
@@ -229,9 +229,9 @@ export default function SignupPage() {
           </div>
         </main>
 
-        <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
+        <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="text-center text-sm text-slate-400 dark:text-slate-400">
+            <div className="text-center text-sm text-slate-600 dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>
@@ -240,10 +240,10 @@ export default function SignupPage() {
 
       {/* Loading Overlay */}
       {isLoading && (
-        <div className="fixed inset-0 bg-slate-900/80 dark:bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center" data-testid="loading-overlay">
-          <div className="bg-slate-800 dark:bg-slate-800 rounded-xl p-6 flex items-center space-x-3">
+        <div className="fixed inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center" data-testid="loading-overlay">
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-6 flex items-center space-x-3 border border-slate-300 dark:border-slate-700">
             <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
-            <span className="text-slate-200 dark:text-slate-200">Creating your account...</span>
+            <span className="text-slate-900 dark:text-slate-200">Creating your account...</span>
           </div>
         </div>
       )}
