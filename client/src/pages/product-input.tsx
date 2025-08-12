@@ -229,9 +229,7 @@ export default function ProductInputPage() {
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
               <h1 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">US Landed Cost Calculator</h1>
-              <p className="text-slate-400 dark:text-slate-400">
-                Enter your product information to calculate total landed costs
-              </p>
+              <p className="text-slate-400 dark:text-slate-400">Enter your product information to calculate total landed cost</p>
             </div>
 
             <div className="space-y-6">
