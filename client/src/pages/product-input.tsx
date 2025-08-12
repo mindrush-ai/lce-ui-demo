@@ -1061,16 +1061,16 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-400 font-medium">Entered Value</td>
                                   <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toFixed(2)}</td>
+                                  <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 3 - Chapter 99 Duty (only show for EU countries) */}
                                 {isEUCountry && (
                                   <tr className="border-b border-slate-600/30">
                                     <td className="py-3 text-slate-400 font-medium">9903.02.20</td>
-                                    <td className="py-3 text-slate-400 text-sm">IEEPA European Union - &lt;15% base duty</td>
+                                    <td className="py-3 text-slate-400 font-medium">IEEPA European Union - &lt;15% base duty</td>
                                     <td className="py-3 text-slate-100 font-medium text-right">{chapter99DutyPercentage.toFixed(2)}%</td>
-                                    <td className="py-3 text-slate-100 font-bold text-right">${chapter99Duty.toFixed(2)}</td>
+                                    <td className="py-3 text-slate-100 font-bold text-right">${chapter99Duty.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                   </tr>
                                 )}
                                 
@@ -1079,7 +1079,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-300 font-bold">Total Customs & Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toFixed(2)}</td>
+                                  <td className="py-3 text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1089,7 +1089,7 @@ export default function ProductInputPage() {
                               <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
                                   <span className="text-emerald-300 font-bold text-lg">Duty Per Item:</span>
-                                  <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toFixed(2)}</span>
+                                  <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
                                 <p className="text-emerald-400/80 text-sm mt-1">
                                   Total Customs & Duties ÷ Number of Wine Cases
