@@ -64,9 +64,7 @@ export default function LandingPage() {
         <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">
-                Total Landed Costs
-              </h1>
+              <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">Total Landed Cost</h1>
               <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">Comprehensive B2B platform for managing and calculating total landed cost with modular precision</p>
             </div>
             
