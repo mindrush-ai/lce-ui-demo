@@ -983,9 +983,7 @@ export default function ProductInputPage() {
                   {/* Box 2 - Customs and Duties (Full Width) */}
                   <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
                     <hr className="border-slate-600/50 dark:border-slate-600/50 mb-6" />
-                    <h3 className="text-lg font-semibold text-slate-200 mb-6 text-center">
-                      CUSTOMS AND DUTIES
-                    </h3>
+                    <h3 className="font-semibold text-slate-200 mb-6 text-center text-[20px]">DUTIES</h3>
                     <div className="space-y-4">
                       {(() => {
                         const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
