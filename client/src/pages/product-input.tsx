@@ -692,8 +692,8 @@ export default function ProductInputPage() {
 
                             {/* Horizontal line and Freight Charges subsection */}
                             <div className="pt-6">
-                              <hr className="border-slate-600/50 dark:border-slate-600/50 mb-6" />
-                              <h3 className="text-lg font-semibold text-slate-200 dark:text-slate-200 mb-6">
+                              <hr className="border-slate-300 dark:border-slate-600/50 mb-6" />
+                              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-6">
                                 Freight Charges
                               </h3>
                               
@@ -714,11 +714,11 @@ export default function ProductInputPage() {
                                               type="radio"
                                               checked={field.value === true}
                                               onChange={() => field.onChange(true)}
-                                              className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500"
+                                              className="w-4 h-4 text-blue-500 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 focus:ring-blue-500"
                                               data-testid="radio-use-index-rates"
                                             />
                                           </div>
-                                          <Label className="text-sm font-medium text-slate-300 dark:text-slate-300 cursor-pointer">
+                                          <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
                                             Use Index Rates
                                           </Label>
                                         </div>
@@ -731,11 +731,11 @@ export default function ProductInputPage() {
                                               type="radio"
                                               checked={field.value === false}
                                               onChange={() => field.onChange(false)}
-                                              className="w-4 h-4 text-blue-500 bg-slate-700 border-slate-600 focus:ring-blue-500"
+                                              className="w-4 h-4 text-blue-500 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 focus:ring-blue-500"
                                               data-testid="radio-use-my-rate"
                                             />
                                           </div>
-                                          <Label className="text-sm font-medium text-slate-300 dark:text-slate-300 cursor-pointer">
+                                          <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
                                             Use My Rate
                                           </Label>
                                         </div>
@@ -747,24 +747,24 @@ export default function ProductInputPage() {
 
                                 {/* Index Rates Display or Custom Freight Input */}
                                 {form.watch("useIndexRates") ? (
-                                  <div className="bg-slate-700/30 border border-slate-600/50 rounded-xl p-4">
-                                    <h4 className="text-sm font-medium text-slate-300 mb-3">Index Rates by Country:</h4>
+                                  <div className="bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 rounded-xl p-4">
+                                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Index Rates by Country:</h4>
                                     <div className="grid grid-cols-2 gap-3 text-sm">
                                       <div className="flex justify-between">
-                                        <span className="text-slate-400">France:</span>
-                                        <span className="text-slate-100 font-medium">$6,000</span>
+                                        <span className="text-slate-600 dark:text-slate-400">France:</span>
+                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,000</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-slate-400">Italy:</span>
-                                        <span className="text-slate-100 font-medium">$6,100</span>
+                                        <span className="text-slate-600 dark:text-slate-400">Italy:</span>
+                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,100</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-slate-400">Portugal:</span>
-                                        <span className="text-slate-100 font-medium">$6,200</span>
+                                        <span className="text-slate-600 dark:text-slate-400">Portugal:</span>
+                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,200</span>
                                       </div>
                                       <div className="flex justify-between">
-                                        <span className="text-slate-400">Spain:</span>
-                                        <span className="text-slate-100 font-medium">$6,300</span>
+                                        <span className="text-slate-600 dark:text-slate-400">Spain:</span>
+                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,300</span>
                                       </div>
                                     </div>
                                     {(() => {
@@ -780,15 +780,15 @@ export default function ProductInputPage() {
                                       };
                                       const rate = getRateForCountry(countryOfOrigin);
                                       return rate ? (
-                                        <div className="mt-3 pt-3 border-t border-slate-600/50">
+                                        <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-600/50">
                                           <div className="flex justify-between items-center">
-                                            <span className="text-slate-300 font-medium">Selected Rate:</span>
-                                            <span className="text-emerald-400 font-bold text-lg">${rate.toLocaleString()}</span>
+                                            <span className="text-slate-700 dark:text-slate-300 font-medium">Selected Rate:</span>
+                                            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">${rate.toLocaleString()}</span>
                                           </div>
                                         </div>
                                       ) : countryOfOrigin ? (
-                                        <div className="mt-3 pt-3 border-t border-slate-600/50">
-                                          <p className="text-yellow-400 text-sm">No index rate available for selected country</p>
+                                        <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-600/50">
+                                          <p className="text-yellow-600 dark:text-yellow-400 text-sm">No index rate available for selected country</p>
                                         </div>
                                       ) : null;
                                     })()}
@@ -912,10 +912,10 @@ export default function ProductInputPage() {
 
                 <div className="space-y-6">
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
-                  <div className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-700/50 p-6">
+                  <div className="bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/40 dark:to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-300 dark:border-emerald-700/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-emerald-300 mb-4">ITEM LANDED COST (CASE)</h3>
-                      <div className="text-4xl font-bold text-emerald-100 mb-2">
+                      <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300 mb-4">ITEM LANDED COST (CASE)</h3>
+                      <div className="text-4xl font-bold text-emerald-800 dark:text-emerald-100 mb-2">
                         {(() => {
                           const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
                           const unitCost = form.getValues("unitCost") || 0;
