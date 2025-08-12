@@ -21,7 +21,7 @@ export default function LandingPage() {
                   <span className="text-white font-bold text-sm">T</span>
                 </div>
                 <span className="text-xl font-semibold text-foreground dark:text-foreground">TLC</span>
-                <span className="text-sm text-muted-foreground dark:text-muted-foreground hidden sm:inline">Total Landed Costs</span>
+                <span className="text-sm text-muted-foreground dark:text-muted-foreground hidden sm:inline">Total Landed Cost (BETA)</span>
               </div>
               
               <div className="flex items-center space-x-4">
