@@ -1075,9 +1075,7 @@ export default function ProductInputPage() {
                                   <span className="text-emerald-300 font-bold text-lg">Duty Per Item:</span>
                                   <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
-                                <p className="text-emerald-400/80 text-sm mt-1">
-                                  Total Customs & Duties ÷ Number of Wine Cases
-                                </p>
+                                
                               </div>
                             </div>
                           </div>
