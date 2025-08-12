@@ -1,5 +1,5 @@
 import { Moon, Sun, LogOut, Calculator, TrendingUp, FileText, Package, BarChart3, Users, Zap } from "lucide-react";
-import mgxLogoPath from "@assets/mgx logo_1754655534840.png";
+
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
 import { Link } from "wouter";
@@ -30,14 +30,7 @@ export default function HomePage() {
                 <span className="text-sm text-muted-foreground dark:text-muted-foreground hidden sm:inline">Total Landed Costs BETA - Customer Name</span>
               </div>
               
-              {/* MGX Logo in center */}
-              <div className="flex-1 flex justify-center">
-                <img 
-                  src={mgxLogoPath} 
-                  alt="MGX Beverage Group" 
-                  className="h-10 w-auto"
-                />
-              </div>
+              
               
               <div className="flex items-center space-x-4">
                 <Button
