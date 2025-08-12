@@ -1064,9 +1064,9 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
-                                {/* ROW 3 - Base HTS Code Duty */}
+                                {/* ROW 3 - HTS Code Output */}
                                 <tr className="border-b border-slate-600/30">
-                                  <td className="py-3"></td>
+                                  <td className="py-3 text-slate-100 font-bold">{htsCode}</td>
                                   <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
