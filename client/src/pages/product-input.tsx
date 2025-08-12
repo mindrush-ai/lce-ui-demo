@@ -914,9 +914,7 @@ export default function ProductInputPage() {
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
                   <div className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-700/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-emerald-300 mb-4">
-                        ITEM LANDED COST
-                      </h3>
+                      <h3 className="text-lg font-semibold text-emerald-300 mb-4">ITEM LANDED COST (CASE)</h3>
                       <div className="text-4xl font-bold text-emerald-100 mb-2">
                         {(() => {
                           const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
