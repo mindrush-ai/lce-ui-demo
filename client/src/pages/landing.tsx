@@ -67,9 +67,7 @@ export default function LandingPage() {
               <h1 className="text-4xl md:text-6xl font-bold text-foreground dark:text-foreground">
                 Total Landed Costs
               </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">
-                Comprehensive B2B platform for managing and calculating total landed costs with modular precision
-              </p>
+              <p className="text-xl md:text-2xl text-muted-foreground dark:text-muted-foreground max-w-2xl mx-auto">Comprehensive B2B platform for managing and calculating total landed cost with modular precision</p>
             </div>
             
             <div className="space-y-6">
