@@ -902,9 +902,7 @@ export default function ProductInputPage() {
             {showResults && (
               <div id="results-section" className="mt-12 mb-8">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
-                    Total Landed Costs Results
-                  </h2>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Total Landed Cost</h2>
                   <p className="text-slate-600 dark:text-slate-400">Your calculated cost breakdown</p>
                 </div>
 
