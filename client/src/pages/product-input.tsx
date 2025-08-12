@@ -1025,7 +1025,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-600/30">
                                   <td className="py-3 text-slate-400 font-medium">Unit of Measure</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold">Liters</td>
+                                  <td className="py-3 text-slate-400 font-medium">Liters</td>
                                   <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)}</td>
                                 </tr>
                                 
@@ -1041,7 +1041,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-600/30">
                                   <td className="py-3 font-medium text-[#8997ad]">{htsCode}</td>
                                   <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
-                                  <td className="py-3 text-slate-100 font-bold">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
+                                  <td className="py-3 text-slate-400 font-medium">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
                                   <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
