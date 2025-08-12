@@ -1053,7 +1053,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-400 font-medium">Unit of Measure</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)} L</td>
+                                  <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)} Liters</td>
                                 </tr>
                                 
                                 {/* ROW 2 - Entered Value and Base HTS Code Duty */}
