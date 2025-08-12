@@ -57,12 +57,12 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
 
   return (
     <div className="animate-fade-in" data-testid="signup-step-1">
-      <div className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 dark:border-slate-700/50 p-8">
+      <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-300/50 dark:border-slate-700/50 p-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
             Create your account
           </h2>
-          <p className="text-slate-400 dark:text-slate-400">
+          <p className="text-slate-600 dark:text-slate-400">
             Get started with Total Landed Costs
           </p>
         </div>
@@ -72,7 +72,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
           <Button
             type="button"
             variant="outline"
-            className="w-full flex items-center justify-center px-4 py-3 border border-slate-600 dark:border-slate-600 rounded-xl bg-slate-700/50 dark:bg-slate-700/50 hover:bg-slate-700 dark:hover:bg-slate-700 transition-colors duration-200 group"
+            className="w-full flex items-center justify-center px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl bg-white dark:bg-slate-700/50 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors duration-200 group"
             onClick={onGoogleSignup}
             disabled={isLoading}
             data-testid="button-google-signup"
@@ -82,18 +82,18 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
               alt="Google" 
               className="w-5 h-5 mr-3"
             />
-            <span className="text-slate-200 dark:text-slate-200 font-medium">
+            <span className="text-slate-900 dark:text-slate-200 font-medium">
               Continue with Google
             </span>
           </Button>
 
           {/* Divider */}
           <div className="relative flex items-center">
-            <div className="flex-1 border-t border-slate-600 dark:border-slate-600"></div>
-            <span className="px-3 text-sm text-slate-400 dark:text-slate-400 bg-slate-800 dark:bg-slate-800">
+            <div className="flex-1 border-t border-slate-300 dark:border-slate-600"></div>
+            <span className="px-3 text-sm text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-800">
               or
             </span>
-            <div className="flex-1 border-t border-slate-600 dark:border-slate-600"></div>
+            <div className="flex-1 border-t border-slate-300 dark:border-slate-600"></div>
           </div>
 
           {/* Email/Password Form */}
@@ -104,7 +104,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <Label htmlFor="email" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                    <Label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Email address
                     </Label>
                     <FormControl>
@@ -112,7 +112,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                         id="email"
                         type="email"
                         placeholder="Enter your email"
-                        className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                        className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                         data-testid="input-email"
                         {...field}
                       />
@@ -127,7 +127,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <Label htmlFor="password" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                    <Label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Password
                     </Label>
                     <FormControl>
@@ -136,7 +136,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                           id="password"
                           type={showPassword ? "text" : "password"}
                           placeholder="Create a password"
-                          className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                           data-testid="input-password"
                           {...field}
                         />
@@ -144,7 +144,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 dark:text-slate-400 hover:text-slate-200 dark:hover:text-slate-200"
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                           onClick={() => setShowPassword(!showPassword)}
                           data-testid="button-toggle-password"
                         >
@@ -166,7 +166,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <Label htmlFor="confirm-password" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                    <Label htmlFor="confirm-password" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Confirm password
                     </Label>
                     <FormControl>
@@ -175,7 +175,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                           id="confirm-password"
                           type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm your password"
-                          className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                          className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                           data-testid="input-confirm-password"
                           {...field}
                         />
@@ -183,7 +183,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
                           type="button"
                           variant="ghost"
                           size="sm"
-                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 dark:text-slate-400 hover:text-slate-200 dark:hover:text-slate-200"
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                           onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                           data-testid="button-toggle-confirm-password"
                         >
@@ -202,7 +202,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 dark:focus:ring-offset-slate-800"
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-800"
                 disabled={isLoading}
                 data-testid="button-continue"
               >
@@ -213,7 +213,7 @@ export function SignupStep1({ onNext, onGoogleSignup, isLoading }: SignupStep1Pr
         </div>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-slate-400 dark:text-slate-400">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Already have an account?{" "}
             <Link href="/login">
               <span className="text-blue-400 dark:text-blue-400 hover:text-blue-300 dark:hover:text-blue-300 font-medium transition-colors duration-200 cursor-pointer" data-testid="link-signin">

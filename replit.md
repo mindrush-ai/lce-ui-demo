@@ -6,6 +6,20 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 
 ## Recent Changes (January 2025)
 
+### Comprehensive Light Mode Implementation (August 2025)
+- Completed systematic light mode support across all application screens and components
+- Updated home page with proper light/dark theme styling for headers, content, feature cards, and footer
+- Fixed signup/signin pages with comprehensive light mode support including:
+  - Background colors: white in light mode, dark slate in dark mode
+  - Form inputs: white backgrounds with dark borders for light mode
+  - Text colors: dark text in light mode, light text in dark mode
+  - Button styling: proper contrast and hover states for both themes
+  - Loading overlays and dividers with appropriate light mode colors
+- Updated signup components (step 1, step 2, progress indicator) with complete light theme support
+- Fixed landing page with proper light mode styling for all elements
+- Enhanced theme toggle functionality working consistently across all pages
+- Maintained professional appearance and accessibility in both light and dark modes
+
 ### Interactive Product Input System
 - Added Item Number field at the start of Product Details section for alphanumeric inputs
 - Changed "Product Name/ID" to "Item Name/Description" for clearer labeling

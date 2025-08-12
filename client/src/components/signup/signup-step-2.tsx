@@ -26,12 +26,12 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
 
   return (
     <div className="animate-slide-up" data-testid="signup-step-2">
-      <div className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 dark:border-slate-700/50 p-8">
+      <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-300/50 dark:border-slate-700/50 p-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
             Tell us about yourself
           </h2>
-          <p className="text-slate-400 dark:text-slate-400">
+          <p className="text-slate-600 dark:text-slate-400">
             We need a few more details to set up your account
           </p>
         </div>
@@ -43,7 +43,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="full-name" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                  <Label htmlFor="full-name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Full name
                   </Label>
                   <FormControl>
@@ -51,7 +51,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
                       id="full-name"
                       type="text"
                       placeholder="Enter your full name"
-                      className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       data-testid="input-full-name"
                       {...field}
                     />
@@ -66,7 +66,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
               name="companyName"
               render={({ field }) => (
                 <FormItem>
-                  <Label htmlFor="company-name" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                  <Label htmlFor="company-name" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                     Company name
                   </Label>
                   <FormControl>
@@ -74,7 +74,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
                       id="company-name"
                       type="text"
                       placeholder="Enter your company name"
-                      className="w-full px-4 py-3 bg-slate-700/50 dark:bg-slate-700/50 border border-slate-600 dark:border-slate-600 rounded-xl text-slate-100 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                       data-testid="input-company-name"
                       {...field}
                     />
@@ -95,11 +95,11 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
                         id="terms"
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        className="mt-1 w-4 h-4 text-blue-500 bg-slate-700 dark:bg-slate-700 border-slate-600 dark:border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
+                        className="mt-1 w-4 h-4 text-blue-500 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
                         data-testid="checkbox-terms"
                       />
                     </FormControl>
-                    <Label htmlFor="terms" className="text-sm text-slate-300 dark:text-slate-300 leading-relaxed">
+                    <Label htmlFor="terms" className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
                       I agree to the{" "}
                       <a 
                         href="#" 
@@ -127,7 +127,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
               <Button
                 type="button"
                 variant="secondary"
-                className="flex-1 bg-slate-700 dark:bg-slate-700 hover:bg-slate-600 dark:hover:bg-slate-600 text-slate-200 dark:text-slate-200 font-medium py-3 px-4 rounded-xl transition-all duration-200"
+                className="flex-1 bg-slate-300 dark:bg-slate-700 hover:bg-slate-400 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-200 font-medium py-3 px-4 rounded-xl transition-all duration-200"
                 onClick={onBack}
                 disabled={isLoading}
                 data-testid="button-back"
@@ -136,7 +136,7 @@ export function SignupStep2({ onSubmit, onBack, isLoading, initialData }: Signup
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-800 dark:focus:ring-offset-slate-800"
+                className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-slate-800"
                 disabled={isLoading}
                 data-testid="button-create-account"
               >

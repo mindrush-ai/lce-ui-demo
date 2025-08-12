@@ -17,7 +17,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
                 ? currentStep > 1 
                   ? "bg-emerald-500 text-white" 
                   : "bg-blue-500 text-white"
-                : "bg-slate-700 text-slate-400"
+                : "bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
             )}
             data-testid="step-1-indicator"
           >
@@ -25,12 +25,12 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
           </div>
           <span className={cn(
             "ml-2 text-sm font-medium transition-colors duration-200",
-            currentStep >= 1 ? "text-slate-300" : "text-slate-500"
+            currentStep >= 1 ? "text-slate-900 dark:text-slate-300" : "text-slate-500 dark:text-slate-500"
           )}>
             Account
           </span>
         </div>
-        <div className="w-12 h-px bg-slate-700"></div>
+        <div className="w-12 h-px bg-slate-300 dark:bg-slate-700"></div>
         <div className="flex items-center">
           <div 
             className={cn(
@@ -39,7 +39,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
                 ? currentStep > 2 
                   ? "bg-emerald-500 text-white" 
                   : "bg-blue-500 text-white"
-                : "bg-slate-700 text-slate-400"
+                : "bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
             )}
             data-testid="step-2-indicator"
           >
@@ -47,7 +47,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
           </div>
           <span className={cn(
             "ml-2 text-sm font-medium transition-colors duration-200",
-            currentStep >= 2 ? "text-slate-300" : "text-slate-500"
+            currentStep >= 2 ? "text-slate-900 dark:text-slate-300" : "text-slate-500 dark:text-slate-500"
           )}>
             Details
           </span>
