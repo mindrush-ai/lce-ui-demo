@@ -974,9 +974,7 @@ export default function ProductInputPage() {
                           return numberOfWineCases > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
                         })()}
                       </div>
-                      <p className="text-sm text-emerald-400">
-                        USD
-                      </p>
+                      
                     </div>
                   </div>
 
