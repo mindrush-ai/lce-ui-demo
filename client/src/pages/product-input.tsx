@@ -939,70 +939,42 @@ export default function ProductInputPage() {
                         ITEM LANDED COST
                       </h3>
                       <div className="text-4xl font-bold text-emerald-100 mb-2">
-                        {/* Placeholder - will be calculated later */}
-                        --
-                      </div>
-                      <p className="text-sm text-emerald-400">
-                        USD
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Box 2 - Customs Calculation */}
-                    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                      <h3 className="text-lg font-semibold text-slate-200 mb-4">
-                        Customs Calculation
-                      </h3>
-                      <div className="space-y-4">
                         {(() => {
                           const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
                           const unitCost = form.getValues("unitCost") || 0;
                           const htsCode = form.getValues("htsCode") || "";
-                          
-                          const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
-                          const customsValue = numberOfWineCases * unitCost; // in USD
-                          const customDutyPerItem = 2.00; // placeholder
-                          
-                          return (
-                            <>
-                              <div className="flex justify-between">
-                                <span className="text-slate-400 font-bold">Unit of Measure:</span>
-                                <span className="text-slate-100 font-bold">{Math.round(customsUnits)} L</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-slate-400">Entered Value:</span>
-                                <span className="text-slate-100 font-medium">${Math.round(customsValue).toLocaleString()}</span>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-slate-400">HTS Code:</span>
-                                <span className="text-slate-100 font-medium">{htsCode}</span>
-                              </div>
-                              <div className="border-t border-slate-600/50 pt-3">
-                                <div className="flex justify-between">
-                                  <span className="text-slate-300 font-medium">Duty per Item:</span>
-                                  <span className="text-slate-100 font-bold">${customDutyPerItem.toFixed(2)}</span>
-                                </div>
-                              </div>
-                            </>
-                          );
-                        })()}
-                      </div>
-                    </div>
-
-                    {/* Box 3 - Freight Costs */}
-                    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
-                      <h3 className="text-lg font-semibold text-slate-200 mb-4">
-                        Freight Costs
-                      </h3>
-                      <div className="space-y-4">
-                        {(() => {
+                          const countryOfOrigin = form.getValues("countryOfOrigin") || "";
                           const useIndexRates = form.getValues("useIndexRates");
                           const freightCost = form.getValues("freightCost");
-                          const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
-                          const countryOfOrigin = form.getValues("countryOfOrigin");
                           
-                          // Get index rate based on country
+                          // EU Countries for 15% cumulative duty
+                          const euCountries = ["FR", "IT", "PT", "ES"];
+                          const isEUCountry = euCountries.includes(countryOfOrigin);
+                          
+                          const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
+                          const enteredValue = numberOfWineCases * unitCost; // in USD
+                          
+                          // Base HTS Code Duty calculation
+                          const getBaseHtsDuty = (code: string, liters: number) => {
+                            switch (code) {
+                              case "2204.21.50.40": return liters * 0.063; // 6.3 cents per liter
+                              case "2204.10.00.75": return liters * 0.198; // 19.8 cents per liter
+                              default: return 0;
+                            }
+                          };
+                          
+                          const baseHtsDutyAmount = getBaseHtsDuty(htsCode, customsUnits);
+                          
+                          // Chapter 99 Duty calculation (only for EU countries)
+                          let chapter99Duty = 0;
+                          if (isEUCountry) {
+                            const totalDutyAt15Percent = enteredValue * 0.15;
+                            chapter99Duty = Math.max(0, totalDutyAt15Percent - baseHtsDutyAmount);
+                          }
+                          
+                          const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
+                          
+                          // Freight calculation
                           const getIndexRate = (countryCode: string) => {
                             switch (countryCode) {
                               case "FR": return 6000;
@@ -1014,41 +986,180 @@ export default function ProductInputPage() {
                           };
                           
                           const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
-                          const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
                           
-                          // Get country names for display
-                          const getCountryName = (code: string) => {
-                            const countryNames = {
-                              "FR": "France",
-                              "IT": "Italy", 
-                              "PT": "Portugal",
-                              "ES": "Spain"
-                            };
-                            return countryNames[code as keyof typeof countryNames] || code;
-                          };
+                          // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Cases) + (Freight / Number of Cases)
+                          const customsDutiesPerCase = numberOfWineCases > 0 ? totalCustomsAndDuties / numberOfWineCases : 0;
+                          const freightPerCase = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
+                          const itemLandedCost = unitCost + customsDutiesPerCase + freightPerCase;
                           
-                          const originCountryName = getCountryName(countryOfOrigin);
-                          const destinationCountryName = "United States"; // Based on destination ports
-                          
-                          return (
-                            <>
-                              <div className="text-sm text-slate-400 font-bold mb-3">
-                                {originCountryName} to {destinationCountryName}
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-slate-400">Total Freight Costs:</span>
-                                <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
-                              </div>
-                              <div className="border-t border-slate-600/50 pt-3">
-                                <div className="flex justify-between">
-                                  <span className="text-slate-300 font-medium">Freight per Item:</span>
-                                  <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
-                                </div>
-                              </div>
-                            </>
-                          );
+                          return numberOfWineCases > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
                         })()}
                       </div>
+                      <p className="text-sm text-emerald-400">
+                        USD
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Box 2 - Customs and Duties (Full Width) */}
+                  <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                    <hr className="border-slate-600/50 dark:border-slate-600/50 mb-6" />
+                    <h3 className="text-lg font-semibold text-slate-200 mb-6 text-center">
+                      CUSTOMS AND DUTIES
+                    </h3>
+                    <div className="space-y-4">
+                      {(() => {
+                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const unitCost = form.getValues("unitCost") || 0;
+                        const htsCode = form.getValues("htsCode") || "";
+                        const countryOfOrigin = form.getValues("countryOfOrigin") || "";
+                        
+                        // EU Countries for 15% cumulative duty
+                        const euCountries = ["FR", "IT", "PT", "ES"];
+                        const isEUCountry = euCountries.includes(countryOfOrigin);
+                        
+                        const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
+                        const enteredValue = numberOfWineCases * unitCost; // in USD
+                        
+                        // Base HTS Code Duty calculation
+                        const getBaseHtsDuty = (code: string, liters: number) => {
+                          switch (code) {
+                            case "2204.21.50.40": return liters * 0.063; // 6.3 cents per liter
+                            case "2204.10.00.75": return liters * 0.198; // 19.8 cents per liter
+                            default: return 0;
+                          }
+                        };
+                        
+                        const baseHtsDutyAmount = getBaseHtsDuty(htsCode, customsUnits);
+                        
+                        // Chapter 99 Duty calculation (only for EU countries)
+                        let chapter99Duty = 0;
+                        let chapter99DutyPercentage = 0;
+                        if (isEUCountry) {
+                          const totalDutyAt15Percent = enteredValue * 0.15;
+                          chapter99Duty = Math.max(0, totalDutyAt15Percent - baseHtsDutyAmount);
+                          chapter99DutyPercentage = enteredValue > 0 ? (chapter99Duty / enteredValue) * 100 : 0;
+                        }
+                        
+                        const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
+                        const dutyPerItem = numberOfWineCases > 0 ? totalCustomsAndDuties / numberOfWineCases : 0;
+                        
+                        return (
+                          <div className="overflow-x-auto">
+                            <table className="w-full">
+                              <tbody>
+                                {/* ROW 1 - Unit of Measure */}
+                                <tr className="border-b border-slate-600/30">
+                                  <td className="py-3 text-slate-400 font-medium">Unit of Measure</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)} L</td>
+                                </tr>
+                                
+                                {/* ROW 2 - Entered Value and Base HTS Code Duty */}
+                                <tr className="border-b border-slate-600/30">
+                                  <td className="py-3 text-slate-400 font-medium">Entered Value</td>
+                                  <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toFixed(2)}</td>
+                                </tr>
+                                
+                                {/* ROW 3 - Chapter 99 Duty (only show for EU countries) */}
+                                {isEUCountry && (
+                                  <tr className="border-b border-slate-600/30">
+                                    <td className="py-3 text-slate-400 font-medium">9903.02.20</td>
+                                    <td className="py-3 text-slate-400 text-sm">IEEPA European Union - &lt;15% base duty</td>
+                                    <td className="py-3 text-slate-100 font-medium text-right">{chapter99DutyPercentage.toFixed(2)}%</td>
+                                    <td className="py-3 text-slate-100 font-bold text-right">${chapter99Duty.toFixed(2)}</td>
+                                  </tr>
+                                )}
+                                
+                                {/* ROW 4 - Total Customs & Duties */}
+                                <tr className="border-t-2 border-slate-500">
+                                  <td className="py-3 text-slate-300 font-bold">Total Customs & Duties</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toFixed(2)}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            
+                            {/* Highlighted Duty Per Item Section */}
+                            <div className="mt-6 pt-6 border-t border-slate-600/50">
+                              <div className="bg-emerald-900/20 border border-emerald-700/50 rounded-xl p-4">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-emerald-300 font-bold text-lg">Duty Per Item:</span>
+                                  <span className="text-emerald-100 font-bold text-xl">${dutyPerItem.toFixed(2)}</span>
+                                </div>
+                                <p className="text-emerald-400/80 text-sm mt-1">
+                                  Total Customs & Duties ÷ Number of Wine Cases
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Box 3 - Freight Costs */}
+                  <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6">
+                    <h3 className="text-lg font-semibold text-slate-200 mb-4">
+                      Freight Costs
+                    </h3>
+                    <div className="space-y-4">
+                      {(() => {
+                        const useIndexRates = form.getValues("useIndexRates");
+                        const freightCost = form.getValues("freightCost");
+                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const countryOfOrigin = form.getValues("countryOfOrigin");
+                        
+                        // Get index rate based on country
+                        const getIndexRate = (countryCode: string) => {
+                          switch (countryCode) {
+                            case "FR": return 6000;
+                            case "IT": return 6100;
+                            case "PT": return 6200;
+                            case "ES": return 6300;
+                            default: return 0;
+                          }
+                        };
+                        
+                        const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
+                        const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
+                        
+                        // Get country names for display
+                        const getCountryName = (code: string) => {
+                          const countryNames = {
+                            "FR": "France",
+                            "IT": "Italy", 
+                            "PT": "Portugal",
+                            "ES": "Spain"
+                          };
+                          return countryNames[code as keyof typeof countryNames] || code;
+                        };
+                        
+                        const originCountryName = getCountryName(countryOfOrigin);
+                        const destinationCountryName = "United States"; // Based on destination ports
+                        
+                        return (
+                          <>
+                            <div className="text-sm text-slate-400 font-bold mb-3">
+                              {originCountryName} to {destinationCountryName}
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-slate-400">Total Freight Costs:</span>
+                              <span className="text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
+                            </div>
+                            <div className="border-t border-slate-600/50 pt-3">
+                              <div className="flex justify-between">
+                                <span className="text-slate-300 font-medium">Freight per Item:</span>
+                                <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>

@@ -84,6 +84,21 @@ Total Landed Costs (TLC) is a comprehensive B2B platform designed for managing a
 - Fixed positioning ensures background doesn't interfere with form functionality
 - Maintains professional appearance while adding thematic wine industry context
 
+### Customs Duty Business Logic Implementation
+- Implemented comprehensive customs calculation system based on Chapter 22 codes
+- EU Countries (FR, IT, PT, ES) subject to 15% cumulative duty rate
+- Base HTS Code Duty calculations:
+  - 2204.21.50.40: 6.3 cents per liter × Unit of Measure
+  - 2204.10.00.75: 19.8 cents per liter × Unit of Measure
+- Chapter 99 Duty calculation for EU countries:
+  - Formula: (15% × Entered Value) - Base HTS Code Duty
+  - Chapter 99 Duty Percentage: (Chapter 99 Duty/Entered Value) × 100
+- Redesigned Customs and Duties section as full-width display with structured table
+- Table includes: Unit of Measure, Entered Value, Base HTS Code Duty, 9903.02.20 IEEPA calculations
+- Highlighted "Duty Per Item" section with emerald styling and formula explanation
+- Updated ITEM LANDED COST hero box with complete calculation:
+  - Total = Unit Cost + (Customs & Duties ÷ Cases) + (Freight ÷ Cases)
+
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
