@@ -1056,15 +1056,23 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-100 font-bold text-right">{Math.round(customsUnits)} Liters</td>
                                 </tr>
                                 
-                                {/* ROW 2 - Entered Value and Base HTS Code Duty */}
+                                {/* ROW 2 - Entered Value */}
                                 <tr className="border-b border-slate-600/30">
                                   <td className="py-3 text-slate-400 font-medium">Entered Value</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                </tr>
+                                
+                                {/* ROW 3 - Base HTS Code Duty */}
+                                <tr className="border-b border-slate-600/30">
+                                  <td className="py-3"></td>
                                   <td className="py-3 text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
-                                {/* ROW 3 - Chapter 99 Duty (only show for EU countries) */}
+                                {/* ROW 4 - Chapter 99 Duty (only show for EU countries) */}
                                 {isEUCountry && (
                                   <tr className="border-b border-slate-600/30">
                                     <td className="py-3 text-slate-400 font-medium">9903.02.20</td>
@@ -1074,7 +1082,7 @@ export default function ProductInputPage() {
                                   </tr>
                                 )}
                                 
-                                {/* ROW 4 - Total Customs & Duties */}
+                                {/* ROW 5 - Total Customs & Duties */}
                                 <tr className="border-t-2 border-slate-500">
                                   <td className="py-3 text-slate-300 font-bold">Total Customs & Duties</td>
                                   <td className="py-3"></td>
