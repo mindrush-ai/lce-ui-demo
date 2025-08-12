@@ -1131,7 +1131,7 @@ export default function ProductInputPage() {
                             </div>
                             <div className="border-t border-slate-600/50 pt-3">
                               <div className="flex justify-between">
-                                <span className="text-slate-300 font-medium">Freight per Item:</span>
+                                <span className="text-slate-300 font-medium">Freight Per Item (Case):</span>
                                 <span className="text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
                               </div>
                             </div>
