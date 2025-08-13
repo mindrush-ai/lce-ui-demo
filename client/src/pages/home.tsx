@@ -12,8 +12,7 @@ export default function HomePage() {
   };
 
   const handleLogout = () => {
-    // TODO: Implement logout functionality
-    console.log("Logout clicked");
+    window.location.href = "/api/logout";
   };
 
   return (

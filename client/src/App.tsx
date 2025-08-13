@@ -7,33 +7,22 @@ import { ThemeProvider } from "@/hooks/use-theme";
 import { useAuth } from "@/hooks/useAuth";
 import NotFound from "@/pages/not-found";
 import LandingPage from "@/pages/landing";
-import SignupPage from "@/pages/signup";
-import LoginPage from "@/pages/login";
-import ForgotPasswordPage from "@/pages/forgot-password";
-import ResetPasswordPage from "@/pages/reset-password";
 import ProductInputPage from "@/pages/product-input";
 import HomePage from "@/pages/home";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="text-slate-100">Loading...</div>
-      </div>
-    );
-  }
-
   return (
     <Switch>
-      <Route path="/" component={isAuthenticated ? HomePage : LandingPage} />
-      <Route path="/signup" component={SignupPage} />
-      <Route path="/login" component={LoginPage} />
-      <Route path="/forgot-password" component={ForgotPasswordPage} />
-      <Route path="/reset-password" component={ResetPasswordPage} />
-      <Route path="/product-input" component={isAuthenticated ? ProductInputPage : LoginPage} />
-      <Route path="/home" component={isAuthenticated ? HomePage : LoginPage} />
+      {isLoading || !isAuthenticated ? (
+        <Route path="/" component={LandingPage} />
+      ) : (
+        <>
+          <Route path="/" component={HomePage} />
+          <Route path="/product-input" component={ProductInputPage} />
+        </>
+      )}
       <Route component={NotFound} />
     </Switch>
   );

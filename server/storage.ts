@@ -1,71 +1,45 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
+import {
+  users,
+  type User,
+  type UpsertUser,
+} from "@shared/schema";
+import { db } from "./db";
+import { eq } from "drizzle-orm";
 
+// Interface for storage operations
 export interface IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  getUserByResetToken(token: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  updateUser(id: string, user: Partial<User>): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  // Other operations
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-
-  constructor() {
-    this.users = new Map();
-  }
+export class DatabaseStorage implements IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
 
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.email === email,
-    );
-  }
-
-  async getUserByResetToken(token: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.resetToken === token && user.resetTokenExpires && user.resetTokenExpires > new Date(),
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { 
-      id,
-      email: insertUser.email,
-      password: insertUser.password || null,
-      fullName: insertUser.fullName,
-      companyName: insertUser.companyName,
-      isGoogleAuth: insertUser.isGoogleAuth || null,
-      googleId: insertUser.googleId || null,
-      resetToken: null,
-      resetTokenExpires: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.users.set(id, user);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
-  async updateUser(id: string, userData: Partial<User>): Promise<User | undefined> {
-    const existingUser = this.users.get(id);
-    if (!existingUser) {
-      return undefined;
-    }
-    
-    const updatedUser: User = {
-      ...existingUser,
-      ...userData,
-      updatedAt: new Date(),
-    };
-    
-    this.users.set(id, updatedUser);
-    return updatedUser;
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
   }
+
+  // Other operations
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

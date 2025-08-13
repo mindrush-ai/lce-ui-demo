@@ -1,115 +1,130 @@
-import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useTheme } from "@/hooks/use-theme";
-import { Link } from "wouter";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calculator, BarChart3, Clock, Shield } from "lucide-react";
 
 export default function LandingPage() {
-  const { theme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+  const handleLogin = () => {
+    window.location.href = "/api/login";
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300">
-      <div className="min-h-screen flex flex-col">
-        <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
-                <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
-                <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Cost (BETA)</span>
+    <div className="min-h-screen bg-gradient-to-br from-white via-white to-blue-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
+      {/* Header */}
+      <div className="border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="h-8 w-8 bg-emerald-600 rounded-lg flex items-center justify-center">
+                <Calculator className="h-5 w-5 text-white" />
               </div>
-              
-              <div className="flex items-center space-x-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={toggleTheme}
-                  className="p-2 rounded-lg"
-                  data-testid="button-theme-toggle"
-                >
-                  {theme === "dark" ? (
-                    <Sun className="w-5 h-5" />
-                  ) : (
-                    <Moon className="w-5 h-5" />
-                  )}
-                </Button>
-                
-                <Link href="/login">
-                  <Button 
-                    variant="outline"
-                    data-testid="button-login"
-                  >
-                    Login
-                  </Button>
-                </Link>
-                
-                <Link href="/signup">
-                  <Button 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
-                    data-testid="button-get-started"
-                  >
-                    Get Started
-                  </Button>
-                </Link>
-              </div>
+              <span className="text-xl font-bold text-slate-900 dark:text-white">
+                Total Landed Costs
+              </span>
             </div>
+            <Button 
+              onClick={handleLogin}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              data-testid="button-login"
+            >
+              Log In
+            </Button>
           </div>
-        </header>
+        </div>
+      </div>
 
-        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100">Total Landed Cost</h1>
-              <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">Comprehensive B2B platform for managing and calculating total landed cost with modular precision</p>
-            </div>
-            
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Modular Design</h3>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Built with flexibility in mind to adapt to your business needs
-                  </p>
-                </div>
-                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">B2B Focused</h3>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Purpose-built for business-to-business cost management
-                  </p>
-                </div>
-                <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Professional</h3>
-                  <p className="text-slate-600 dark:text-slate-400">
-                    Enterprise-grade platform with modern, intuitive interface
-                  </p>
-                </div>
-              </div>
-              
-              <Link href="/signup">
-                <Button 
-                  size="lg"
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 py-4 text-lg"
-                  data-testid="button-start-journey"
-                >
-                  Start Your Journey
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </main>
+      {/* Hero Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+            Calculate Wine Import Costs
+            <span className="block text-emerald-600 dark:text-emerald-400">
+              with Precision
+            </span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-3xl mx-auto">
+            Professional B2B platform for calculating total landed costs of wine imports. 
+            Get accurate duty calculations for EU countries with comprehensive customs business logic.
+          </p>
+          <Button 
+            onClick={handleLogin}
+            size="lg"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3"
+            data-testid="button-hero-login"
+          >
+            Get Started
+          </Button>
+        </div>
 
-        <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="text-center text-sm text-slate-600 dark:text-slate-400">
-              <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
-            </div>
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <Calculator className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <CardTitle className="text-slate-900 dark:text-white">Accurate Calculations</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Precise customs duty calculations for EU countries with HTS code-specific business logic
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <BarChart3 className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <CardTitle className="text-slate-900 dark:text-white">Professional Results</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Detailed cost breakdowns with freight charges and comprehensive duty analysis
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <Clock className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <CardTitle className="text-slate-900 dark:text-white">Fast Processing</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Quick calculations with real-time freight rates and automated port selection
+              </CardDescription>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+            <CardHeader>
+              <Shield className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <CardTitle className="text-slate-900 dark:text-white">Secure Platform</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-slate-600 dark:text-slate-300">
+                Enterprise-grade security for your business data and calculations
+              </CardDescription>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 max-w-2xl mx-auto">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+              Ready to Calculate Your Wine Import Costs?
+            </h2>
+            <p className="text-slate-600 dark:text-slate-300 mb-6">
+              Join wine import professionals using our platform for accurate landed cost calculations.
+            </p>
+            <Button 
+              onClick={handleLogin}
+              size="lg"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              data-testid="button-cta-login"
+            >
+              Start Calculating
+            </Button>
           </div>
-        </footer>
+        </div>
       </div>
     </div>
   );
