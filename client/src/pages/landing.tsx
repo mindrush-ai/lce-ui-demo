@@ -4,7 +4,7 @@ import { Calculator, BarChart3, Clock, Shield } from "lucide-react";
 
 export default function LandingPage() {
   const handleLogin = () => {
-    window.location.href = "/api/login";
+    window.location.href = "/login";
   };
 
   return (

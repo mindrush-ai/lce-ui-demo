@@ -83,3 +83,37 @@ export const productInfoSchema = z.object({
 
 export type ProductInfo = z.infer<typeof productInfoSchema>;
 
+// Authentication schemas
+export const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+export type LoginData = z.infer<typeof loginSchema>;
+
+// Signup schemas
+export const signupStep1Schema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Password must contain at least one uppercase letter, one lowercase letter, and one number"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
+});
+
+export type SignupStep1Data = z.infer<typeof signupStep1Schema>;
+
+export const signupStep2Schema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  company: z.string().min(1, "Company name is required"),
+  acceptTerms: z.boolean().refine((val) => val === true, {
+    message: "You must accept the terms and conditions",
+  }),
+  acceptMarketing: z.boolean().optional(),
+});
+
+export type SignupStep2Data = z.infer<typeof signupStep2Schema>;
+
