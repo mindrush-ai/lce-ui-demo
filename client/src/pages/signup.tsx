@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
+import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 import { ProgressIndicator } from "@/components/signup/progress-indicator";
 import { SignupStep1 } from "@/components/signup/signup-step-1";
 import { SignupStep2 } from "@/components/signup/signup-step-2";
@@ -120,17 +120,23 @@ export default function SignupPage() {
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
+                {/* Left Side - Brand Text */}
                 <div className="flex items-center space-x-3">
-                  <img 
-                    src={tfiLogoPath} 
-                    alt="TFI Logo" 
-                    className="h-10 w-auto"
-                  />
                   <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                   <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
                 </div>
                 
+                {/* Center - Logo Only (Larger) */}
+                <div className="absolute left-1/2 transform -translate-x-1/2">
+                  <img 
+                    src={tfiLogoPath} 
+                    alt="TFI Logo" 
+                    className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                  />
+                </div>
+                
+                {/* Right Side - Theme Toggle */}
                 <Button
                   variant="ghost"
                   size="sm"
@@ -186,9 +192,11 @@ export default function SignupPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
+                <img 
+                  src={tfiLogoPath} 
+                  alt="TFI Logo" 
+                  className="h-12 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-sm"
+                />
                 <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                 <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
               </div>

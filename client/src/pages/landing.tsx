@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
+import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, BarChart3, Clock, Shield } from "lucide-react";
 
@@ -13,17 +13,24 @@ export default function LandingPage() {
       {/* Header */}
       <div className="border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
+            {/* Left Side - Brand Text */}
             <div className="flex items-center space-x-3">
-              <img 
-                src={tfiLogoPath} 
-                alt="TFI Logo" 
-                className="h-10 w-auto"
-              />
               <span className="text-xl font-bold text-slate-900 dark:text-white">
                 Total Landed Costs
               </span>
             </div>
+            
+            {/* Center - Logo Only (Larger) */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <img 
+                src={tfiLogoPath} 
+                alt="TFI Logo" 
+                className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+              />
+            </div>
+            
+            {/* Right Side - Login Button */}
             <Button 
               onClick={handleLogin}
               className="bg-primary hover:bg-primary/90 text-white"

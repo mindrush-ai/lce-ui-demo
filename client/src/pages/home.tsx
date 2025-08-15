@@ -1,5 +1,5 @@
 import { Moon, Sun, LogOut, Calculator, TrendingUp, FileText, Package, BarChart3, Users, Zap } from "lucide-react";
-import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
+import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -21,19 +21,23 @@ export default function HomePage() {
       <div className="min-h-screen flex flex-col">
         <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
+              {/* Left Side - Brand Text */}
               <div className="flex items-center space-x-3">
-                <img 
-                  src={tfiLogoPath} 
-                  alt="TFI Logo" 
-                  className="h-10 w-auto"
-                />
                 <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                 <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Cost (BETA)</span>
               </div>
               
+              {/* Center - Logo Only (Larger) */}
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <img 
+                  src={tfiLogoPath} 
+                  alt="TFI Logo" 
+                  className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                />
+              </div>
               
-              
+              {/* Right Side - Actions */}
               <div className="flex items-center space-x-4">
                 <Button
                   variant="ghost"
