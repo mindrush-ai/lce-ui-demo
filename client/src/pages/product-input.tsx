@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, LogOut } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, LogOut, AlertTriangle, XCircle } from "lucide-react";
 import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
@@ -23,6 +23,8 @@ interface Section {
   title: string;
   isCompleted: boolean;
   isCollapsed: boolean;
+  hasValidationErrors?: boolean;
+  missingFields?: string[];
 }
 
 export default function ProductInputPage() {
@@ -187,6 +189,47 @@ export default function ProductInputPage() {
     }
   };
 
+  const getSectionValidationErrors = (sectionId: string) => {
+    const values = form.getValues();
+    const missingFields: string[] = [];
+    
+    switch (sectionId) {
+      case 'product-details':
+        if (!values.itemNumber || values.itemNumber.trim() === '') missingFields.push('Item Number');
+        if (!values.nameId || values.nameId.trim() === '') missingFields.push('Item Name/Description');
+        if (!values.htsCode) missingFields.push('HTS Code');
+        if (!values.countryOfOrigin) missingFields.push('Country of Origin');
+        if (!values.unitCost || values.unitCost <= 0) missingFields.push('Unit Cost');
+        break;
+      case 'item-details':
+        if (!values.numberOfWineCases || values.numberOfWineCases <= 0) missingFields.push('Number of Wine Cases');
+        break;
+      case 'shipment-details':
+        if (!values.containerSize) missingFields.push('Container Size');
+        if (!values.incoterms) missingFields.push('Incoterms');
+        if (!values.originPort) missingFields.push('Origin Port');
+        if (!values.destinationPort) missingFields.push('Destination Port');
+        if (!values.useIndexRates && (!values.freightCost || values.freightCost <= 0)) missingFields.push('Freight Cost');
+        break;
+    }
+    
+    return missingFields;
+  };
+
+  const updateSectionValidationState = (sectionId: string) => {
+    const missingFields = getSectionValidationErrors(sectionId);
+    setSections(prev => prev.map(section => 
+      section.id === sectionId 
+        ? { 
+            ...section, 
+            hasValidationErrors: missingFields.length > 0,
+            missingFields 
+          }
+        : section
+    ));
+    return missingFields.length === 0;
+  };
+
   const onSubmit = async (data: ProductInfo) => {
     try {
       console.log("Product data:", data);
@@ -267,7 +310,12 @@ export default function ProductInputPage() {
               {sections.map((section) => (
                 <div
                   key={section.id}
-                  className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50"
+                  className={cn(
+                    "backdrop-blur-sm rounded-2xl transition-all duration-300",
+                    section.hasValidationErrors
+                      ? "bg-red-50 dark:bg-red-900/20 border border-slate-300/50 dark:border-slate-700/50 border-l-4 border-l-red-500"
+                      : "bg-white/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50"
+                  )}
                   data-testid={`section-${section.id}`}
                 >
                   {/* Section Header */}
@@ -291,7 +339,7 @@ export default function ProductInputPage() {
                     </div>
                     
                     <div className="flex items-center space-x-2">
-                      {section.isCompleted && (
+                      {section.isCompleted && !section.hasValidationErrors && (
                         <span className="text-sm text-primary font-medium">Completed</span>
                       )}
                       {section.isCollapsed ? (
@@ -301,6 +349,15 @@ export default function ProductInputPage() {
                       )}
                     </div>
                   </div>
+
+                  {/* Error Message */}
+                  {section.hasValidationErrors && section.missingFields && section.missingFields.length > 0 && (
+                    <div className="px-6 pb-2">
+                      <p className="text-sm text-red-600 dark:text-red-400">
+                        Please complete: {section.missingFields.join(", ")}
+                      </p>
+                    </div>
+                  )}
 
                   {/* Section Content */}
                   {!section.isCollapsed && (
@@ -469,7 +526,8 @@ export default function ProductInputPage() {
                               <Button
                                 type="button"
                                 onClick={() => {
-                                  if (validateSection1()) {
+                                  const isValid = updateSectionValidationState("product-details");
+                                  if (isValid) {
                                     markSectionCompleted("product-details");
                                     toast({
                                       title: "Success!",
@@ -558,9 +616,8 @@ export default function ProductInputPage() {
                               <Button
                                 type="button"
                                 onClick={() => {
-                                  // Validate Section 2 fields
-                                  const numberOfWineCases = form.getValues("numberOfWineCases");
-                                  if (numberOfWineCases && numberOfWineCases >= 1 && numberOfWineCases <= 1260) {
+                                  const isValid = updateSectionValidationState("item-details");
+                                  if (isValid) {
                                     markSectionCompleted("item-details");
                                     toast({
                                       title: "Success!",
@@ -859,18 +916,8 @@ export default function ProductInputPage() {
                               <Button
                                 type="button"
                                 onClick={() => {
-                                  // Validate Section 3 fields including freight
-                                  const containerSize = form.getValues("containerSize");
-                                  const incoterms = form.getValues("incoterms");
-                                  const originPort = form.getValues("originPort");
-                                  const destinationPort = form.getValues("destinationPort");
-                                  const useIndexRates = form.getValues("useIndexRates");
-                                  const freightCost = form.getValues("freightCost");
-                                  
-                                  // Check if freight is properly filled
-                                  const freightValid = useIndexRates || (freightCost && freightCost > 0);
-                                  
-                                  if (containerSize && incoterms && originPort && destinationPort && freightValid) {
+                                  const isValid = updateSectionValidationState("shipment-details");
+                                  if (isValid) {
                                     markSectionCompleted("shipment-details");
                                     toast({
                                       title: "Success!",
