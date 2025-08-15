@@ -1,4 +1,5 @@
 import { Moon, Sun, LogOut, Calculator, TrendingUp, FileText, Package, BarChart3, Users, Zap } from "lucide-react";
+import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/hooks/use-theme";
@@ -22,9 +23,11 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
+                <img 
+                  src={tfiLogoPath} 
+                  alt="TFI Logo" 
+                  className="h-10 w-auto"
+                />
                 <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                 <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Cost (BETA)</span>
               </div>
@@ -94,7 +97,7 @@ export default function HomePage() {
                 </div>
                 
                 <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl hover:shadow-lg transition-shadow duration-200">
-                  <Package className="w-8 h-8 text-emerald-500 mb-4" />
+                  <Package className="w-8 h-8 text-primary mb-4" />
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-2">Inventory Management</h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-4">
                     Track and manage your inventory with cost insights

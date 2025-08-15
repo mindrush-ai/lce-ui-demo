@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, LogOut } from "lucide-react";
-import mgxLogoPath from "@assets/mgx logo_1754655534840.png";
+import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
@@ -215,9 +215,11 @@ export default function ProductInputPage() {
             <div className="flex justify-between items-center">
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">T</span>
-                  </div>
+                  <img 
+                    src={tfiLogoPath} 
+                    alt="TFI Logo" 
+                    className="h-10 w-auto"
+                  />
                   <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                   <span className="text-sm text-slate-500 dark:text-slate-400 hidden sm:inline">Total Landed Cost</span>
                 </div>
@@ -273,7 +275,7 @@ export default function ProductInputPage() {
                     className={cn(
                       "flex items-center justify-between p-6 cursor-pointer transition-colors duration-200",
                       section.isCompleted 
-                        ? "bg-emerald-100/30 dark:bg-emerald-900/30 border-b border-emerald-300/50 dark:border-emerald-700/50" 
+                        ? "bg-primary/10 dark:bg-primary/20 border-b border-primary/30 dark:border-primary/50" 
                         : "hover:bg-slate-100/30 dark:hover:bg-slate-700/30"
                     )}
                     onClick={() => toggleSection(section.id)}
@@ -290,7 +292,7 @@ export default function ProductInputPage() {
                     
                     <div className="flex items-center space-x-2">
                       {section.isCompleted && (
-                        <span className="text-sm text-emerald-400 font-medium">Completed</span>
+                        <span className="text-sm text-primary font-medium">Completed</span>
                       )}
                       {section.isCollapsed ? (
                         <ChevronRight className="w-5 h-5 text-slate-600 dark:text-slate-400" />
@@ -812,7 +814,7 @@ export default function ProductInputPage() {
                                         <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-600/50">
                                           <div className="flex justify-between items-center">
                                             <span className="text-slate-700 dark:text-slate-300 font-medium">Selected Rate:</span>
-                                            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-lg">${rate.toLocaleString()}</span>
+                                            <span className="text-primary dark:text-primary/80 font-bold text-lg">${rate.toLocaleString()}</span>
                                           </div>
                                         </div>
                                       ) : countryOfOrigin ? (
@@ -917,7 +919,7 @@ export default function ProductInputPage() {
                       }
                     }, 100);
                   }}
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-lg py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-emerald-500/25"
+                  className="bg-gradient-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-white font-bold text-lg py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-primary/25"
                   data-testid="button-calculate-tlc"
                 >
                   <span className="flex items-center space-x-2">
@@ -937,10 +939,10 @@ export default function ProductInputPage() {
 
                 <div className="space-y-6">
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
-                  <div className="bg-gradient-to-br from-emerald-100 to-emerald-50 dark:from-emerald-900/40 dark:to-emerald-800/30 backdrop-blur-sm rounded-2xl border border-emerald-300 dark:border-emerald-700/50 p-6">
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-300 mb-4">ITEM LANDED COST (CASE)</h3>
-                      <div className="text-4xl font-bold text-emerald-800 dark:text-emerald-100 mb-2">
+                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (CASE)</h3>
+                      <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
                         {(() => {
                           const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
                           const unitCost = form.getValues("unitCost") || 0;
@@ -1091,10 +1093,10 @@ export default function ProductInputPage() {
                             </table>
                             {/* Highlighted Duty Per Item Section */}
                             <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-600/50">
-                              <div className="bg-emerald-100 dark:bg-emerald-900/20 border border-emerald-300 dark:border-emerald-700/50 rounded-xl p-4">
+                              <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
-                                  <span className="text-emerald-700 dark:text-emerald-300 font-bold text-lg">Duty Per Item (Case)</span>
-                                  <span className="text-emerald-800 dark:text-emerald-100 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item (Case)</span>
+                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                 </div>
                                 
                               </div>

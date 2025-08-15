@@ -15,7 +15,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
               "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200",
               currentStep >= 1 
                 ? currentStep > 1 
-                  ? "bg-emerald-500 text-white" 
+                  ? "bg-primary text-white" 
                   : "bg-blue-500 text-white"
                 : "bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
             )}
@@ -37,7 +37,7 @@ export function ProgressIndicator({ currentStep, totalSteps }: ProgressIndicator
               "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200",
               currentStep >= 2 
                 ? currentStep > 2 
-                  ? "bg-emerald-500 text-white" 
+                  ? "bg-primary text-white" 
                   : "bg-blue-500 text-white"
                 : "bg-slate-300 dark:bg-slate-700 text-slate-600 dark:text-slate-400"
             )}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Moon, Sun } from "lucide-react";
+import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 import { ProgressIndicator } from "@/components/signup/progress-indicator";
 import { SignupStep1 } from "@/components/signup/signup-step-1";
 import { SignupStep2 } from "@/components/signup/signup-step-2";
@@ -121,9 +122,11 @@ export default function SignupPage() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">T</span>
-                  </div>
+                  <img 
+                    src={tfiLogoPath} 
+                    alt="TFI Logo" 
+                    className="h-10 w-auto"
+                  />
                   <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                   <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
                 </div>
@@ -148,8 +151,8 @@ export default function SignupPage() {
           <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
             <div className="w-full max-w-md space-y-8">
               <div className="animate-bounce-gentle" data-testid="success-state">
-                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-8 text-center">
-                  <div className="w-16 h-16 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="bg-primary/10 border border-primary/20 rounded-2xl p-8 text-center">
+                  <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                     </svg>

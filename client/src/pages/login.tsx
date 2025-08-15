@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Moon, Sun } from "lucide-react";
+import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 import { loginSchema, type LoginData } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -103,9 +104,11 @@ export default function LoginPage() {
             <div className="flex justify-between items-center">
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-violet-600 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">T</span>
-                  </div>
+                  <img 
+                    src={tfiLogoPath} 
+                    alt="TFI Logo" 
+                    className="h-10 w-auto"
+                  />
                   <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
                   <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
                 </div>

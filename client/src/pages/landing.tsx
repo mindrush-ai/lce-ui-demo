@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import tfiLogoPath from "@/assets/TFINewLogo.jpeg";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calculator, BarChart3, Clock, Shield } from "lucide-react";
 
@@ -14,16 +15,18 @@ export default function LandingPage() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="h-8 w-8 bg-emerald-600 rounded-lg flex items-center justify-center">
-                <Calculator className="h-5 w-5 text-white" />
-              </div>
+              <img 
+                src={tfiLogoPath} 
+                alt="TFI Logo" 
+                className="h-10 w-auto"
+              />
               <span className="text-xl font-bold text-slate-900 dark:text-white">
                 Total Landed Costs
               </span>
             </div>
             <Button 
               onClick={handleLogin}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-white"
               data-testid="button-login"
             >
               Log In
@@ -37,7 +40,7 @@ export default function LandingPage() {
         <div className="text-center mb-16">
           <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
             Calculate Wine Import Costs
-            <span className="block text-emerald-600 dark:text-emerald-400">
+            <span className="block text-primary dark:text-primary/80">
               with Precision
             </span>
           </h1>
@@ -48,7 +51,7 @@ export default function LandingPage() {
           <Button 
             onClick={handleLogin}
             size="lg"
-            className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-3"
+            className="bg-primary hover:bg-primary/90 text-white px-8 py-3"
             data-testid="button-hero-login"
           >
             Get Started
@@ -59,7 +62,7 @@ export default function LandingPage() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <Calculator className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <Calculator className="h-8 w-8 text-primary dark:text-primary/80 mb-2" />
               <CardTitle className="text-slate-900 dark:text-white">Accurate Calculations</CardTitle>
             </CardHeader>
             <CardContent>
@@ -71,7 +74,7 @@ export default function LandingPage() {
 
           <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <BarChart3 className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <BarChart3 className="h-8 w-8 text-primary dark:text-primary/80 mb-2" />
               <CardTitle className="text-slate-900 dark:text-white">Professional Results</CardTitle>
             </CardHeader>
             <CardContent>
@@ -83,7 +86,7 @@ export default function LandingPage() {
 
           <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <Clock className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <Clock className="h-8 w-8 text-primary dark:text-primary/80 mb-2" />
               <CardTitle className="text-slate-900 dark:text-white">Fast Processing</CardTitle>
             </CardHeader>
             <CardContent>
@@ -95,7 +98,7 @@ export default function LandingPage() {
 
           <Card className="bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
             <CardHeader>
-              <Shield className="h-8 w-8 text-emerald-600 dark:text-emerald-400 mb-2" />
+              <Shield className="h-8 w-8 text-primary dark:text-primary/80 mb-2" />
               <CardTitle className="text-slate-900 dark:text-white">Secure Platform</CardTitle>
             </CardHeader>
             <CardContent>
@@ -118,7 +121,7 @@ export default function LandingPage() {
             <Button 
               onClick={handleLogin}
               size="lg"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-primary hover:bg-primary/90 text-white"
               data-testid="button-cta-login"
             >
               Start Calculating
