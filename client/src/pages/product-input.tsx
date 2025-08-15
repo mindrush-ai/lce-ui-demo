@@ -275,7 +275,7 @@ export default function ProductInputPage() {
                     className={cn(
                       "flex items-center justify-between p-6 cursor-pointer transition-colors duration-200",
                       section.isCompleted 
-                        ? "bg-primary/10 dark:bg-primary/20 border-b border-primary/30 dark:border-primary/50" 
+                        ? "bg-primary/10 dark:bg-primary/20" 
                         : "hover:bg-slate-100/30 dark:hover:bg-slate-700/30"
                     )}
                     onClick={() => toggleSection(section.id)}
