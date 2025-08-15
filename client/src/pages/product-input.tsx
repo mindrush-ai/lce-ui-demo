@@ -1110,14 +1110,14 @@ export default function ProductInputPage() {
                                 {/* ROW 2 - Entered Value */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Entered Value</td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
+                                  <td className="py-3"></td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 3 - HTS Code Output */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 font-medium text-blue-600 dark:text-[#8997ad]">{htsCode}</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode}</td>
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
                                   <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
