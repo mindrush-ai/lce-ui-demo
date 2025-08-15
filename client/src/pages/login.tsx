@@ -33,15 +33,17 @@ export default function LoginPage() {
       await apiRequest("POST", "/api/auth/login", data);
       
       // Invalidate auth queries to refresh authentication state
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       toast({
         title: "Success!",
         description: "You've been logged in successfully.",
       });
       
-      // Redirect to home page
-      setLocation("/");
+      // Wait a moment for the auth state to propagate to the router
+      setTimeout(() => {
+        setLocation("/product-input");
+      }, 200);
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
@@ -66,15 +68,17 @@ export default function LoginPage() {
       await apiRequest("POST", "/api/auth/login", mockLoginData);
       
       // Invalidate auth queries to refresh authentication state
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       toast({
         title: "Success!",
         description: "Google login successful.",
       });
       
-      // Redirect to home page
-      setLocation("/");
+      // Wait a moment for the auth state to propagate to the router
+      setTimeout(() => {
+        setLocation("/product-input");
+      }, 200);
     } catch (error: any) {
       console.error("Google login error:", error);
       toast({

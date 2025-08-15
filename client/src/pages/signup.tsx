@@ -48,17 +48,17 @@ export default function SignupPage() {
       await apiRequest("POST", "/api/auth/signup", mockGoogleUser);
 
       // Invalidate auth queries to refresh authentication state
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       toast({
         title: "Success!",
         description: "Google account created successfully.",
       });
       
-      // Redirect to home after success
+      // Wait for auth state to propagate before redirecting
       setTimeout(() => {
-        setLocation("/");
-      }, 1000);
+        setLocation("/product-input");
+      }, 1200);
 
     } catch (error) {
       console.error("Google signup error:", error);
@@ -83,7 +83,7 @@ export default function SignupPage() {
       });
 
       // Invalidate auth queries to refresh authentication state
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/me"] });
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
       
       setShowSuccess(true);
       
@@ -92,10 +92,10 @@ export default function SignupPage() {
         description: "Your account has been created successfully.",
       });
       
-      // Redirect to home after success
+      // Redirect to product input page after success (longer delay for success animation)
       setTimeout(() => {
-        setLocation("/");
-      }, 2000);
+        setLocation("/product-input");
+      }, 2200);
 
     } catch (error) {
       console.error("Signup error:", error);

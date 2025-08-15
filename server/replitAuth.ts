@@ -182,8 +182,7 @@ export async function setupAuth(app: Express) {
 
       // Check hardcoded dev users if password provided
       const DEV_USERS = {
-        'admin@example.com': { password: 'admin123', firstName: 'Admin', lastName: 'User' },
-        'user@example.com': { password: 'user123', firstName: 'Test', lastName: 'User' },
+        'admin@mindrush.com': { password: '$omeRandomPass*', firstName: 'Admin', lastName: 'User' },
         'google.user@example.com': { password: 'mock-google-password', firstName: 'Google', lastName: 'User' },
       };
 
@@ -259,7 +258,7 @@ export async function setupAuth(app: Express) {
       const email = decodeURIComponent(req.params.email);
       
       // Check hardcoded users
-      const DEV_USERS = ['admin@example.com', 'user@example.com', 'google.user@example.com'];
+      const DEV_USERS = ['admin@mindrush.com', 'google.user@example.com'];
       if (DEV_USERS.includes(email)) {
         return res.json({ exists: true });
       }
@@ -336,10 +335,9 @@ export async function setupAuth(app: Express) {
   // Dev info endpoint
   app.get('/api/dev-info', (req, res) => {
     const DEV_USERS = {
-      'admin@example.com': 'admin123',
-      'user@example.com': 'user123',
+      'admin@mindrush.com': '$omeRandomPass*',
       'google.user@example.com': 'mock-google-password',
-    };
+      };
 
     res.json({
       message: "Development login credentials",

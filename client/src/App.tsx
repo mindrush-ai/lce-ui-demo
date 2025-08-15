@@ -6,11 +6,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/hooks/use-theme";
 import { useAuth } from "@/hooks/useAuth";
 import NotFound from "@/pages/not-found";
-import LandingPage from "@/pages/landing";
 import LoginPage from "@/pages/login";
 import SignupPage from "@/pages/signup";
 import ProductInputPage from "@/pages/product-input";
-import HomePage from "@/pages/home";
 
 function Router() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -19,13 +17,15 @@ function Router() {
     <Switch>
       {isLoading || !isAuthenticated ? (
         <>
-          <Route path="/" component={LandingPage} />
+          <Route path="/" component={LoginPage} />
           <Route path="/login" component={LoginPage} />
           <Route path="/signup" component={SignupPage} />
         </>
       ) : (
         <>
-          <Route path="/" component={HomePage} />
+          <Route path="/" component={ProductInputPage} />
+          <Route path="/login" component={ProductInputPage} />
+          <Route path="/signup" component={ProductInputPage} />
           <Route path="/product-input" component={ProductInputPage} />
         </>
       )}

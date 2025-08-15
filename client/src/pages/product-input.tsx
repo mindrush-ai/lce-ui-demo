@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, LogOut } from "lucide-react";
 import mgxLogoPath from "@assets/mgx logo_1754655534840.png";
 
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
@@ -13,9 +13,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/use-theme";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { countries } from "@/lib/countries";
 import { cn } from "@/lib/utils";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 interface Section {
   id: string;
@@ -27,6 +28,7 @@ interface Section {
 export default function ProductInputPage() {
   const { toast } = useToast();
   const { theme, setTheme } = useTheme();
+  const [, setLocation] = useLocation();
 
   const [sections, setSections] = useState<Section[]>([
     {
@@ -92,6 +94,32 @@ export default function ProductInputPage() {
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest("POST", "/api/auth/logout");
+      
+      // Invalidate auth queries to refresh authentication state
+      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      
+      toast({
+        title: "Logged out",
+        description: "You have been logged out successfully.",
+      });
+      
+      // Redirect to login page (force a full page reload to ensure clean state)
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 300);
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: "Logout Failed",
+        description: "Failed to logout. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const toggleSection = (sectionId: string) => {
@@ -212,14 +240,15 @@ export default function ProductInputPage() {
                   )}
                 </Button>
                 
-                <Link href="/home">
-                  <Button 
-                    variant="outline"
-                    data-testid="button-home"
-                  >
-                    Home
-                  </Button>
-                </Link>
+                <Button 
+                  variant="outline"
+                  onClick={handleLogout}
+                  data-testid="button-logout"
+                  className="flex items-center space-x-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Logout</span>
+                </Button>
               </div>
             </div>
           </div>
