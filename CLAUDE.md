@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Context
+
+This is a forked version of the original cost management platform, customized to create an early demo for **The Honest Company**. The codebase maintains the same core functionality while being adapted for this specific customer's needs.
+
 ## Development Commands
 
 - `npm run dev` - Start development server with hot reload
@@ -75,7 +79,7 @@ This is a full-stack B2B cost management platform for calculating Total Landed C
 - Form state persists across sections until submission
 - Results display with auto-scroll and responsive design
 - Theme support (light/dark) throughout the application
-- MGX Beverage Group branding integration
+- The Honest Company branding integration (forked from MGX Beverage Group)
 
 ### Environment Setup
 - Requires `DATABASE_URL` environment variable for PostgreSQL connection
