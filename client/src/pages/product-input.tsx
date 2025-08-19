@@ -850,32 +850,17 @@ export default function ProductInputPage() {
                                 {form.watch("useIndexRates") ? (
                                   <div className="bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 rounded-xl p-4">
                                     <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Index Rates by Country:</h4>
-                                    <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div className="text-sm">
                                       <div className="flex justify-between">
-                                        <span className="text-slate-600 dark:text-slate-400">France:</span>
+                                        <span className="text-slate-600 dark:text-slate-400">China:</span>
                                         <span className="text-slate-900 dark:text-slate-100 font-medium">$6,000</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-slate-600 dark:text-slate-400">Italy:</span>
-                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,100</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-slate-600 dark:text-slate-400">Portugal:</span>
-                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,200</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-slate-600 dark:text-slate-400">Spain:</span>
-                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,300</span>
                                       </div>
                                     </div>
                                     {(() => {
                                       const countryOfOrigin = form.watch("countryOfOrigin");
                                       const getRateForCountry = (countryCode: string) => {
                                         switch (countryCode) {
-                                          case "FR": return 6000;
-                                          case "IT": return 6100;
-                                          case "PT": return 6200;
-                                          case "ES": return 6300;
+                                          case "CN": return 6000;
                                           default: return null;
                                         }
                                       };
