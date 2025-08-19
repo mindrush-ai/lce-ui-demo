@@ -62,10 +62,10 @@ export default function ProductInputPage() {
     defaultValues: {
       itemNumber: "",
       nameId: "",
-      htsCode: "2204.21.50.40",
+      htsCode: "3401.19.00.00",
       countryOfOrigin: "",
       unitCost: 0,
-      numberOfWineCases: 0,
+      numberOfUnits: 0,
       containerSize: "",
       incoterms: "",
       originPort: "",
@@ -202,7 +202,7 @@ export default function ProductInputPage() {
         if (!values.unitCost || values.unitCost <= 0) missingFields.push('Unit Cost');
         break;
       case 'item-details':
-        if (!values.numberOfWineCases || values.numberOfWineCases <= 0) missingFields.push('Number of Wine Cases');
+        if (!values.numberOfUnits || values.numberOfUnits <= 0) missingFields.push('Number of Units');
         break;
       case 'shipment-details':
         if (!values.containerSize) missingFields.push('Container Size');
@@ -435,11 +435,20 @@ export default function ProductInputPage() {
                                           className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-hts-code"
                                         >
-                                          <option value="2204.21.50.40" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
-                                            2204.21.50.40
+                                          <option value="3401.19.00.00" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            3401.19.00.00
                                           </option>
-                                          <option value="2204.10.00.75" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
-                                            2204.10.00.75
+                                          <option value="5603.92.00.70" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            5603.92.00.70
+                                          </option>
+                                          <option value="3401.11.50.00" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            3401.11.50.00
+                                          </option>
+                                          <option value="5603.12.00.10" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            5603.12.00.10
+                                          </option>
+                                          <option value="5603.14.90.10" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            5603.14.90.10
                                           </option>
                                         </select>
                                         <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
@@ -570,8 +579,11 @@ export default function ProductInputPage() {
                                   {(() => {
                                     const htsCode = form.watch("htsCode");
                                     const descriptions = {
-                                      "2204.21.50.40": "Wine > Red > Not Certified Organic",
-                                      "2204.10.00.75": "Wine > Sparkling"
+                                      "3401.19.00.00": "Baby Wipes & Flushable Wipes",
+                                      "5603.92.00.70": "Dry Wipes",
+                                      "3401.11.50.00": "Benefit Wipes & Makeup Wipes",
+                                      "5603.12.00.10": "Sanitizing Wipes",
+                                      "5603.14.90.10": "Sanitizing Wipes"
                                     };
                                     return descriptions[htsCode as keyof typeof descriptions] || "Select HTS Code in previous section";
                                   })()}
@@ -584,22 +596,22 @@ export default function ProductInputPage() {
                               {/* Number of Wine Cases */}
                               <FormField
                                 control={form.control}
-                                name="numberOfWineCases"
+                                name="numberOfUnits"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="numberOfWineCases" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                                      Number of Wine Cases <span className="text-red-400">*</span>
+                                    <Label htmlFor="numberOfUnits" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                      Number of Units <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
                                       <Input
-                                        id="numberOfWineCases"
+                                        id="numberOfUnits"
                                         type="number"
                                         placeholder="Enter number of cases"
                                         min="1"
                                         max="1260"
                                         step="1"
                                         className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        data-testid="input-wine-cases"
+                                        data-testid="input-units"
                                         value={field.value || ''}
                                         onChange={(e) => {
                                           const value = parseInt(e.target.value) || 0;
@@ -630,7 +642,7 @@ export default function ProductInputPage() {
                                   } else {
                                     toast({
                                       title: "Validation Error",
-                                      description: "Please enter a valid number of wine cases (1-1260).",
+                                      description: "Please enter a valid number of units.",
                                       variant: "destructive",
                                     });
                                   }
@@ -766,11 +778,8 @@ export default function ProductInputPage() {
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select destination port
                                           </option>
-                                          <option value="New York (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
-                                            New York (US)
-                                          </option>
-                                          <option value="New Jersey (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
-                                            New Jersey (US)
+                                          <option value="Long Beach (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            Long Beach (US)
                                           </option>
                                         </select>
                                         <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
@@ -992,39 +1001,43 @@ export default function ProductInputPage() {
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (CASE)</h3>
+                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (UNIT)</h3>
                       <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
                         {(() => {
-                          const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                          const numberOfUnits = form.getValues("numberOfUnits") || 0;
                           const unitCost = form.getValues("unitCost") || 0;
                           const htsCode = form.getValues("htsCode") || "";
                           const countryOfOrigin = form.getValues("countryOfOrigin") || "";
                           const useIndexRates = form.getValues("useIndexRates");
                           const freightCost = form.getValues("freightCost");
                           
-                          // EU Countries for 15% cumulative duty
-                          const euCountries = ["FR", "IT", "PT", "ES"];
-                          const isEUCountry = euCountries.includes(countryOfOrigin);
+                          // China for wipes duty calculations
+                          const isChinaCountry = countryOfOrigin === "CN";
                           
-                          const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
-                          const enteredValue = numberOfWineCases * unitCost; // in USD
+                          const enteredValue = numberOfUnits * unitCost; // in USD
                           
-                          // Base HTS Code Duty calculation
-                          const getBaseHtsDuty = (code: string, liters: number) => {
-                            switch (code) {
-                              case "2204.21.50.40": return liters * 0.063; // 6.3 cents per liter
-                              case "2204.10.00.75": return liters * 0.198; // 19.8 cents per liter
-                              default: return 0;
-                            }
+                          // Base HTS Code Duty calculation (all wipes are duty-free)
+                          const getBaseHtsDuty = (code: string, value: number) => {
+                            const validCodes = ["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"];
+                            return validCodes.includes(code) ? 0 : 0; // All wipes are duty-free
                           };
                           
-                          const baseHtsDutyAmount = getBaseHtsDuty(htsCode, customsUnits);
+                          const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
                           
-                          // Chapter 99 Duty calculation (only for EU countries)
+                          // Chapter 99 Duty calculation (only for China)
                           let chapter99Duty = 0;
-                          if (isEUCountry) {
-                            const totalDutyAt15Percent = enteredValue * 0.15;
-                            chapter99Duty = Math.max(0, totalDutyAt15Percent - baseHtsDutyAmount);
+                          if (isChinaCountry) {
+                            const getChapter99Rate = (code: string) => {
+                              switch (code) {
+                                case "3401.19.00.00": return 0.20 + 0.10 + 0.075; // 37.5%
+                                case "5603.92.00.70": return 0.20 + 0.10 + 0.25; // 55%
+                                case "3401.11.50.00": return 0.20 + 0.10 + 0.25; // 55%
+                                case "5603.12.00.10": return 0.20 + 0.10 + 0.25; // 55%
+                                case "5603.14.90.10": return 0.20 + 0.10 + 0.25; // 55%
+                                default: return 0;
+                              }
+                            };
+                            chapter99Duty = enteredValue * getChapter99Rate(htsCode);
                           }
                           
                           const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
@@ -1032,22 +1045,19 @@ export default function ProductInputPage() {
                           // Freight calculation
                           const getIndexRate = (countryCode: string) => {
                             switch (countryCode) {
-                              case "FR": return 6000;
-                              case "IT": return 6100;
-                              case "PT": return 6200;
-                              case "ES": return 6300;
+                              case "CN": return 6000;
                               default: return 0;
                             }
                           };
                           
                           const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
                           
-                          // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Cases) + (Freight / Number of Cases)
-                          const customsDutiesPerCase = numberOfWineCases > 0 ? totalCustomsAndDuties / numberOfWineCases : 0;
-                          const freightPerCase = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
-                          const itemLandedCost = unitCost + customsDutiesPerCase + freightPerCase;
+                          // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Units) + (Freight / Number of Units)
+                          const customsDutiesPerUnit = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
+                          const freightPerUnit = numberOfUnits > 0 ? totalFreightCosts / numberOfUnits : 0;
+                          const itemLandedCost = unitCost + customsDutiesPerUnit + freightPerUnit;
                           
-                          return numberOfWineCases > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
+                          return numberOfUnits > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
                         })()}
                       </div>
                       
@@ -1060,40 +1070,44 @@ export default function ProductInputPage() {
                     <hr className="border-slate-300/50 dark:border-slate-600/50 mb-6" />
                     <div className="space-y-4">
                       {(() => {
-                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const numberOfUnits = form.getValues("numberOfUnits") || 0;
                         const unitCost = form.getValues("unitCost") || 0;
                         const htsCode = form.getValues("htsCode") || "";
                         const countryOfOrigin = form.getValues("countryOfOrigin") || "";
                         
-                        // EU Countries for 15% cumulative duty
-                        const euCountries = ["FR", "IT", "PT", "ES"];
-                        const isEUCountry = euCountries.includes(countryOfOrigin);
+                        // China for wipes duty calculations
+                        const isChinaCountry = countryOfOrigin === "CN";
                         
-                        const customsUnits = numberOfWineCases * 12 * 0.75; // in litres
-                        const enteredValue = numberOfWineCases * unitCost; // in USD
+                        const enteredValue = numberOfUnits * unitCost; // in USD
                         
-                        // Base HTS Code Duty calculation
-                        const getBaseHtsDuty = (code: string, liters: number) => {
-                          switch (code) {
-                            case "2204.21.50.40": return liters * 0.063; // 6.3 cents per liter
-                            case "2204.10.00.75": return liters * 0.198; // 19.8 cents per liter
-                            default: return 0;
-                          }
+                        // Base HTS Code Duty calculation (all wipes are duty-free)
+                        const getBaseHtsDuty = (code: string, value: number) => {
+                          const validCodes = ["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"];
+                          return validCodes.includes(code) ? 0 : 0; // All wipes are duty-free
                         };
                         
-                        const baseHtsDutyAmount = getBaseHtsDuty(htsCode, customsUnits);
+                        const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
                         
-                        // Chapter 99 Duty calculation (only for EU countries)
+                        // Chapter 99 Duty calculation (only for China)
                         let chapter99Duty = 0;
                         let chapter99DutyPercentage = 0;
-                        if (isEUCountry) {
-                          const totalDutyAt15Percent = enteredValue * 0.15;
-                          chapter99Duty = Math.max(0, totalDutyAt15Percent - baseHtsDutyAmount);
-                          chapter99DutyPercentage = enteredValue > 0 ? (chapter99Duty / enteredValue) * 100 : 0;
+                        if (isChinaCountry) {
+                          const getChapter99Rate = (code: string) => {
+                            switch (code) {
+                              case "3401.19.00.00": return 0.20 + 0.10 + 0.075; // 37.5%
+                              case "5603.92.00.70": return 0.20 + 0.10 + 0.25; // 55%
+                              case "3401.11.50.00": return 0.20 + 0.10 + 0.25; // 55%
+                              case "5603.12.00.10": return 0.20 + 0.10 + 0.25; // 55%
+                              case "5603.14.90.10": return 0.20 + 0.10 + 0.25; // 55%
+                              default: return 0;
+                            }
+                          };
+                          chapter99DutyPercentage = getChapter99Rate(htsCode) * 100;
+                          chapter99Duty = enteredValue * getChapter99Rate(htsCode);
                         }
                         
                         const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
-                        const dutyPerItem = numberOfWineCases > 0 ? totalCustomsAndDuties / numberOfWineCases : 0;
+                        const dutyPerItem = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
                         
                         return (
                           <div className="overflow-x-auto">
@@ -1101,10 +1115,10 @@ export default function ProductInputPage() {
                               <tbody>
                                 {/* ROW 1 - Unit of Measure */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Unit of Measure</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Number of Units</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Liters</td>
-                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">{Math.round(customsUnits)}</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Units</td>
+                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">{numberOfUnits}</td>
                                 </tr>
                                 
                                 {/* ROW 2 - Entered Value */}
@@ -1119,15 +1133,15 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode}</td>
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode === "2204.21.50.40" ? "6.3 c/l" : htsCode === "2204.10.00.75" ? "19.8 c/l" : ""}</td>
+                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Free</td>
                                   <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
-                                {/* ROW 4 - Chapter 99 Duty (only show for EU countries) */}
-                                {isEUCountry && (
+                                {/* ROW 4 - Chapter 99 Duty (only show for China) */}
+                                {isChinaCountry && (
                                   <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">9903.02.20</td>
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">IEEPA European Union - &lt;15% base duty</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Chapter 99</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">China Trade Duties</td>
                                     <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{chapter99DutyPercentage.toFixed(2)}%</td>
                                     <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${chapter99Duty.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                   </tr>
@@ -1165,30 +1179,24 @@ export default function ProductInputPage() {
                       {(() => {
                         const useIndexRates = form.getValues("useIndexRates");
                         const freightCost = form.getValues("freightCost");
-                        const numberOfWineCases = form.getValues("numberOfWineCases") || 0;
+                        const numberOfUnits = form.getValues("numberOfUnits") || 0;
                         const countryOfOrigin = form.getValues("countryOfOrigin");
                         
                         // Get index rate based on country
                         const getIndexRate = (countryCode: string) => {
                           switch (countryCode) {
-                            case "FR": return 6000;
-                            case "IT": return 6100;
-                            case "PT": return 6200;
-                            case "ES": return 6300;
+                            case "CN": return 6000;
                             default: return 0;
                           }
                         };
                         
                         const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
-                        const freightPerItem = numberOfWineCases > 0 ? totalFreightCosts / numberOfWineCases : 0;
+                        const freightPerItem = numberOfUnits > 0 ? totalFreightCosts / numberOfUnits : 0;
                         
                         // Get country names for display
                         const getCountryName = (code: string) => {
                           const countryNames = {
-                            "FR": "France",
-                            "IT": "Italy", 
-                            "PT": "Portugal",
-                            "ES": "Spain"
+                            "CN": "China"
                           };
                           return countryNames[code as keyof typeof countryNames] || code;
                         };

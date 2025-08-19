@@ -6,10 +6,7 @@ export interface Country {
 }
 
 export const countries: Country[] = [
-  { code: "FR", name: "France", flag: "🇫🇷", port: "Le Havre (FR)" },
-  { code: "IT", name: "Italy", flag: "🇮🇹", port: "Livorno (IT)" },
-  { code: "PT", name: "Portugal", flag: "🇵🇹", port: "Leixões (PT)" },
-  { code: "ES", name: "Spain", flag: "🇪🇸", port: "Barcelona (ES)" }
+  { code: "CN", name: "China", flag: "🇨🇳", port: "Shanghai (CN)" }
 ];
 
 export const getCountryByCode = (code: string): Country | undefined => {

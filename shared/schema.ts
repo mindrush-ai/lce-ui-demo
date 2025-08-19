@@ -59,7 +59,7 @@ export type Company = typeof companies.$inferSelect;
 export const productInfoSchema = z.object({
   itemNumber: z.string().min(1, "Item Number is required"),
   nameId: z.string().min(1, "Item Name/Description is required"),
-  htsCode: z.enum(["2204.21.50.40", "2204.10.00.75"], {
+  htsCode: z.enum(["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"], {
     required_error: "Please select an HTS Code"
   }),
   countryOfOrigin: z.string().min(2, "Country of origin is required"),
@@ -67,10 +67,9 @@ export const productInfoSchema = z.object({
     .positive("Unit cost must be positive")
     .max(999999.9999, "Unit cost too large"),
   // Section 2 - Item Details
-  numberOfWineCases: z.number()
+  numberOfUnits: z.number()
     .int("Number must be a whole number")
-    .min(1, "Number of wine cases must be at least 1")
-    .max(1260, "Number of wine cases cannot exceed 1260"),
+    .min(1, "Number of units must be at least 1"),
   // Section 3 - Shipment Details
   containerSize: z.string().min(1, "Container size is required"),
   incoterms: z.string().min(1, "Incoterms is required"),
