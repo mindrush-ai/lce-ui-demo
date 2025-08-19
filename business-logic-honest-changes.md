@@ -1,72 +1,13 @@
 
-## Freight Calculations
-
 ### Index Rates by Country
 The index rates are still populating based on European countries. The index rates need be updated to only display China..
 
 Fixed rates based on origin country:
 - **China**: $6,000
 
-### Custom Rates
-Users can opt to input custom freight costs instead of using index rates.
+### Output Duties Table Changes
 
-### Port Mapping
-Origin ports are automatically assigned based on country:
-- China → Shanghai (CN)
-
-## Total Landed Cost Formula
-
-```
-Item Landed Cost (per case) = Unit Cost + (Total Duties ÷ Number of Units) + (Freight Costs ÷ Number of Units)
-```
-
-### Component Breakdown
-- **Unit Cost**: Unit Cost (USD)
-- **Duty Per Item**: Total customs duties divided by number of Units
-- **Freight Per Item**: Total freight costs divided by number of Units
-
-## Validation Rules
-
-### Product Details
-- **Item Number**: Required, any string
-- **Item Name/Description**: Required, any string
-- **HTS Code**: Must be one of the five supported codes
-- **Country of Origin**: Must be CN
-- **Unit Cost**: Required, positive number, max $999,999.9999 (4 decimal places)
-
-### Item Details
-- **Number of Units**: Integer
-
-### Shipment Details
-- **Container Size**: Currently only "40 Feet" supported
-- **Incoterms**: "FCA (Supplier Facility)" or "FCA (Port of Loading)"
-- **Origin Port**: Auto-populated based on country selection
-- **Destination Port**: "Long Beach (US)"
-- **Freight**: Either use index rates or provide custom rate (positive number)
-
-## Business Constraints
-
-### Current Limitations
-1. **Product scope**: Wipes (5 HTS codes)
-2. **Geographic scope**: China Only (1 country)
-3. **Container types**: 40-foot containers only
-4. **Duty structure**: To be calcualted using the formulas in the duty section
-
-### Industry-Specific Logic
-- Chapter 99 duty calculations for China imports
-- Fixed freight rates based on common CN-US shipping routes
-
-## Technical Implementation
-
-### Key Files
-- `client/src/pages/product-input.tsx`: Main calculation logic (lines 997-1051)
-- `shared/schema.ts`: Validation schemas and type definitions
-- `client/src/lib/countries.ts`: Country and port mapping
-
-### Calculation Location
-The core TLC calculation is implemented in the results section of the product input form, specifically in the "ITEM LANDED COST (CASE)" component starting at line 997 of `product-input.tsx`.
-
-
+I want to make the following changes to the table labelled as "DUTIES" in the output section:
 
   Row 1 - Number of Units:
   - Column 1: "Number of Units"
@@ -86,13 +27,25 @@ The core TLC calculation is implemented in the results section of the product in
   - Column 3: "Free"
   - Column 4: ${baseHtsDutyAmount} (formatted currency, right-aligned)
 
-  Row 4 - Chapter 99 Duty (only shows for China):
-  - Column 1: "Chapter 99"
-  - Column 2: "China Trade Duties"
-  - Column 3: {chapter99DutyPercentage}% (percentage)
-  - Column 4: ${chapter99Duty} (formatted currency, right-aligned)
+  Row 4 - Chapter 99 Duty (Line Item 1):
+  - Column 1: Output the first 99xx code under the relevant HTS code
+  - Column 2: Output the description of first 99xx code
+  - Column 3: Output the percentage of the first 99xx code
+  - Column 4: Entered Value x Percentage of Line item (in USD)
 
-  Row 5 - Total:
+  Row 5 - Chapter 99 Duty (Line Item 2):
+  - Column 1: Output the second 99xx code under the relevant HTS code
+  - Column 2: Output the description of second 99xx code
+  - Column 3: Output the percentage of the second 99xx code
+  - Column 4: Entered Value x Percentage of Line item (in USD)
+
+  Row 6 - Chapter 99 Duty (Line Item 3):
+  - Column 1: Output the third 99xx code under the relevant HTS code
+  - Column 2: Output the description of third 99xx code
+  - Column 3: Output the percentage of the third 99xx code
+  - Column 4: Entered Value x Percentage of Line item (in USD)
+
+  Row 7 - Total:
   - Column 1: "Total Duties" (bold)
   - Column 2: Empty
   - Column 3: Empty

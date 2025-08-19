@@ -1073,32 +1073,60 @@ export default function ProductInputPage() {
                         
                         const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
                         
-                        // Chapter 99 Duty calculation (only for China)
-                        let chapter99Duty = 0;
-                        let chapter99DutyPercentage = 0;
+                        // Chapter 99 Duty calculation for China
+                        const getChapter99Codes = (htsCode: string) => {
+                          switch (htsCode) {
+                            case "3401.19.00.00": 
+                              return [
+                                { code: "9903.88.03", description: "Baby Wipes & Flushable Wipes - Section 301 Duty", percentage: 20.0 },
+                                { code: "9903.88.15", description: "Baby Wipes & Flushable Wipes - Additional Tariff", percentage: 10.0 },
+                                { code: "9903.89.05", description: "Baby Wipes & Flushable Wipes - Trade Action Duty", percentage: 7.5 }
+                              ];
+                            case "5603.92.00.70":
+                              return [
+                                { code: "9903.88.03", description: "Dry Wipes - Section 301 Duty", percentage: 20.0 },
+                                { code: "9903.88.15", description: "Dry Wipes - Additional Tariff", percentage: 10.0 },
+                                { code: "9903.89.06", description: "Dry Wipes - Trade Action Duty", percentage: 25.0 }
+                              ];
+                            case "3401.11.50.00":
+                              return [
+                                { code: "9903.88.03", description: "Benefit Wipes & Makeup Wipes - Section 301 Duty", percentage: 20.0 },
+                                { code: "9903.88.15", description: "Benefit Wipes & Makeup Wipes - Additional Tariff", percentage: 10.0 },
+                                { code: "9903.89.07", description: "Benefit Wipes & Makeup Wipes - Trade Action Duty", percentage: 25.0 }
+                              ];
+                            case "5603.12.00.10":
+                              return [
+                                { code: "9903.88.03", description: "Sanitizing Wipes - Section 301 Duty", percentage: 20.0 },
+                                { code: "9903.88.15", description: "Sanitizing Wipes - Additional Tariff", percentage: 10.0 },
+                                { code: "9903.89.08", description: "Sanitizing Wipes - Trade Action Duty", percentage: 25.0 }
+                              ];
+                            case "5603.14.90.10":
+                              return [
+                                { code: "9903.88.03", description: "Sanitizing Wipes - Section 301 Duty", percentage: 20.0 },
+                                { code: "9903.88.15", description: "Sanitizing Wipes - Additional Tariff", percentage: 10.0 },
+                                { code: "9903.89.09", description: "Sanitizing Wipes - Trade Action Duty", percentage: 25.0 }
+                              ];
+                            default: 
+                              return [];
+                          }
+                        };
+                        
+                        const chapter99Codes = isChinaCountry ? getChapter99Codes(htsCode) : [];
+                        let totalChapter99Duty = 0;
+                        
                         if (isChinaCountry) {
-                          const getChapter99Rate = (code: string) => {
-                            switch (code) {
-                              case "3401.19.00.00": return 0.20 + 0.10 + 0.075; // 37.5%
-                              case "5603.92.00.70": return 0.20 + 0.10 + 0.25; // 55%
-                              case "3401.11.50.00": return 0.20 + 0.10 + 0.25; // 55%
-                              case "5603.12.00.10": return 0.20 + 0.10 + 0.25; // 55%
-                              case "5603.14.90.10": return 0.20 + 0.10 + 0.25; // 55%
-                              default: return 0;
-                            }
-                          };
-                          chapter99DutyPercentage = getChapter99Rate(htsCode) * 100;
-                          chapter99Duty = enteredValue * getChapter99Rate(htsCode);
+                          chapter99Codes.forEach(item => {
+                            totalChapter99Duty += enteredValue * (item.percentage / 100);
+                          });
                         }
                         
-                        const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
-                        const dutyPerItem = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
+                        const totalCustomsAndDuties = baseHtsDutyAmount + totalChapter99Duty;
                         
                         return (
                           <div className="overflow-x-auto">
                             <table className="w-full">
                               <tbody>
-                                {/* ROW 1 - Unit of Measure */}
+                                {/* ROW 1 - Number of Units */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Number of Units</td>
                                   <td className="py-3"></td>
@@ -1114,7 +1142,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
-                                {/* ROW 3 - HTS Code Output */}
+                                {/* ROW 3 - HTS Code Duty */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode}</td>
                                   <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
@@ -1122,17 +1150,17 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
-                                {/* ROW 4 - Chapter 99 Duty (only show for China) */}
-                                {isChinaCountry && (
-                                  <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Chapter 99</td>
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">China Trade Duties</td>
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{chapter99DutyPercentage.toFixed(2)}%</td>
-                                    <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${chapter99Duty.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                {/* ROW 4-6 - Chapter 99 Duty (Line Items 1-3) for China */}
+                                {isChinaCountry && chapter99Codes.map((item, index) => (
+                                  <tr key={index} className="border-b border-slate-300 dark:border-slate-600/30">
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.code}</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.description}</td>
+                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</td>
+                                    <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${(enteredValue * (item.percentage / 100)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                   </tr>
-                                )}
+                                ))}
                                 
-                                {/* ROW 5 - Total Customs & Duties */}
+                                {/* ROW 7 - Total */}
                                 <tr className="border-t-2 border-slate-400 dark:border-slate-500">
                                   <td className="py-3 text-slate-700 dark:text-slate-300 font-bold">Total Duties</td>
                                   <td className="py-3"></td>
@@ -1146,7 +1174,7 @@ export default function ProductInputPage() {
                               <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
                                   <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item (Case)</span>
-                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${dutyPerItem.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${numberOfUnits > 0 ? (totalCustomsAndDuties / numberOfUnits).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</span>
                                 </div>
                                 
                               </div>
