@@ -606,7 +606,7 @@ export default function ProductInputPage() {
                                       <Input
                                         id="numberOfUnits"
                                         type="number"
-                                        placeholder="Enter number of cases"
+                                        placeholder="Enter number of Items"
                                         min="1"
                                         max="1260"
                                         step="1"
@@ -621,7 +621,7 @@ export default function ProductInputPage() {
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                     <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                                      Item quantity per container (1-1260, whole numbers only)
+                                      Item quantity per container (whole numbers only)
                                     </p>
                                   </FormItem>
                                 )}
