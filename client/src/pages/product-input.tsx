@@ -18,6 +18,17 @@ import { countries } from "@/lib/countries";
 import { cn } from "@/lib/utils";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 
+// System Variables - Hardcoded for this version
+const CONTAINER_UTILIZATION = 0.90;
+
+// Container Volumes in cubic meters
+const CONTAINER_VOLUMES = {
+  "20-feet": 30,
+  "40-feet": 60,
+  "40-feet-high-cube": 70,
+  "45-feet": 80
+} as const;
+
 interface Section {
   id: string;
   title: string;
@@ -65,13 +76,16 @@ export default function ProductInputPage() {
       htsCode: "3401.19.00.00",
       countryOfOrigin: "",
       unitCost: 0,
-      numberOfUnits: 0,
+      masterPackLength: 0,
+      masterPackWidth: 0,
+      masterPackHeight: 0,
+      masterPackWeight: 0,
+      itemsPerMasterPack: 0,
       containerSize: "",
       incoterms: "",
       originPort: "",
       destinationPort: "",
-      useIndexRates: false,
-      freightCost: undefined,
+      freightCost: 0,
     },
   });
 
@@ -202,14 +216,18 @@ export default function ProductInputPage() {
         if (!values.unitCost || values.unitCost <= 0) missingFields.push('Unit Cost');
         break;
       case 'item-details':
-        if (!values.numberOfUnits || values.numberOfUnits <= 0) missingFields.push('Number of Units');
+        if (!values.masterPackLength || values.masterPackLength <= 0) missingFields.push('Master Pack Length');
+        if (!values.masterPackWidth || values.masterPackWidth <= 0) missingFields.push('Master Pack Width');
+        if (!values.masterPackHeight || values.masterPackHeight <= 0) missingFields.push('Master Pack Height');
+        if (!values.masterPackWeight || values.masterPackWeight <= 0) missingFields.push('Master Pack Weight');
+        if (!values.itemsPerMasterPack || values.itemsPerMasterPack <= 0) missingFields.push('Items per Master Pack');
         break;
       case 'shipment-details':
         if (!values.containerSize) missingFields.push('Container Size');
         if (!values.incoterms) missingFields.push('Incoterms');
         if (!values.originPort) missingFields.push('Origin Port');
         if (!values.destinationPort) missingFields.push('Destination Port');
-        if (!values.useIndexRates && (!values.freightCost || values.freightCost <= 0)) missingFields.push('Freight Cost');
+        if (!values.freightCost || values.freightCost <= 0) missingFields.push('Freight Cost');
         break;
     }
     
@@ -569,7 +587,7 @@ export default function ProductInputPage() {
                       {section.id === "item-details" && (
                         <Form {...form}>
                           <div className="space-y-6">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 gap-6">
                               {/* HTS Code Description */}
                               <div>
                                 <Label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
@@ -593,39 +611,168 @@ export default function ProductInputPage() {
                                 </p>
                               </div>
 
-                              {/* Number of Wine Cases */}
-                              <FormField
-                                control={form.control}
-                                name="numberOfUnits"
-                                render={({ field }) => (
-                                  <FormItem>
-                                    <Label htmlFor="numberOfUnits" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                                      Number of Units <span className="text-red-400">*</span>
-                                    </Label>
-                                    <FormControl>
-                                      <Input
-                                        id="numberOfUnits"
-                                        type="number"
-                                        placeholder="Enter number of Items"
-                                        min="1"
-                                        max="1260"
-                                        step="1"
-                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                                        data-testid="input-units"
-                                        value={field.value || ''}
-                                        onChange={(e) => {
-                                          const value = parseInt(e.target.value) || 0;
-                                          field.onChange(value);
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormMessage className="text-red-400 text-sm mt-1" />
-                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
-                                      Item quantity per container (whole numbers only)
-                                    </p>
-                                  </FormItem>
-                                )}
-                              />
+                            </div>
+
+                            {/* Master Pack Section */}
+                            <div className="pt-6">
+                              <hr className="border-slate-300 dark:border-slate-600/50 mb-6" />
+                              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-6">
+                                Master Pack
+                              </h3>
+                              
+                              <div className="space-y-6">
+                                {/* Master Pack Dimensions */}
+                                <div>
+                                  <Label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    Master Pack Dimensions (cm) <span className="text-red-400">*</span>
+                                  </Label>
+                                  <div className="grid grid-cols-3 gap-3">
+                                    <FormField
+                                      control={form.control}
+                                      name="masterPackLength"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <div className="relative">
+                                              <Input
+                                                type="number"
+                                                placeholder="Length"
+                                                step="0.1"
+                                                min="0"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                value={field.value || ''}
+                                                onChange={(e) => {
+                                                  const value = parseFloat(e.target.value) || 0;
+                                                  field.onChange(value);
+                                                }}
+                                              />
+                                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">L</span>
+                                            </div>
+                                          </FormControl>
+                                          <FormMessage className="text-red-400 text-sm mt-1" />
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      control={form.control}
+                                      name="masterPackWidth"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <div className="relative">
+                                              <Input
+                                                type="number"
+                                                placeholder="Width"
+                                                step="0.1"
+                                                min="0"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                value={field.value || ''}
+                                                onChange={(e) => {
+                                                  const value = parseFloat(e.target.value) || 0;
+                                                  field.onChange(value);
+                                                }}
+                                              />
+                                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">W</span>
+                                            </div>
+                                          </FormControl>
+                                          <FormMessage className="text-red-400 text-sm mt-1" />
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      control={form.control}
+                                      name="masterPackHeight"
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <div className="relative">
+                                              <Input
+                                                type="number"
+                                                placeholder="Height"
+                                                step="0.1"
+                                                min="0"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                value={field.value || ''}
+                                                onChange={(e) => {
+                                                  const value = parseFloat(e.target.value) || 0;
+                                                  field.onChange(value);
+                                                }}
+                                              />
+                                              <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">H</span>
+                                            </div>
+                                          </FormControl>
+                                          <FormMessage className="text-red-400 text-sm mt-1" />
+                                        </FormItem>
+                                      )}
+                                    />
+                                  </div>
+                                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                    Enter dimensions in centimeters (Length x Width x Height)
+                                  </p>
+                                </div>
+
+                                {/* Master Pack Weight and Items per Master Pack */}
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                  <FormField
+                                    control={form.control}
+                                    name="masterPackWeight"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Label htmlFor="masterPackWeight" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                          Master Pack Weight (kg) <span className="text-red-400">*</span>
+                                        </Label>
+                                        <FormControl>
+                                          <Input
+                                            id="masterPackWeight"
+                                            type="number"
+                                            placeholder="Enter weight in kg"
+                                            step="0.1"
+                                            min="0"
+                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            value={field.value || ''}
+                                            onChange={(e) => {
+                                              const value = parseFloat(e.target.value) || 0;
+                                              field.onChange(value);
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormMessage className="text-red-400 text-sm mt-1" />
+                                      </FormItem>
+                                    )}
+                                  />
+
+                                  <FormField
+                                    control={form.control}
+                                    name="itemsPerMasterPack"
+                                    render={({ field }) => (
+                                      <FormItem>
+                                        <Label htmlFor="itemsPerMasterPack" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                          Items per Master Pack <span className="text-red-400">*</span>
+                                        </Label>
+                                        <FormControl>
+                                          <Input
+                                            id="itemsPerMasterPack"
+                                            type="number"
+                                            placeholder="Enter number of items"
+                                            min="1"
+                                            step="1"
+                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            value={field.value || ''}
+                                            onChange={(e) => {
+                                              const value = parseInt(e.target.value) || 0;
+                                              field.onChange(value);
+                                            }}
+                                          />
+                                        </FormControl>
+                                        <FormMessage className="text-red-400 text-sm mt-1" />
+                                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                          Whole numbers only (1 and above)
+                                        </p>
+                                      </FormItem>
+                                    )}
+                                  />
+                                </div>
+                              </div>
                             </div>
 
                             <div className="flex justify-end pt-6">
@@ -637,12 +784,12 @@ export default function ProductInputPage() {
                                     markSectionCompleted("item-details");
                                     toast({
                                       title: "Success!",
-                                      description: "Item details saved successfully.",
+                                      description: "Units and dimensions saved successfully.",
                                     });
                                   } else {
                                     toast({
                                       title: "Validation Error",
-                                      description: "Please enter a valid number of units.",
+                                      description: "Please fill in all required fields for units and master pack dimensions.",
                                       variant: "destructive",
                                     });
                                   }
@@ -681,8 +828,17 @@ export default function ProductInputPage() {
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select container size
                                           </option>
+                                          <option value="20-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            20 Feet
+                                          </option>
                                           <option value="40-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
                                             40 Feet
+                                          </option>
+                                          <option value="40-feet-high-cube" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            40 Feet High Cube
+                                          </option>
+                                          <option value="45-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                            45 Feet
                                           </option>
                                         </select>
                                         <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
@@ -799,114 +955,42 @@ export default function ProductInputPage() {
                               </h3>
                               
                               <div className="space-y-6">
-                                {/* Freight Rate Selection */}
+                                {/* Direct Freight Cost Input */}
                                 <FormField
                                   control={form.control}
-                                  name="useIndexRates"
+                                  name="freightCost"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <div className="space-y-3">
-                                        <div 
-                                          className="flex items-center space-x-3 cursor-pointer"
-                                          onClick={() => field.onChange(true)}
-                                        >
-                                          <div className="relative">
-                                            <input
-                                              type="radio"
-                                              checked={field.value === true}
-                                              onChange={() => field.onChange(true)}
-                                              className="w-4 h-4 text-blue-500 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 focus:ring-blue-500"
-                                              data-testid="radio-use-index-rates"
-                                            />
-                                          </div>
-                                          <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
-                                            Use Index Rates
-                                          </Label>
-                                        </div>
-                                        <div 
-                                          className="flex items-center space-x-3 cursor-pointer"
-                                          onClick={() => field.onChange(false)}
-                                        >
-                                          <div className="relative">
-                                            <input
-                                              type="radio"
-                                              checked={field.value === false}
-                                              onChange={() => field.onChange(false)}
-                                              className="w-4 h-4 text-blue-500 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 focus:ring-blue-500"
-                                              data-testid="radio-use-my-rate"
-                                            />
-                                          </div>
-                                          <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
-                                            Use My Rate
-                                          </Label>
-                                        </div>
-                                      </div>
-                                      <FormMessage className="text-red-400 text-sm mt-1" />
-                                    </FormItem>
-                                  )}
-                                />
-
-                                {/* Index Rates Display or Custom Freight Input */}
-                                {form.watch("useIndexRates") ? (
-                                  <div className="bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 rounded-xl p-4">
-                                    <h4 className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Index Rates by Country:</h4>
-                                    <div className="text-sm">
-                                      <div className="flex justify-between">
-                                        <span className="text-slate-600 dark:text-slate-400">China:</span>
-                                        <span className="text-slate-900 dark:text-slate-100 font-medium">$6,000</span>
-                                      </div>
-                                    </div>
-                                    {(() => {
-                                      const countryOfOrigin = form.watch("countryOfOrigin");
-                                      const getRateForCountry = (countryCode: string) => {
-                                        switch (countryCode) {
-                                          case "CN": return 6000;
-                                          default: return null;
-                                        }
-                                      };
-                                      const rate = getRateForCountry(countryOfOrigin);
-                                      return rate ? (
-                                        <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-600/50">
-                                          <div className="flex justify-between items-center">
-                                            <span className="text-slate-700 dark:text-slate-300 font-medium">Selected Rate:</span>
-                                            <span className="text-primary dark:text-primary/80 font-bold text-lg">${rate.toLocaleString()}</span>
-                                          </div>
-                                        </div>
-                                      ) : countryOfOrigin ? (
-                                        <div className="mt-3 pt-3 border-t border-slate-300 dark:border-slate-600/50">
-                                          <p className="text-yellow-600 dark:text-yellow-400 text-sm">No index rate available for selected country</p>
-                                        </div>
-                                      ) : null;
-                                    })()}
-                                  </div>
-                                ) : (
-                                  <FormField
-                                    control={form.control}
-                                    name="freightCost"
-                                    render={({ field }) => (
-                                      <FormItem>
-                                        <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-                                          Freight Cost (USD) <span className="text-red-400">*</span>
-                                        </Label>
-                                        <FormControl>
+                                      <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                        Freight Cost (USD) <span className="text-red-400">*</span>
+                                      </Label>
+                                      <FormControl>
+                                        <div className="relative">
+                                          <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 text-lg">$</span>
                                           <Input
                                             id="freightCost"
                                             type="number"
                                             placeholder="Enter freight cost"
-                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            min="0"
+                                            step="0.01"
+                                            className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             data-testid="input-freight-cost"
                                             value={field.value || ""}
                                             onChange={(e) => {
-                                              const value = e.target.value;
-                                              field.onChange(value === "" ? undefined : Number(value));
+                                              const value = parseFloat(e.target.value) || 0;
+                                              field.onChange(value);
                                             }}
                                           />
-                                        </FormControl>
-                                        <FormMessage className="text-red-400 text-sm mt-1" />
-                                      </FormItem>
-                                    )}
-                                  />
-                                )}
+                                        </div>
+                                      </FormControl>
+                                      <FormMessage className="text-red-400 text-sm mt-1" />
+                                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                        Enter your negotiated freight rate
+                                      </p>
+                                    </FormItem>
+                                  )}
+                                />
+
                               </div>
                             </div>
 
@@ -986,15 +1070,29 @@ export default function ProductInputPage() {
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (UNIT)</h3>
+                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (PER UNIT)</h3>
                       <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
                         {(() => {
-                          const numberOfUnits = form.getValues("numberOfUnits") || 0;
                           const unitCost = form.getValues("unitCost") || 0;
                           const htsCode = form.getValues("htsCode") || "";
                           const countryOfOrigin = form.getValues("countryOfOrigin") || "";
-                          const useIndexRates = form.getValues("useIndexRates");
-                          const freightCost = form.getValues("freightCost");
+                          const freightCost = form.getValues("freightCost") || 0;
+                          const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
+                          const masterPackLength = form.getValues("masterPackLength") || 0;
+                          const masterPackWidth = form.getValues("masterPackWidth") || 0;
+                          const masterPackHeight = form.getValues("masterPackHeight") || 0;
+                          const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
+                          
+                          // Container and capacity calculations
+                          const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
+                          const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                          const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                          const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000; // Convert cm³ to m³
+                          const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                          const maxItemsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
+                          
+                          // Use maximum container capacity as the number of units
+                          const numberOfUnits = maxItemsPerContainer;
                           
                           // China for wipes duty calculations
                           const isChinaCountry = countryOfOrigin === "CN";
@@ -1027,15 +1125,8 @@ export default function ProductInputPage() {
                           
                           const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
                           
-                          // Freight calculation
-                          const getIndexRate = (countryCode: string) => {
-                            switch (countryCode) {
-                              case "CN": return 6000;
-                              default: return 0;
-                            }
-                          };
-                          
-                          const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
+                          // Use the entered freight cost directly
+                          const totalFreightCosts = freightCost;
                           
                           // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Units) + (Freight / Number of Units)
                           const customsDutiesPerUnit = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
@@ -1055,10 +1146,22 @@ export default function ProductInputPage() {
                     <hr className="border-slate-300/50 dark:border-slate-600/50 mb-6" />
                     <div className="space-y-4">
                       {(() => {
-                        const numberOfUnits = form.getValues("numberOfUnits") || 0;
                         const unitCost = form.getValues("unitCost") || 0;
                         const htsCode = form.getValues("htsCode") || "";
                         const countryOfOrigin = form.getValues("countryOfOrigin") || "";
+                        const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
+                        const masterPackLength = form.getValues("masterPackLength") || 0;
+                        const masterPackWidth = form.getValues("masterPackWidth") || 0;
+                        const masterPackHeight = form.getValues("masterPackHeight") || 0;
+                        const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
+                        
+                        // Calculate maximum units that fit in container
+                        const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
+                        const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                        const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                        const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
+                        const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                        const numberOfUnits = maxMasterPacksPerContainer * itemsPerMasterPack;
                         
                         // China for wipes duty calculations
                         const isChinaCountry = countryOfOrigin === "CN";
@@ -1190,20 +1293,24 @@ export default function ProductInputPage() {
                     <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
                     <div className="space-y-4">
                       {(() => {
-                        const useIndexRates = form.getValues("useIndexRates");
-                        const freightCost = form.getValues("freightCost");
-                        const numberOfUnits = form.getValues("numberOfUnits") || 0;
+                        const freightCost = form.getValues("freightCost") || 0;
                         const countryOfOrigin = form.getValues("countryOfOrigin");
+                        const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
+                        const masterPackLength = form.getValues("masterPackLength") || 0;
+                        const masterPackWidth = form.getValues("masterPackWidth") || 0;
+                        const masterPackHeight = form.getValues("masterPackHeight") || 0;
+                        const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
                         
-                        // Get index rate based on country
-                        const getIndexRate = (countryCode: string) => {
-                          switch (countryCode) {
-                            case "CN": return 6000;
-                            default: return 0;
-                          }
-                        };
+                        // Calculate maximum units that fit in container
+                        const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
+                        const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                        const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                        const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
+                        const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                        const numberOfUnits = maxMasterPacksPerContainer * itemsPerMasterPack;
                         
-                        const totalFreightCosts = useIndexRates ? getIndexRate(countryOfOrigin) : (freightCost || 0);
+                        // Use the entered freight cost directly
+                        const totalFreightCosts = freightCost;
                         const freightPerItem = numberOfUnits > 0 ? totalFreightCosts / numberOfUnits : 0;
                         
                         // Get country names for display
@@ -1230,6 +1337,98 @@ export default function ProductInputPage() {
                               <div className="flex justify-between">
                                 <span className="text-slate-700 dark:text-slate-300 font-medium">Freight Per Item (Case):</span>
                                 <span className="text-slate-900 dark:text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                              </div>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </div>
+                  </div>
+
+                  {/* Box 4 - Container Utilization */}
+                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
+                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-4 text-[20px] text-center">CONTAINER UTILIZATION</h3>
+                    <div className="space-y-4">
+                      {(() => {
+                        const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
+                        const masterPackLength = form.getValues("masterPackLength") || 0;
+                        const masterPackWidth = form.getValues("masterPackWidth") || 0;
+                        const masterPackHeight = form.getValues("masterPackHeight") || 0;
+                        const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
+                        
+                        // Container calculations
+                        const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
+                        const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                        const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                        const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000; // Convert cm³ to m³
+                        const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                        const maxItemsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
+                        const masterPacksUsed = maxMasterPacksPerContainer; // Use all available space
+                        const volumeUtilizedByShipment = masterPacksUsed * masterPackVolumeCubicMeters;
+                        const utilizationPercentage = usableVolumeCubicMeters > 0 ? (volumeUtilizedByShipment / usableVolumeCubicMeters) * 100 : 0;
+                        
+                        const getContainerSizeDisplay = (size: string) => {
+                          const sizeMap = {
+                            "20-feet": "20 Feet",
+                            "40-feet": "40 Feet", 
+                            "40-feet-high-cube": "40 Feet High Cube",
+                            "45-feet": "45 Feet"
+                          } as const;
+                          return sizeMap[size as keyof typeof sizeMap] || size;
+                        };
+                        
+                        return (
+                          <>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-3">
+                                <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
+                                  Container Details
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Container Size:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{getContainerSizeDisplay(containerSize)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Total Volume:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{containerVolumeCubicMeters} m³</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Usable Volume ({(CONTAINER_UTILIZATION * 100)}%):</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{usableVolumeCubicMeters.toFixed(1)} m³</span>
+                                </div>
+                              </div>
+                              <div className="space-y-3">
+                                <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
+                                  Capacity Analysis
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Master Pack Volume:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{masterPackVolumeCubicMeters.toFixed(4)} m³</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Max Master Packs:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{maxMasterPacksPerContainer}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-600 dark:text-slate-400">Total Items in Container:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{maxItemsPerContainer.toLocaleString()}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="border-t border-slate-300 dark:border-slate-600/50 pt-4 mt-4">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="flex justify-between">
+                                  <span className="text-slate-700 dark:text-slate-300 font-medium">Master Packs Used:</span>
+                                  <span className="text-slate-900 dark:text-slate-100 font-bold">{masterPacksUsed}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                  <span className="text-slate-700 dark:text-slate-300 font-medium">Container Utilization:</span>
+                                  <span className={`font-bold ${
+                                    utilizationPercentage > 90 ? 'text-red-600 dark:text-red-400' : 
+                                    utilizationPercentage > 75 ? 'text-yellow-600 dark:text-yellow-400' : 
+                                    'text-green-600 dark:text-green-400'
+                                  }`}>{utilizationPercentage.toFixed(1)}%</span>
+                                </div>
                               </div>
                             </div>
                           </>

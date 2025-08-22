@@ -54,3 +54,52 @@ I want to make the following changes to the table labelled as "DUTIES" in the ou
 
   The table uses a 4-column layout with borders between rows and a thicker
   border
+
+# Changes - 22 Aug 2025
+
+# User Inputs
+
+## Units and Dimensions
+
+- Keep the "HTS Code Description" field
+- We need to change the business logic of "Number of Units"
+
+### Master Pack (New Heading under Units and Dimensions)
+The following inputs need to be entered
+- Master Pack Dimensions (cm) - Multi Input Field (L x W X H), three inputs in cm
+- Master Pack Weight (kg)
+- Items per Master Pack - 1 and above - whole numbers only
+
+
+## Shipment Details
+
+- Container Size - fixed options - 20 Feet, 40 Feet, 40 Feet High Cube, 45 Feet
+
+### Freight Charges
+- Remove the index rate logic
+- Let the user enter their own rate
+
+# System Variables / Inputs - Non Fixed
+
+For this version, we will make them hardcoded. The later versions will give the user ability to change these variables.
+
+## Overall
+- Container Utilization = 0.90
+
+# System Variables / Inputs - Fixed
+
+## Container Volumes
+- 20 Feet = 30 cubic meters
+- 40 Feet = 60 cubic meters
+- 40 Feet High Cube = 70 cubic meters
+- 45 Feet = 80 cubic meters
+
+
+## Units and Dimensions
+- We can get rid of "Number of Units" field in the input
+
+## Calculations
+- We need to change the calculations to accomodate for the deletion of "Number of Units"
+- We will now calculate the maximum number of units that can be fitted in the choosen container size
+
+

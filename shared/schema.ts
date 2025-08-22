@@ -66,18 +66,29 @@ export const productInfoSchema = z.object({
   unitCost: z.number()
     .positive("Unit cost must be positive")
     .max(999999.9999, "Unit cost too large"),
-  // Section 2 - Item Details
-  numberOfUnits: z.number()
-    .int("Number must be a whole number")
-    .min(1, "Number of units must be at least 1"),
+  // Section 2 - Units and Dimensions
+  // Master Pack fields
+  masterPackLength: z.number()
+    .positive("Master pack length must be positive"),
+  masterPackWidth: z.number()
+    .positive("Master pack width must be positive"),
+  masterPackHeight: z.number()
+    .positive("Master pack height must be positive"),
+  masterPackWeight: z.number()
+    .positive("Master pack weight must be positive"),
+  itemsPerMasterPack: z.number()
+    .int("Items per master pack must be a whole number")
+    .min(1, "Items per master pack must be at least 1"),
   // Section 3 - Shipment Details
-  containerSize: z.string().min(1, "Container size is required"),
+  containerSize: z.enum(["20-feet", "40-feet", "40-feet-high-cube", "45-feet"], {
+    required_error: "Please select a container size"
+  }),
   incoterms: z.string().min(1, "Incoterms is required"),
   originPort: z.string().min(1, "Origin port is required"),
   destinationPort: z.string().min(1, "Destination port is required"),
-  // Freight Charges
-  useIndexRates: z.boolean().default(false),
-  freightCost: z.number().optional()
+  // Freight Charges - removed index rates, only custom rates
+  freightCost: z.number()
+    .positive("Freight cost must be positive")
 });
 
 export type ProductInfo = z.infer<typeof productInfoSchema>;
