@@ -66,13 +66,13 @@ export default function ResetPasswordPage() {
       <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="flex items-center justify-between">
                 {/* Left Side - Brand Text */}
                 <Link href="/">
                   <div className="flex items-center space-x-3 cursor-pointer">
-                    <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                    <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                    <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                    <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                   </div>
                 </Link>
                 
@@ -81,7 +81,7 @@ export default function ResetPasswordPage() {
                   <img 
                     src={tfiLogoPath} 
                     alt="TFI Logo" 
-                    className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                    className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                   />
                 </div>
                 
@@ -113,7 +113,7 @@ export default function ResetPasswordPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"/>
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">Invalid reset link</h3>
+                    <h3 className="text-2xl font-bold text-foreground mb-2">Invalid reset link</h3>
                     <p className="text-slate-400 dark:text-slate-400 mb-6">
                       This password reset link is invalid or has expired. Please request a new one.
                     </p>
@@ -143,7 +143,7 @@ export default function ResetPasswordPage() {
           </main>
 
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
@@ -159,13 +159,13 @@ export default function ResetPasswordPage() {
       <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="flex items-center justify-between">
                 {/* Left Side - Brand Text */}
                 <Link href="/">
                   <div className="flex items-center space-x-3 cursor-pointer">
-                    <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                    <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                    <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                    <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                   </div>
                 </Link>
                 
@@ -174,7 +174,7 @@ export default function ResetPasswordPage() {
                   <img 
                     src={tfiLogoPath} 
                     alt="TFI Logo" 
-                    className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                    className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                   />
                 </div>
                 
@@ -206,7 +206,7 @@ export default function ResetPasswordPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">Password reset successful!</h3>
+                    <h3 className="text-2xl font-bold text-foreground mb-2">Password reset successful!</h3>
                     <p className="text-slate-400 dark:text-slate-400 mb-6">
                       Your password has been successfully reset. You can now log in with your new password.
                     </p>
@@ -225,7 +225,7 @@ export default function ResetPasswordPage() {
           </main>
 
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
@@ -249,8 +249,8 @@ export default function ResetPasswordPage() {
                     alt="TFI Logo" 
                     className="h-12 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-sm"
                   />
-                  <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                  <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
@@ -276,7 +276,7 @@ export default function ResetPasswordPage() {
             <div className="animate-fade-in" data-testid="reset-password-form">
               <div className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 dark:border-slate-700/50 p-8">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+                  <h2 className="text-3xl font-bold text-foreground mb-2">
                     Set new password
                   </h2>
                   <p className="text-slate-400 dark:text-slate-400">
@@ -291,7 +291,7 @@ export default function ResetPasswordPage() {
                       name="password"
                       render={({ field }) => (
                         <FormItem>
-                          <Label htmlFor="password" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                          <Label htmlFor="password" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                             New password
                           </Label>
                           <FormControl>
@@ -330,7 +330,7 @@ export default function ResetPasswordPage() {
                       name="confirmPassword"
                       render={({ field }) => (
                         <FormItem>
-                          <Label htmlFor="confirm-password" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                          <Label htmlFor="confirm-password" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                             Confirm new password
                           </Label>
                           <FormControl>

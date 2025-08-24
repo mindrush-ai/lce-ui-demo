@@ -97,16 +97,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-[#0E4A7E] dark:text-slate-100 font-inter transition-colors duration-300">
       <div className="min-h-screen flex flex-col">
         <header className="border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex items-center justify-between">
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-600 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                  <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
@@ -115,7 +115,7 @@ export default function LoginPage() {
                 <img 
                   src={tfiLogoPath} 
                   alt="TFI Logo" 
-                  className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                  className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                 />
               </div>
               
@@ -142,10 +142,10 @@ export default function LoginPage() {
             <div className="animate-fade-in" data-testid="login-form">
               <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-300/50 dark:border-slate-700/50 p-8">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                  <h2 className="text-3xl font-bold text-foreground mb-2">
                     Welcome back
                   </h2>
-                  <p className="text-slate-600 dark:text-slate-400">
+                  <p className="text-[#0E4A7E] dark:text-slate-400">
                     Sign in to your account
                   </p>
                 </div>
@@ -165,7 +165,7 @@ export default function LoginPage() {
                       alt="Google" 
                       className="w-5 h-5 mr-3"
                     />
-                    <span className="text-slate-900 dark:text-slate-200 font-medium">
+                    <span className="text-[#0E4A7E] dark:text-slate-200 font-medium">
                       Continue with Google
                     </span>
                   </Button>
@@ -173,7 +173,7 @@ export default function LoginPage() {
                   {/* Divider */}
                   <div className="relative flex items-center">
                     <div className="flex-1 border-t border-slate-300 dark:border-slate-600"></div>
-                    <span className="px-3 text-sm text-slate-600 dark:text-slate-400 bg-white dark:bg-slate-800">
+                    <span className="px-3 text-sm text-[#0E4A7E] dark:text-slate-400 bg-white dark:bg-slate-800">
                       or
                     </span>
                     <div className="flex-1 border-t border-slate-300 dark:border-slate-600"></div>
@@ -187,7 +187,7 @@ export default function LoginPage() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <Label htmlFor="email" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                            <Label htmlFor="email" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                               Email address
                             </Label>
                             <FormControl>
@@ -195,7 +195,7 @@ export default function LoginPage() {
                                 id="email"
                                 type="email"
                                 placeholder="Enter your email"
-                                className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                 data-testid="input-email"
                                 {...field}
                               />
@@ -211,7 +211,7 @@ export default function LoginPage() {
                         render={({ field }) => (
                           <FormItem>
                             <div className="flex justify-between items-center mb-2">
-                              <Label htmlFor="password" className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                              <Label htmlFor="password" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300">
                                 Password
                               </Label>
                               <Link href="/forgot-password">
@@ -226,7 +226,7 @@ export default function LoginPage() {
                                   id="password"
                                   type={showPassword ? "text" : "password"}
                                   placeholder="Enter your password"
-                                  className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                  className="w-full px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                   data-testid="input-password"
                                   {...field}
                                 />
@@ -234,7 +234,7 @@ export default function LoginPage() {
                                   type="button"
                                   variant="ghost"
                                   size="sm"
-                                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+                                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#0E4A7E] dark:text-slate-400 hover:text-[#0E4A7E] dark:hover:text-slate-200"
                                   onClick={() => setShowPassword(!showPassword)}
                                   data-testid="button-toggle-password"
                                 >
@@ -264,7 +264,7 @@ export default function LoginPage() {
                 </div>
 
                 <div className="mt-6 text-center">
-                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                  <p className="text-sm text-[#0E4A7E] dark:text-slate-400">
                     Don't have an account?{" "}
                     <Link href="/signup">
                       <span className="text-blue-400 dark:text-blue-400 hover:text-blue-300 dark:hover:text-blue-300 font-medium transition-colors duration-200 cursor-pointer" data-testid="link-signup">
@@ -280,7 +280,7 @@ export default function LoginPage() {
 
         <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="text-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="text-center text-sm text-[#0E4A7E] dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>
@@ -292,7 +292,7 @@ export default function LoginPage() {
         <div className="fixed inset-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center" data-testid="loading-overlay">
           <div className="bg-white dark:bg-slate-800 rounded-xl p-6 flex items-center space-x-3 border border-slate-300 dark:border-slate-700">
             <div className="animate-spin rounded-full h-6 w-6 border-2 border-blue-500 border-t-transparent"></div>
-            <span className="text-slate-900 dark:text-slate-200">Signing you in...</span>
+            <span className="text-[#0E4A7E] dark:text-slate-200">Signing you in...</span>
           </div>
         </div>
       )}

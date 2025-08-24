@@ -73,7 +73,7 @@ export default function ProductInputPage() {
     defaultValues: {
       itemNumber: "",
       nameId: "",
-      htsCode: "3401.19.00.00",
+      htsCode: "",
       countryOfOrigin: "",
       unitCost: 0,
       masterPackLength: 0,
@@ -269,16 +269,16 @@ export default function ProductInputPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-inter transition-colors duration-300 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-[#0E4A7E] dark:text-slate-100 font-inter transition-colors duration-300 relative">
       <div className="min-h-screen flex flex-col relative z-10">
         <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex items-center justify-between">
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-xl font-semibold text-slate-900 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-500 dark:text-slate-400 hidden sm:inline">Total Landed Cost</span>
+                  <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
@@ -287,7 +287,7 @@ export default function ProductInputPage() {
                 <img 
                   src={tfiLogoPath} 
                   alt="TFI Logo" 
-                  className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                  className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                 />
               </div>
               
@@ -301,9 +301,9 @@ export default function ProductInputPage() {
                   data-testid="button-theme-toggle"
                 >
                   {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Sun className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   ) : (
-                    <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Moon className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
                   )}
                 </Button>
                 
@@ -324,8 +324,8 @@ export default function ProductInputPage() {
         <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-4xl mx-auto">
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">US Landed Cost Calculator</h1>
-              <p className="text-slate-600 dark:text-slate-400">Enter your product information to calculate total landed cost</p>
+              <h1 className="text-3xl font-bold text-foreground mb-2">US Landed Cost Engine</h1>
+              <p className="text-[#0E4A7E] dark:text-slate-400">Enter your product information to calculate total landed cost</p>
             </div>
 
             <div className="space-y-6">
@@ -355,7 +355,7 @@ export default function ProductInputPage() {
                       {section.id === "product-details" && <Package className="w-5 h-5 text-blue-500" />}
                       {section.id === "item-details" && <Archive className="w-5 h-5 text-blue-500" />}
                       {section.id === "shipment-details" && <Package className="w-5 h-5 text-blue-500" />}
-                      <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                      <h2 className="text-xl font-semibold text-foreground">
                         {section.title}
                       </h2>
                     </div>
@@ -365,9 +365,9 @@ export default function ProductInputPage() {
                         <span className="text-sm text-primary font-medium">Completed</span>
                       )}
                       {section.isCollapsed ? (
-                        <ChevronRight className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                        <ChevronRight className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                        <ChevronDown className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400" />
                       )}
                     </div>
                   </div>
@@ -394,7 +394,7 @@ export default function ProductInputPage() {
                                 name="itemNumber"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="itemNumber" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="itemNumber" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Item Number <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -402,7 +402,7 @@ export default function ProductInputPage() {
                                         id="itemNumber"
                                         type="text"
                                         placeholder="Enter item number"
-                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-item-number"
                                         {...field}
                                       />
@@ -418,7 +418,7 @@ export default function ProductInputPage() {
                                 name="nameId"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="nameId" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="nameId" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Item Name/Description <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -426,7 +426,7 @@ export default function ProductInputPage() {
                                         id="nameId"
                                         type="text"
                                         placeholder="Enter item name or description"
-                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                        className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                         data-testid="input-name-id"
                                         {...field}
                                       />
@@ -442,30 +442,33 @@ export default function ProductInputPage() {
                                 name="htsCode"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="htsCode" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="htsCode" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       HTS Code <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
+                                      <div className="relative z-20">
                                         <select
                                           {...field}
                                           id="htsCode"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-hts-code"
                                         >
-                                          <option value="3401.19.00.00" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
+                                            Select HTS Code
+                                          </option>
+                                          <option value="3401.19.00.00" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             3401.19.00.00
                                           </option>
-                                          <option value="5603.92.00.70" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="5603.92.00.70" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             5603.92.00.70
                                           </option>
-                                          <option value="3401.11.50.00" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="3401.11.50.00" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             3401.11.50.00
                                           </option>
-                                          <option value="5603.12.00.10" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="5603.12.00.10" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             5603.12.00.10
                                           </option>
-                                          <option value="5603.14.90.10" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="5603.14.90.10" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             5603.14.90.10
                                           </option>
                                         </select>
@@ -483,15 +486,15 @@ export default function ProductInputPage() {
                                 name="countryOfOrigin"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="countryOfOrigin" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
+                                      <div className="relative z-20">
                                         <select
                                           {...field}
                                           id="countryOfOrigin"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-country"
                                         >
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
@@ -501,7 +504,7 @@ export default function ProductInputPage() {
                                             <option 
                                               key={country.code} 
                                               value={country.code}
-                                              className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                                              className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100"
                                             >
                                               {country.flag} {country.name} ({country.code})
                                             </option>
@@ -521,7 +524,7 @@ export default function ProductInputPage() {
                                 name="unitCost"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="unitCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="unitCost" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Unit Cost (USD) <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
@@ -534,7 +537,7 @@ export default function ProductInputPage() {
                                           step="0.0001"
                                           min="0"
                                           max="999999.9999"
-                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                          className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                           data-testid="input-unit-cost"
                                           value={field.value || ''}
                                           onChange={(e) => {
@@ -545,7 +548,7 @@ export default function ProductInputPage() {
                                       </div>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
-                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                    <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                       Up to 4 decimal places allowed
                                     </p>
                                   </FormItem>
@@ -590,10 +593,10 @@ export default function ProductInputPage() {
                             <div className="grid grid-cols-1 gap-6">
                               {/* HTS Code Description */}
                               <div>
-                                <Label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                <Label className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                   HTS Code Description
                                 </Label>
-                                <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-slate-600 dark:text-slate-400 flex items-center">
+                                <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-[#0E4A7E] dark:text-slate-400 flex items-center">
                                   {(() => {
                                     const htsCode = form.watch("htsCode");
                                     const descriptions = {
@@ -606,7 +609,7 @@ export default function ProductInputPage() {
                                     return descriptions[htsCode as keyof typeof descriptions] || "Select HTS Code in previous section";
                                   })()}
                                 </div>
-                                <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                   This displays the description for the selected HTS Code
                                 </p>
                               </div>
@@ -616,14 +619,14 @@ export default function ProductInputPage() {
                             {/* Master Pack Section */}
                             <div className="pt-6">
                               <hr className="border-slate-300 dark:border-slate-600/50 mb-6" />
-                              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-6">
+                              <h3 className="text-lg font-semibold text-foreground mb-6">
                                 Master Pack
                               </h3>
                               
                               <div className="space-y-6">
                                 {/* Master Pack Dimensions */}
                                 <div>
-                                  <Label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                  <Label className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                     Master Pack Dimensions (cm) <span className="text-red-400">*</span>
                                   </Label>
                                   <div className="grid grid-cols-3 gap-3">
@@ -639,7 +642,7 @@ export default function ProductInputPage() {
                                                 placeholder="Length"
                                                 step="0.1"
                                                 min="0"
-                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
                                                   const value = parseFloat(e.target.value) || 0;
@@ -665,7 +668,7 @@ export default function ProductInputPage() {
                                                 placeholder="Width"
                                                 step="0.1"
                                                 min="0"
-                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
                                                   const value = parseFloat(e.target.value) || 0;
@@ -691,7 +694,7 @@ export default function ProductInputPage() {
                                                 placeholder="Height"
                                                 step="0.1"
                                                 min="0"
-                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                                className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
                                                   const value = parseFloat(e.target.value) || 0;
@@ -706,7 +709,7 @@ export default function ProductInputPage() {
                                       )}
                                     />
                                   </div>
-                                  <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                  <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                     Enter dimensions in centimeters (Length x Width x Height)
                                   </p>
                                 </div>
@@ -718,7 +721,7 @@ export default function ProductInputPage() {
                                     name="masterPackWeight"
                                     render={({ field }) => (
                                       <FormItem>
-                                        <Label htmlFor="masterPackWeight" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                        <Label htmlFor="masterPackWeight" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                           Master Pack Weight (kg) <span className="text-red-400">*</span>
                                         </Label>
                                         <FormControl>
@@ -728,7 +731,7 @@ export default function ProductInputPage() {
                                             placeholder="Enter weight in kg"
                                             step="0.1"
                                             min="0"
-                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             value={field.value || ''}
                                             onChange={(e) => {
                                               const value = parseFloat(e.target.value) || 0;
@@ -746,7 +749,7 @@ export default function ProductInputPage() {
                                     name="itemsPerMasterPack"
                                     render={({ field }) => (
                                       <FormItem>
-                                        <Label htmlFor="itemsPerMasterPack" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                        <Label htmlFor="itemsPerMasterPack" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                           Items per Master Pack <span className="text-red-400">*</span>
                                         </Label>
                                         <FormControl>
@@ -756,7 +759,7 @@ export default function ProductInputPage() {
                                             placeholder="Enter number of items"
                                             min="1"
                                             step="1"
-                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             value={field.value || ''}
                                             onChange={(e) => {
                                               const value = parseInt(e.target.value) || 0;
@@ -765,7 +768,7 @@ export default function ProductInputPage() {
                                           />
                                         </FormControl>
                                         <FormMessage className="text-red-400 text-sm mt-1" />
-                                        <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                        <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                           Whole numbers only (1 and above)
                                         </p>
                                       </FormItem>
@@ -814,30 +817,30 @@ export default function ProductInputPage() {
                                 name="containerSize"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="containerSize" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="containerSize" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Container Size <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
+                                      <div className="relative z-20">
                                         <select
                                           {...field}
                                           id="containerSize"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-container-size"
                                         >
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select container size
                                           </option>
-                                          <option value="20-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="20-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             20 Feet
                                           </option>
-                                          <option value="40-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="40-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             40 Feet
                                           </option>
-                                          <option value="40-feet-high-cube" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="40-feet-high-cube" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             40 Feet High Cube
                                           </option>
-                                          <option value="45-feet" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="45-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             45 Feet
                                           </option>
                                         </select>
@@ -855,24 +858,24 @@ export default function ProductInputPage() {
                                 name="incoterms"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="incoterms" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="incoterms" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Incoterms Rule <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
+                                      <div className="relative z-20">
                                         <select
                                           {...field}
                                           id="incoterms"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-incoterms"
                                         >
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select Incoterms Rule
                                           </option>
-                                          <option value="FCA-SUPPLIER" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="FCA-SUPPLIER" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             FCA (Supplier Facility)
                                           </option>
-                                          <option value="FCA-PORT" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="FCA-PORT" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             FCA (Port of Loading)
                                           </option>
                                         </select>
@@ -880,7 +883,7 @@ export default function ProductInputPage() {
                                       </div>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
-                                    <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                    <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                       International Commercial Terms for shipping responsibilities
                                     </p>
                                   </FormItem>
@@ -897,16 +900,16 @@ export default function ProductInputPage() {
                                   
                                   return (
                                     <FormItem>
-                                      <Label htmlFor="originPort" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                      <Label htmlFor="originPort" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                         Origin Port <span className="text-red-400">*</span>
                                       </Label>
                                       <FormControl>
-                                        <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-slate-600 dark:text-slate-100 flex items-center">
+                                        <div className="w-full h-[50px] px-4 py-3 bg-slate-100 dark:bg-slate-700/30 border border-slate-300 dark:border-slate-600/50 !rounded-xl text-[#0E4A7E] dark:text-slate-400 flex items-center">
                                           {matchingCountry ? matchingCountry.port : (selectedCountry ? "Loading..." : "Select country of origin first")}
                                         </div>
                                       </FormControl>
                                       <FormMessage className="text-red-400 text-sm mt-1" />
-                                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                      <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                         Port automatically matches selected country of origin
                                       </p>
                                     </FormItem>
@@ -920,21 +923,21 @@ export default function ProductInputPage() {
                                 name="destinationPort"
                                 render={({ field }) => (
                                   <FormItem>
-                                    <Label htmlFor="destinationPort" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                    <Label htmlFor="destinationPort" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                       Destination Port <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative">
+                                      <div className="relative z-20">
                                         <select
                                           {...field}
                                           id="destinationPort"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
+                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
                                           data-testid="select-destination-port"
                                         >
                                           <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
                                             Select destination port
                                           </option>
-                                          <option value="Long Beach (US)" className="bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100">
+                                          <option value="Long Beach (US)" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
                                             Long Beach (US)
                                           </option>
                                         </select>
@@ -950,7 +953,7 @@ export default function ProductInputPage() {
                             {/* Horizontal line and Freight Charges subsection */}
                             <div className="pt-6">
                               <hr className="border-slate-300 dark:border-slate-600/50 mb-6" />
-                              <h3 className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-6">
+                              <h3 className="text-lg font-semibold text-foreground mb-6">
                                 Freight Charges
                               </h3>
                               
@@ -961,7 +964,7 @@ export default function ProductInputPage() {
                                   name="freightCost"
                                   render={({ field }) => (
                                     <FormItem>
-                                      <Label htmlFor="freightCost" className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                      <Label htmlFor="freightCost" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                                         Freight Cost (USD) <span className="text-red-400">*</span>
                                       </Label>
                                       <FormControl>
@@ -973,7 +976,7 @@ export default function ProductInputPage() {
                                             placeholder="Enter freight cost"
                                             min="0"
                                             step="0.01"
-                                            className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                            className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             data-testid="input-freight-cost"
                                             value={field.value || ""}
                                             onChange={(e) => {
@@ -984,7 +987,7 @@ export default function ProductInputPage() {
                                         </div>
                                       </FormControl>
                                       <FormMessage className="text-red-400 text-sm mt-1" />
-                                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">
+                                      <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
                                         Enter your negotiated freight rate
                                       </p>
                                     </FormItem>
@@ -1062,15 +1065,15 @@ export default function ProductInputPage() {
             {showResults && (
               <div id="results-section" className="mt-12 mb-8">
                 <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">Total Landed Cost</h2>
-                  <p className="text-slate-600 dark:text-slate-400">Your calculated cost breakdown</p>
+                  <h2 className="text-2xl font-bold text-foreground mb-2">Total Landed Cost</h2>
+                  <p className="text-[#0E4A7E] dark:text-slate-400">Your calculated cost breakdown</p>
                 </div>
 
                 <div className="space-y-6">
                   {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
                   <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
                     <div className="text-center">
-                      <h3 className="text-lg font-semibold text-primary dark:text-primary/80 mb-4">ITEM LANDED COST (PER UNIT)</h3>
+                      <h3 className="text-lg font-semibold text-foreground mb-4">ITEM LANDED COST (PER UNIT)</h3>
                       <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
                         {(() => {
                           const unitCost = form.getValues("unitCost") || 0;
@@ -1142,7 +1145,7 @@ export default function ProductInputPage() {
 
                   {/* Box 2 - Customs and Duties (Full Width) */}
                   <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-6 text-center text-[20px]">DUTIES</h3>
+                    <h3 className="font-semibold text-foreground mb-6 text-center text-[20px]">DUTIES</h3>
                     <hr className="border-slate-300/50 dark:border-slate-600/50 mb-6" />
                     <div className="space-y-4">
                       {(() => {
@@ -1231,44 +1234,44 @@ export default function ProductInputPage() {
                               <tbody>
                                 {/* ROW 1 - Number of Units */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Number of Units</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Units</td>
-                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">{numberOfUnits}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Units</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits}</td>
                                 </tr>
                                 
                                 {/* ROW 2 - Entered Value */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Entered Value</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Entered Value</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 3 - HTS Code Duty */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{htsCode}</td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Base HTS Code Duty</td>
-                                  <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">Free</td>
-                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{htsCode}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Base HTS Code Duty</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Free</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
                                 {/* ROW 4-6 - Chapter 99 Duty (Line Items 1-3) for China */}
                                 {isChinaCountry && chapter99Codes.map((item, index) => (
                                   <tr key={index} className="border-b border-slate-300 dark:border-slate-600/30">
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.code}</td>
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.description}</td>
-                                    <td className="py-3 text-slate-600 dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</td>
-                                    <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right">${(enteredValue * (item.percentage / 100)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.code}</td>
+                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.description}</td>
+                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</td>
+                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * (item.percentage / 100)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                   </tr>
                                 ))}
                                 
                                 {/* ROW 7 - Total */}
                                 <tr className="border-t-2 border-slate-400 dark:border-slate-500">
-                                  <td className="py-3 text-slate-700 dark:text-slate-300 font-bold">Total Duties</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-slate-900 dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1290,7 +1293,7 @@ export default function ProductInputPage() {
 
                   {/* Box 3 - Freight Costs */}
                   <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
+                    <h3 className="font-semibold text-foreground mb-4 text-[20px] text-center">FREIGHT COSTS</h3>
                     <div className="space-y-4">
                       {(() => {
                         const freightCost = form.getValues("freightCost") || 0;
@@ -1326,17 +1329,19 @@ export default function ProductInputPage() {
                         
                         return (
                           <>
-                            <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
+                            <div className="text-sm text-[#0E4A7E] dark:text-slate-400 font-bold mb-3">
                               {originCountryName} to {destinationCountryName}
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-slate-600 dark:text-slate-400">Total Freight Costs:</span>
-                              <span className="text-slate-900 dark:text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
+                              <span className="text-[#0E4A7E] dark:text-slate-400">Total Freight Costs</span>
+                              <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">${totalFreightCosts.toLocaleString()}</span>
                             </div>
                             <div className="border-t border-slate-300 dark:border-slate-600/50 pt-3">
-                              <div className="flex justify-between">
-                                <span className="text-slate-700 dark:text-slate-300 font-medium">Freight Per Item (Case):</span>
-                                <span className="text-slate-900 dark:text-slate-100 font-bold">${freightPerItem.toFixed(2)}</span>
+                              <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Freight Per Item</span>
+                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${freightPerItem.toFixed(2)}</span>
+                                </div>
                               </div>
                             </div>
                           </>
@@ -1347,7 +1352,7 @@ export default function ProductInputPage() {
 
                   {/* Box 4 - Container Utilization */}
                   <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-slate-900 dark:text-slate-200 mb-4 text-[20px] text-center">CONTAINER UTILIZATION</h3>
+                    <h3 className="font-semibold text-foreground mb-4 text-[20px] text-center">CONTAINER UTILIZATION</h3>
                     <div className="space-y-4">
                       {(() => {
                         const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
@@ -1381,48 +1386,48 @@ export default function ProductInputPage() {
                           <>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="space-y-3">
-                                <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
+                                <div className="text-sm text-[#0E4A7E] dark:text-slate-400 font-bold mb-3">
                                   Container Details
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Container Size:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{getContainerSizeDisplay(containerSize)}</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Container Size:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{getContainerSizeDisplay(containerSize)}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Total Volume:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{containerVolumeCubicMeters} m³</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Total Volume:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{containerVolumeCubicMeters} m³</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Usable Volume ({(CONTAINER_UTILIZATION * 100)}%):</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{usableVolumeCubicMeters.toFixed(1)} m³</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Usable Volume ({(CONTAINER_UTILIZATION * 100)}%):</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{usableVolumeCubicMeters.toFixed(1)} m³</span>
                                 </div>
                               </div>
                               <div className="space-y-3">
-                                <div className="text-sm text-slate-600 dark:text-slate-400 font-bold mb-3">
+                                <div className="text-sm text-[#0E4A7E] dark:text-slate-400 font-bold mb-3">
                                   Capacity Analysis
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Master Pack Volume:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{masterPackVolumeCubicMeters.toFixed(4)} m³</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Master Pack Volume:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{masterPackVolumeCubicMeters.toFixed(4)} m³</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Max Master Packs:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{maxMasterPacksPerContainer}</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Max Master Packs:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{maxMasterPacksPerContainer}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-600 dark:text-slate-400">Total Items in Container:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-medium">{maxItemsPerContainer.toLocaleString()}</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-400">Total Items in Container:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{maxItemsPerContainer.toLocaleString()}</span>
                                 </div>
                               </div>
                             </div>
                             <div className="border-t border-slate-300 dark:border-slate-600/50 pt-4 mt-4">
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="flex justify-between">
-                                  <span className="text-slate-700 dark:text-slate-300 font-medium">Master Packs Used:</span>
-                                  <span className="text-slate-900 dark:text-slate-100 font-bold">{masterPacksUsed}</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-300 font-medium">Master Packs Used:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-bold">{masterPacksUsed}</span>
                                 </div>
                                 <div className="flex justify-between">
-                                  <span className="text-slate-700 dark:text-slate-300 font-medium">Container Utilization:</span>
+                                  <span className="text-[#0E4A7E] dark:text-slate-300 font-medium">Container Utilization:</span>
                                   <span className={`font-bold ${
                                     utilizationPercentage > 90 ? 'text-red-600 dark:text-red-400' : 
                                     utilizationPercentage > 75 ? 'text-yellow-600 dark:text-yellow-400' : 
@@ -1444,7 +1449,7 @@ export default function ProductInputPage() {
 
         <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="text-center text-sm text-slate-600 dark:text-slate-400">
+            <div className="text-center text-sm text-[#0E4A7E] dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
           </div>

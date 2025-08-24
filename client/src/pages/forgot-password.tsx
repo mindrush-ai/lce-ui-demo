@@ -57,13 +57,13 @@ export default function ForgotPasswordPage() {
       <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="flex items-center justify-between">
                 {/* Left Side - Brand Text */}
                 <Link href="/">
                   <div className="flex items-center space-x-3 cursor-pointer">
-                    <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                    <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                    <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                    <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                   </div>
                 </Link>
                 
@@ -72,7 +72,7 @@ export default function ForgotPasswordPage() {
                   <img 
                     src={tfiLogoPath} 
                     alt="TFI Logo" 
-                    className="h-16 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                    className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                   />
                 </div>
                 
@@ -104,7 +104,7 @@ export default function ForgotPasswordPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-slate-100 dark:text-slate-100 mb-2">Check your email</h3>
+                    <h3 className="text-2xl font-bold text-foreground mb-2">Check your email</h3>
                     <p className="text-slate-400 dark:text-slate-400 mb-6">
                       We've sent a password reset link to your email address. Click the link to reset your password.
                     </p>
@@ -136,7 +136,7 @@ export default function ForgotPasswordPage() {
           </main>
 
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
@@ -156,8 +156,8 @@ export default function ForgotPasswordPage() {
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-xl font-semibold text-slate-100 dark:text-slate-100">TLC</span>
-                  <span className="text-sm text-slate-400 dark:text-slate-400 hidden sm:inline">Total Landed Costs</span>
+                  <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
+                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
@@ -193,7 +193,7 @@ export default function ForgotPasswordPage() {
             <div className="animate-fade-in" data-testid="forgot-password-form">
               <div className="bg-slate-800/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl shadow-2xl border border-slate-700/50 dark:border-slate-700/50 p-8">
                 <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-slate-100 dark:text-slate-100 mb-2">
+                  <h2 className="text-3xl font-bold text-foreground mb-2">
                     Forgot password?
                   </h2>
                   <p className="text-slate-400 dark:text-slate-400">
@@ -208,7 +208,7 @@ export default function ForgotPasswordPage() {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <Label htmlFor="email" className="block text-sm font-medium text-slate-300 dark:text-slate-300 mb-2">
+                          <Label htmlFor="email" className="block text-sm font-medium text-[#0E4A7E] dark:text-slate-300 mb-2">
                             Email address
                           </Label>
                           <FormControl>
