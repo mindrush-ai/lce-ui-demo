@@ -63,10 +63,10 @@ export default function ResetPasswordPage() {
 
   if (!token) {
     return (
-      <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
+      <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-sans transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="flex items-center justify-between">
                 {/* Left Side - Brand Text */}
                 <Link href="/">
@@ -143,7 +143,7 @@ export default function ResetPasswordPage() {
           </main>
 
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
@@ -156,10 +156,10 @@ export default function ResetPasswordPage() {
 
   if (resetSuccess) {
     return (
-      <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
+      <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-sans transition-colors duration-300">
         <div className="min-h-screen flex flex-col">
           <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="flex items-center justify-between">
                 {/* Left Side - Brand Text */}
                 <Link href="/">
@@ -225,7 +225,7 @@ export default function ResetPasswordPage() {
           </main>
 
           <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8">
               <div className="text-center text-sm text-slate-400 dark:text-slate-400">
                 <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
               </div>
@@ -237,10 +237,10 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-inter transition-colors duration-300">
+    <div className="min-h-screen bg-slate-900 dark:bg-slate-900 text-slate-100 dark:text-slate-100 font-sans transition-colors duration-300">
       <div className="min-h-screen flex flex-col">
         <header className="border-b border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex justify-between items-center">
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
@@ -380,7 +380,7 @@ export default function ResetPasswordPage() {
         </main>
 
         <footer className="border-t border-slate-800 dark:border-slate-800 bg-slate-900/50 dark:bg-slate-900/50 backdrop-blur-sm">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="text-center text-sm text-slate-400 dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
