@@ -446,34 +446,28 @@ export default function ProductInputPage() {
                                       HTS Code <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative z-20">
-                                        <select
-                                          {...field}
-                                          id="htsCode"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-hts-code"
-                                        >
-                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            Select HTS Code
-                                          </option>
-                                          <option value="3401.19.00.00" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                      <Select value={field.value} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" data-testid="select-hts-code">
+                                          <SelectValue placeholder="Select HTS Code" className="text-slate-500 dark:text-slate-400" />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-50 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg">
+                                          <SelectItem value="3401.19.00.00" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             3401.19.00.00
-                                          </option>
-                                          <option value="5603.92.00.70" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="5603.92.00.70" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             5603.92.00.70
-                                          </option>
-                                          <option value="3401.11.50.00" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="3401.11.50.00" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             3401.11.50.00
-                                          </option>
-                                          <option value="5603.12.00.10" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="5603.12.00.10" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             5603.12.00.10
-                                          </option>
-                                          <option value="5603.14.90.10" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="5603.14.90.10" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             5603.14.90.10
-                                          </option>
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
@@ -490,28 +484,22 @@ export default function ProductInputPage() {
                                       Country of Origin <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative z-20">
-                                        <select
-                                          {...field}
-                                          id="countryOfOrigin"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-country"
-                                        >
-                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            Select country
-                                          </option>
+                                      <Select value={field.value} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" data-testid="select-country">
+                                          <SelectValue placeholder="Select country" className="text-slate-500 dark:text-slate-400" />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-50 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg">
                                           {countries.map((country) => (
-                                            <option 
+                                            <SelectItem 
                                               key={country.code} 
                                               value={country.code}
-                                              className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100"
+                                              className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600"
                                             >
                                               {country.flag} {country.name} ({country.code})
-                                            </option>
+                                            </SelectItem>
                                           ))}
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
+                                        </SelectContent>
+                                      </Select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
@@ -821,31 +809,25 @@ export default function ProductInputPage() {
                                       Container Size <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative z-20">
-                                        <select
-                                          {...field}
-                                          id="containerSize"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-container-size"
-                                        >
-                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            Select container size
-                                          </option>
-                                          <option value="20-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                      <Select value={field.value} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" data-testid="select-container-size">
+                                          <SelectValue placeholder="Select container size" className="text-slate-500 dark:text-slate-400" />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-50 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg">
+                                          <SelectItem value="20-feet" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             20 Feet
-                                          </option>
-                                          <option value="40-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="40-feet" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             40 Feet
-                                          </option>
-                                          <option value="40-feet-high-cube" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="40-feet-high-cube" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             40 Feet High Cube
-                                          </option>
-                                          <option value="45-feet" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="45-feet" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             45 Feet
-                                          </option>
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
@@ -862,25 +844,19 @@ export default function ProductInputPage() {
                                       Incoterms Rule <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative z-20">
-                                        <select
-                                          {...field}
-                                          id="incoterms"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-incoterms"
-                                        >
-                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            Select Incoterms Rule
-                                          </option>
-                                          <option value="FCA-SUPPLIER" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                      <Select value={field.value} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" data-testid="select-incoterms">
+                                          <SelectValue placeholder="Select Incoterms Rule" className="text-slate-500 dark:text-slate-400" />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-50 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg">
+                                          <SelectItem value="FCA-SUPPLIER" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             FCA (Supplier Facility)
-                                          </option>
-                                          <option value="FCA-PORT" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                          </SelectItem>
+                                          <SelectItem value="FCA-PORT" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             FCA (Port of Loading)
-                                          </option>
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                     <p className="text-xs text-[#0E4A7E] dark:text-slate-500 mt-1">
@@ -927,22 +903,16 @@ export default function ProductInputPage() {
                                       Destination Port <span className="text-red-400">*</span>
                                     </Label>
                                     <FormControl>
-                                      <div className="relative z-20">
-                                        <select
-                                          {...field}
-                                          id="destinationPort"
-                                          className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none pr-12"
-                                          data-testid="select-destination-port"
-                                        >
-                                          <option value="" className="bg-white dark:bg-slate-700 text-slate-500 dark:text-slate-400">
-                                            Select destination port
-                                          </option>
-                                          <option value="Long Beach (US)" className="bg-white dark:bg-slate-700 text-[#0E4A7E] dark:text-slate-100">
+                                      <Select value={field.value} onValueChange={field.onChange}>
+                                        <SelectTrigger className="w-full h-[50px] px-4 py-0 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" data-testid="select-destination-port">
+                                          <SelectValue placeholder="Select destination port" className="text-slate-500 dark:text-slate-400" />
+                                        </SelectTrigger>
+                                        <SelectContent className="z-50 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-xl shadow-lg">
+                                          <SelectItem value="Long Beach (US)" className="text-[#0E4A7E] dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-600">
                                             Long Beach (US)
-                                          </option>
-                                        </select>
-                                        <ChevronDown className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
-                                      </div>
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
                                     </FormControl>
                                     <FormMessage className="text-red-400 text-sm mt-1" />
                                   </FormItem>
