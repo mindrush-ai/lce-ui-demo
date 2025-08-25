@@ -1154,33 +1154,33 @@ export default function ProductInputPage() {
                           switch (htsCode) {
                             case "3401.19.00.00": 
                               return [
-                                { code: "9903.88.03", description: "Baby Wipes & Flushable Wipes - Section 301 Duty", percentage: 20.0 },
-                                { code: "9903.88.15", description: "Baby Wipes & Flushable Wipes - Additional Tariff", percentage: 10.0 },
-                                { code: "9903.89.05", description: "Baby Wipes & Flushable Wipes - Trade Action Duty", percentage: 7.5 }
+                                { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+                                { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+                                { code: "9903.88.15", description: "Section 301 List 4A", percentage: 7.5 }
                               ];
                             case "5603.92.00.70":
                               return [
-                                { code: "9903.88.03", description: "Dry Wipes - Section 301 Duty", percentage: 20.0 },
-                                { code: "9903.88.15", description: "Dry Wipes - Additional Tariff", percentage: 10.0 },
-                                { code: "9903.89.06", description: "Dry Wipes - Trade Action Duty", percentage: 25.0 }
+                                { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+                                { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+                                { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
                               ];
                             case "3401.11.50.00":
                               return [
-                                { code: "9903.88.03", description: "Benefit Wipes & Makeup Wipes - Section 301 Duty", percentage: 20.0 },
-                                { code: "9903.88.15", description: "Benefit Wipes & Makeup Wipes - Additional Tariff", percentage: 10.0 },
-                                { code: "9903.89.07", description: "Benefit Wipes & Makeup Wipes - Trade Action Duty", percentage: 25.0 }
+                                { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+                                { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+                                { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
                               ];
                             case "5603.12.00.10":
                               return [
-                                { code: "9903.88.03", description: "Sanitizing Wipes - Section 301 Duty", percentage: 20.0 },
-                                { code: "9903.88.15", description: "Sanitizing Wipes - Additional Tariff", percentage: 10.0 },
-                                { code: "9903.89.08", description: "Sanitizing Wipes - Trade Action Duty", percentage: 25.0 }
+                                { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+                                { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+                                { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
                               ];
                             case "5603.14.90.10":
                               return [
-                                { code: "9903.88.03", description: "Sanitizing Wipes - Section 301 Duty", percentage: 20.0 },
-                                { code: "9903.88.15", description: "Sanitizing Wipes - Additional Tariff", percentage: 10.0 },
-                                { code: "9903.89.09", description: "Sanitizing Wipes - Trade Action Duty", percentage: 25.0 }
+                                { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+                                { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+                                { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
                               ];
                             default: 
                               return [];
@@ -1198,6 +1198,18 @@ export default function ProductInputPage() {
                         
                         const totalCustomsAndDuties = baseHtsDutyAmount + totalChapter99Duty;
                         
+                        // HTS Code descriptions for the table
+                        const getHtsDescription = (code: string) => {
+                          const descriptions = {
+                            "3401.19.00.00": "Baby Wipes & Flushable Wipes",
+                            "5603.92.00.70": "Dry Wipes",
+                            "3401.11.50.00": "Benefit Wipes & Makeup Wipes",
+                            "5603.12.00.10": "Sanitizing Wipes",
+                            "5603.14.90.10": "Sanitizing Wipes"
+                          };
+                          return descriptions[code as keyof typeof descriptions] || "Select HTS Code in previous section";
+                        };
+                        
                         return (
                           <div className="overflow-x-auto">
                             <table className="w-full">
@@ -1206,7 +1218,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Units</td>
+                                  <td className="py-3"></td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits}</td>
                                 </tr>
                                 
@@ -1221,8 +1233,8 @@ export default function ProductInputPage() {
                                 {/* ROW 3 - HTS Code Duty */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{htsCode}</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Base HTS Code Duty</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Free</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{getHtsDescription(htsCode)}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.00%</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
@@ -1236,12 +1248,46 @@ export default function ProductInputPage() {
                                   </tr>
                                 ))}
                                 
-                                {/* ROW 7 - Total */}
+                                {/* ROW 7 - HMF (Harbor Maintenance Fee) */}
+                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * 0.00125).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                </tr>
+                                
+                                {/* ROW 8 - MPF (Merchandise Processing Fee) */}
+                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
+                                    const mpfCalculated = enteredValue * 0.003464;
+                                    const mpfMin = 33.58;
+                                    const mpfMax = 651.50;
+                                    let mpfFinal = mpfCalculated;
+                                    if (mpfCalculated < mpfMin) mpfFinal = mpfMin;
+                                    if (mpfCalculated > mpfMax) mpfFinal = mpfMax;
+                                    return mpfFinal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                  })()}</td>
+                                </tr>
+                                
+                                {/* ROW 9 - Total (formerly ROW 7) */}
                                 <tr className="border-t-2 border-slate-400 dark:border-slate-500">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${(() => {
+                                    const hmfFee = enteredValue * 0.00125;
+                                    const mpfCalculated = enteredValue * 0.003464;
+                                    const mpfMin = 33.58;
+                                    const mpfMax = 651.50;
+                                    let mpfFee = mpfCalculated;
+                                    if (mpfCalculated < mpfMin) mpfFee = mpfMin;
+                                    if (mpfCalculated > mpfMax) mpfFee = mpfMax;
+                                    const totalWithFees = totalCustomsAndDuties + hmfFee + mpfFee;
+                                    return totalWithFees.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                  })()}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1249,8 +1295,18 @@ export default function ProductInputPage() {
                             <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-600/50">
                               <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
                                 <div className="flex justify-between items-center">
-                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item (Case)</span>
-                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${numberOfUnits > 0 ? (totalCustomsAndDuties / numberOfUnits).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00'}</span>
+                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item</span>
+                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${numberOfUnits > 0 ? (() => {
+                                    const hmfFee = enteredValue * 0.00125;
+                                    const mpfCalculated = enteredValue * 0.003464;
+                                    const mpfMin = 33.58;
+                                    const mpfMax = 651.50;
+                                    let mpfFee = mpfCalculated;
+                                    if (mpfCalculated < mpfMin) mpfFee = mpfMin;
+                                    if (mpfCalculated > mpfMax) mpfFee = mpfMax;
+                                    const totalWithFees = totalCustomsAndDuties + hmfFee + mpfFee;
+                                    return (totalWithFees / numberOfUnits).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                  })() : '0.00'}</span>
                                 </div>
                                 
                               </div>
@@ -1320,97 +1376,6 @@ export default function ProductInputPage() {
                     </div>
                   </div>
 
-                  {/* Box 4 - Container Utilization */}
-                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-foreground mb-4 text-[20px] text-center">CONTAINER UTILIZATION</h3>
-                    <div className="space-y-4">
-                      {(() => {
-                        const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
-                        const masterPackLength = form.getValues("masterPackLength") || 0;
-                        const masterPackWidth = form.getValues("masterPackWidth") || 0;
-                        const masterPackHeight = form.getValues("masterPackHeight") || 0;
-                        const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
-                        
-                        // Container calculations
-                        const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
-                        const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
-                        const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
-                        const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000; // Convert cm³ to m³
-                        const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
-                        const maxItemsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
-                        const masterPacksUsed = maxMasterPacksPerContainer; // Use all available space
-                        const volumeUtilizedByShipment = masterPacksUsed * masterPackVolumeCubicMeters;
-                        const utilizationPercentage = usableVolumeCubicMeters > 0 ? (volumeUtilizedByShipment / usableVolumeCubicMeters) * 100 : 0;
-                        
-                        const getContainerSizeDisplay = (size: string) => {
-                          const sizeMap = {
-                            "20-feet": "20 Feet",
-                            "40-feet": "40 Feet", 
-                            "40-feet-high-cube": "40 Feet High Cube",
-                            "45-feet": "45 Feet"
-                          } as const;
-                          return sizeMap[size as keyof typeof sizeMap] || size;
-                        };
-                        
-                        return (
-                          <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                              <div className="space-y-3">
-                                <div className="text-sm text-[#0E4A7E] dark:text-slate-400 font-bold mb-3">
-                                  Container Details
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Container Size:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{getContainerSizeDisplay(containerSize)}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Total Volume:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{containerVolumeCubicMeters} m³</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Usable Volume ({(CONTAINER_UTILIZATION * 100)}%):</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{usableVolumeCubicMeters.toFixed(1)} m³</span>
-                                </div>
-                              </div>
-                              <div className="space-y-3">
-                                <div className="text-sm text-[#0E4A7E] dark:text-slate-400 font-bold mb-3">
-                                  Capacity Analysis
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Master Pack Volume:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{masterPackVolumeCubicMeters.toFixed(4)} m³</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Max Master Packs:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{maxMasterPacksPerContainer}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-400">Total Items in Container:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-medium">{maxItemsPerContainer.toLocaleString()}</span>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="border-t border-slate-300 dark:border-slate-600/50 pt-4 mt-4">
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-300 font-medium">Master Packs Used:</span>
-                                  <span className="text-[#0E4A7E] dark:text-slate-100 font-bold">{masterPacksUsed}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                  <span className="text-[#0E4A7E] dark:text-slate-300 font-medium">Container Utilization:</span>
-                                  <span className={`font-bold ${
-                                    utilizationPercentage > 90 ? 'text-red-600 dark:text-red-400' : 
-                                    utilizationPercentage > 75 ? 'text-yellow-600 dark:text-yellow-400' : 
-                                    'text-green-600 dark:text-green-400'
-                                  }`}>{utilizationPercentage.toFixed(1)}%</span>
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </div>
-                  </div>
                 </div>
               </div>
             )}

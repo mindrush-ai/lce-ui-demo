@@ -103,3 +103,67 @@ For this version, we will make them hardcoded. The later versions will give the 
 - We will now calculate the maximum number of units that can be fitted in the choosen container size
 
 
+# 25 Aug Changes
+
+## Duty Rates
+
+Here are the duty rates configured in the system already. For every line under each bold, the first part of the text is the HST code, after the tab you have the description, and the last tab contains the rate of the duty
+
+**3401.19.00.00**
+3401.19.00.00 Base  0.00%
+9903.01.24  IEEPA China 20%	20.00%
+9903.01.25  IEEPA Reciprocal All Country 10%	10.00%
+9903.88.15  Section 301 List 4A	7.50%
+
+**5603.92.00.70**
+5603.92.00.70	Base	0.00%
+9903.01.24	IEEPA China 20%	20.00%
+9903.01.25	IEEPA Reciprocal All Country 10%	10.00%
+9903.88.03	Section 301 List 3	25.00%
+
+**3401.11.50.00**
+3401.11.50.00	Base	0.00%
+9903.01.24	IEEPA China 20%	20.00%
+9903.01.25	IEEPA Reciprocal All Country 10%	10.00%
+9903.88.03	Section 301 List 3	25.00%
+
+**5603.12.00.10**
+5603.12.00.10	Base	0.00%
+9903.01.24	IEEPA China 20%	20.00%
+9903.01.25	IEEPA Reciprocal All Country 10%	10.00%
+9903.88.03	Section 301 List 3	25.00%
+
+**5603.14.90.10**
+5603.14.90.10	Base	0.00%
+9903.01.24	IEEPA China 20%	20.00%
+9903.01.25	IEEPA Reciprocal All Country 10%	10.00%
+9903.88.03	Section 301 List 3	25.00%
+
+## Duties Ouput Table Changes
+* For rows 3,4,5 & 6. I need you to change column 2 and print out the description of each HTS code
+
+## Duties Ouput Table Changes - Iteration 2
+* For Row 1, make column 3 emoty
+* Remove (Case) from the text Duty Per Item
+
+## Duties Ouput Table Changes - Iteration 2
+- In the output table, I would like to insert two new rows after Row 6
+- Row 7
+  - Column 1 HMF
+  - Column 2 Harbor Maintenance Fee
+  - Column 3
+  - Column 4 = Enterted Value x 0.125% (in $ with two decimal points)
+- Row 8
+  - Column 1 MPF
+  - Column 2 Merchandise Processing Fee
+  - Column 3
+  - Column 4 Calculation
+      - MPF Calculated Value = Enterted Value x 0.3464%
+      - Min = $33.58
+      - Max = $651.50
+      - If the MPF Calculated Value < Min then use Min
+      - If the MPF Calulcated Value > Max then use Max
+- The old Row 7 becomes Row 9
+
+## Remove Container Utilization
+* Remove the container utilization output from the bottom, it is not needed for the end user consumption
