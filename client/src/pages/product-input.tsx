@@ -278,7 +278,7 @@ export default function ProductInputPage() {
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
                   <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
-                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
+                  <span className="text-base text-muted-foreground hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               

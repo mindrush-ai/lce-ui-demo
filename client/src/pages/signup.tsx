@@ -124,7 +124,7 @@ export default function SignupPage() {
                 {/* Left Side - Brand Text */}
                 <div className="flex items-center space-x-3">
                   <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
-                  <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
+                  <span className="text-base text-muted-foreground hidden sm:inline">Total Landed Cost Engine</span>
                 </div>
                 
                 {/* Center - Logo Only (Larger) */}
@@ -198,7 +198,7 @@ export default function SignupPage() {
                   className="h-12 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-sm"
                 />
                 <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
-                <span className="text-lg text-[#0E4A7E] hidden sm:inline">Total Landed Cost Engine</span>
+                <span className="text-base text-muted-foreground hidden sm:inline">Total Landed Cost Engine</span>
               </div>
               
               <Button
