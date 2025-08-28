@@ -564,8 +564,8 @@ export default function ProductInputPage() {
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-xl sm:text-2xl font-semibold text-foreground">TLC</span>
-                  <span className="text-base text-muted-foreground hidden md:inline">Total Landed Cost Engine</span>
+                  <span className="text-xl sm:text-2xl font-semibold" style={{color: '#0E4A7E'}}>TLC</span>
+                  <span className="text-base hidden md:inline" style={{color: '#0E4A7E'}}>Total Landed Cost Engine</span>
                 </div>
               </Link>
               
@@ -815,8 +815,16 @@ export default function ProductInputPage() {
                                           data-testid="input-unit-cost"
                                           value={field.value || ''}
                                           onChange={(e) => {
-                                            const value = parseFloat(e.target.value) || 0;
-                                            field.onChange(value);
+                                            const inputValue = e.target.value;
+                                            if (inputValue === '') {
+                                              field.onChange(0);
+                                            } else {
+                                              const value = parseFloat(inputValue);
+                                              if (!isNaN(value)) {
+                                                const rounded = Math.round(value * 10000) / 10000;
+                                                field.onChange(rounded);
+                                              }
+                                            }
                                           }}
                                         />
                                       </div>
@@ -914,13 +922,21 @@ export default function ProductInputPage() {
                                               <Input
                                                 type="number"
                                                 placeholder="Length"
-                                                step="0.1"
+                                                step="0.01"
                                                 min="0"
                                                 className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
-                                                  const value = parseFloat(e.target.value) || 0;
-                                                  field.onChange(value);
+                                                  const inputValue = e.target.value;
+                                                  if (inputValue === '') {
+                                                    field.onChange(0);
+                                                  } else {
+                                                    const value = parseFloat(inputValue);
+                                                    if (!isNaN(value)) {
+                                                      const rounded = Math.round(value * 100) / 100;
+                                                      field.onChange(rounded);
+                                                    }
+                                                  }
                                                 }}
                                               />
                                               <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">L</span>
@@ -940,13 +956,21 @@ export default function ProductInputPage() {
                                               <Input
                                                 type="number"
                                                 placeholder="Width"
-                                                step="0.1"
+                                                step="0.01"
                                                 min="0"
                                                 className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
-                                                  const value = parseFloat(e.target.value) || 0;
-                                                  field.onChange(value);
+                                                  const inputValue = e.target.value;
+                                                  if (inputValue === '') {
+                                                    field.onChange(0);
+                                                  } else {
+                                                    const value = parseFloat(inputValue);
+                                                    if (!isNaN(value)) {
+                                                      const rounded = Math.round(value * 100) / 100;
+                                                      field.onChange(rounded);
+                                                    }
+                                                  }
                                                 }}
                                               />
                                               <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">W</span>
@@ -966,13 +990,21 @@ export default function ProductInputPage() {
                                               <Input
                                                 type="number"
                                                 placeholder="Height"
-                                                step="0.1"
+                                                step="0.01"
                                                 min="0"
                                                 className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                                 value={field.value || ''}
                                                 onChange={(e) => {
-                                                  const value = parseFloat(e.target.value) || 0;
-                                                  field.onChange(value);
+                                                  const inputValue = e.target.value;
+                                                  if (inputValue === '') {
+                                                    field.onChange(0);
+                                                  } else {
+                                                    const value = parseFloat(inputValue);
+                                                    if (!isNaN(value)) {
+                                                      const rounded = Math.round(value * 100) / 100;
+                                                      field.onChange(rounded);
+                                                    }
+                                                  }
                                                 }}
                                               />
                                               <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">H</span>
@@ -1003,13 +1035,21 @@ export default function ProductInputPage() {
                                             id="masterPackWeight"
                                             type="number"
                                             placeholder="Enter weight in kg"
-                                            step="0.1"
+                                            step="0.01"
                                             min="0"
                                             className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             value={field.value || ''}
                                             onChange={(e) => {
-                                              const value = parseFloat(e.target.value) || 0;
-                                              field.onChange(value);
+                                              const inputValue = e.target.value;
+                                              if (inputValue === '') {
+                                                field.onChange(0);
+                                              } else {
+                                                const value = parseFloat(inputValue);
+                                                if (!isNaN(value)) {
+                                                  const rounded = Math.round(value * 100) / 100;
+                                                  field.onChange(rounded);
+                                                }
+                                              }
                                             }}
                                           />
                                         </FormControl>
@@ -1036,8 +1076,15 @@ export default function ProductInputPage() {
                                             className="w-full h-[50px] px-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             value={field.value || ''}
                                             onChange={(e) => {
-                                              const value = parseInt(e.target.value) || 0;
-                                              field.onChange(value);
+                                              const inputValue = e.target.value;
+                                              if (inputValue === '') {
+                                                field.onChange(0);
+                                              } else {
+                                                const value = parseInt(inputValue);
+                                                if (!isNaN(value) && value >= 0) {
+                                                  field.onChange(value);
+                                                }
+                                              }
                                             }}
                                           />
                                         </FormControl>
@@ -1231,13 +1278,20 @@ export default function ProductInputPage() {
                                             type="number"
                                             placeholder="Enter freight cost"
                                             min="0"
-                                            step="0.01"
+                                            step="1"
                                             className="w-full h-[50px] pl-8 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-slate-300 dark:border-slate-600 !rounded-xl text-[#0E4A7E] dark:text-slate-100 placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                             data-testid="input-freight-cost"
                                             value={field.value || ""}
                                             onChange={(e) => {
-                                              const value = parseFloat(e.target.value) || 0;
-                                              field.onChange(value);
+                                              const inputValue = e.target.value;
+                                              if (inputValue === '') {
+                                                field.onChange(0);
+                                              } else {
+                                                const value = parseInt(inputValue);
+                                                if (!isNaN(value) && value >= 0) {
+                                                  field.onChange(value);
+                                                }
+                                              }
                                             }}
                                           />
                                         </div>
@@ -1311,7 +1365,7 @@ export default function ProductInputPage() {
                   data-testid="button-calculate-tlc"
                 >
                   <span className="flex items-center space-x-2">
-                    <span>Calculate Total Landed Costs</span>
+                    <span>Calculate Total Landed Cost</span>
                   </span>
                 </Button>
               </div>
@@ -1329,8 +1383,7 @@ export default function ProductInputPage() {
                   {/* Export PDF Button */}
                   <Button 
                     onClick={exportToPDF}
-                    variant="outline"
-                    className="flex items-center space-x-2"
+                    className="bg-gradient-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-primary/25 flex items-center space-x-2"
                     data-testid="button-export-pdf"
                   >
                     <Download className="w-4 h-4" />
@@ -1551,7 +1604,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</td>
-                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.125%</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * 0.00125).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
@@ -1559,7 +1612,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</td>
-                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.3464%</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
                                     const mpfCalculated = enteredValue * 0.003464;
                                     const mpfMin = 33.58;
@@ -1575,7 +1628,14 @@ export default function ProductInputPage() {
                                 <tr className="border-t-2 border-slate-400 dark:border-slate-500">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duties</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">{(() => {
+                                    const basePercentage = 0;
+                                    const chapter99Percentage = isChinaCountry ? chapter99Codes.reduce((sum, item) => sum + item.percentage, 0) : 0;
+                                    const hmfPercentage = 0.125;
+                                    const mpfPercentage = 0.3464;
+                                    const totalPercentage = basePercentage + chapter99Percentage + hmfPercentage + mpfPercentage;
+                                    return totalPercentage.toFixed(4) + '%';
+                                  })()}</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${(() => {
                                     const hmfFee = enteredValue * 0.00125;
                                     const mpfCalculated = enteredValue * 0.003464;
@@ -1681,8 +1741,7 @@ export default function ProductInputPage() {
                 <div className="mt-8 flex justify-center">
                   <Button 
                     onClick={exportToPDF}
-                    variant="outline"
-                    className="flex items-center space-x-2"
+                    className="bg-gradient-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-primary/25 flex items-center space-x-2"
                     data-testid="button-export-pdf-bottom"
                   >
                     <Download className="w-4 h-4" />
