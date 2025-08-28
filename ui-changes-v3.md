@@ -24,10 +24,18 @@
 * Don't show the percentages in column 3, rows 6,7
 
 ### Iteration 4 Fixes - Duties Output Table
+
+Make the following changes and test using Playwright
+
 * In row 1 column 4, use the number format xxx,xxx,xxx
 * Remove the percentage in row 2, column 3
 * The percentage addition in row 7, column 3 is the sum of percentages in row 3-6 (DO NOT INCLUDE ANYHTING ELSE). Round the output to 0 decimal points
 * Round the amounts in column 4 to 0 decimal points
+
+### Iteration 5 Fixes
+
+* There is a UX bug in the product-input page, when we complete the inputs in Units and Dimensions section. The view jumps into the middle of next section and not the start. Use playwright if you need to capture this and fix this. Test using playwright
+
 
 
 
