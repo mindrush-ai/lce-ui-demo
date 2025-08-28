@@ -99,66 +99,32 @@ export default function LandingPage() {
               <p className="text-muted-foreground">
                 Please note that this is the "MVP" (Minimum Viable Product) version of a much more sophisticated engine that generates landed costs for all items in an importer's Product Master Data file. As such, this engine is limited to maritime transportation and allows two options for the applicable Incoterms Rule. If you'd like to learn more about the enterprise version of the Total Landed Cost Engine, write to us at contact@tradefacil.com.
               </p>
+              <p className="text-muted-foreground">
+                While TFI is confident in the underlying algorithms, formulas and APIs that enable this engine, it must be stressed that all outputs are intended for informational purposes only and in no way constitute any transportation, duty, legal or U.S. Customs & Border Protection regulatory advice. Integral to the Terms & Conditions for use of this tool, Trade Facilitators, Inc. accepts no liability related to its use.
+              </p>
+              <p className="text-muted-foreground font-medium">
+                If you're ready to show your U.S. import program some "Tender Loving Care", please continue below to sign-up for twelve free product classifications…
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <Card className="border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <Calculator className="w-10 h-10 text-primary mb-2" />
-              <CardTitle className="text-lg">Accurate Calculations</CardTitle>
-              <CardDescription>
-                Precise duty and freight calculations based on current trade regulations
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <BarChart3 className="w-10 h-10 text-primary mb-2" />
-              <CardTitle className="text-lg">Detailed Breakdown</CardTitle>
-              <CardDescription>
-                Comprehensive cost analysis with itemized duty and fee breakdowns
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <Clock className="w-10 h-10 text-primary mb-2" />
-              <CardTitle className="text-lg">Quick Results</CardTitle>
-              <CardDescription>
-                Get instant calculations to make informed import decisions faster
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <Shield className="w-10 h-10 text-primary mb-2" />
-              <CardTitle className="text-lg">Compliant & Secure</CardTitle>
-              <CardDescription>
-                Built with current trade regulations and secure data handling
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-
-        {/* Call to Action */}
+        {/* CTA Section */}
         <div className="text-center">
-          <div className="bg-primary/10 dark:bg-primary/20 rounded-2xl p-8 border border-primary/30 dark:border-primary/50">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 max-w-2xl mx-auto">
+            <h2 className="text-2xl font-bold text-foreground mb-4">
               Ready to Calculate Your Total Landed Cost?
-            </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-              Start using our calculator now to get accurate cost estimates for your imports from China. 
-              Perfect for wipes and personal care products.
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Use our professional platform for accurate landed cost calculations with comprehensive duty analysis.
             </p>
             <Link href="/product-input">
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white px-8 py-3">
-                Start Your Calculation
+              <Button 
+                size="lg"
+                className="bg-primary hover:bg-primary/90 text-white"
+                data-testid="button-cta-start"
+              >
+                Start Calculating
               </Button>
             </Link>
           </div>
@@ -167,15 +133,9 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center text-sm text-muted-foreground">
             <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
-            <p className="mt-2">
-              For enterprise solutions, contact us at{" "}
-              <a href="mailto:contact@tradefacil.com" className="text-primary hover:underline">
-                contact@tradefacil.com
-              </a>
-            </p>
           </div>
         </div>
       </footer>
