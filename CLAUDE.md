@@ -44,6 +44,7 @@ This is a static React SPA for calculating Total Landed Costs (TLC), customized 
 - Section 3: Shipment details (Container, Incoterms, Ports, Freight)
 - Dynamic freight rate calculation (index rates or custom input)
 - Complete TLC calculation with customs duty business logic
+- **Enhanced UX**: Smooth section transitions with proper scroll positioning that avoids sticky header overlap
 
 **Validation Schemas** (`shared/schema.ts`):
 - Product input validation with comprehensive field validation
@@ -72,6 +73,7 @@ This is a static React SPA for calculating Total Landed Costs (TLC), customized 
 - Static deployment ready for Cloudflare Pages, Netlify, or Vercel
 - The Honest Company branding integration (forked from wine industry platform)
 - Business logic adapted for personal care products (wipes, diapers, etc.)
+- **Scroll Behavior**: Enhanced UX with header-aware scroll positioning for section transitions and results display
 
 ### Key Features
 
