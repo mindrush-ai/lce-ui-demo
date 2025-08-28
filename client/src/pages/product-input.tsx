@@ -276,8 +276,8 @@ export default function ProductInputPage() {
     yPos += 10;
     const tableData = [
       ["Number of Units", "", "", numberOfUnits.toLocaleString()],
-      ["Entered Value", "", "", `$${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
-      [data.htsCode || "", "Base HTS Code Duty", "Free", `$${baseHtsDutyAmount.toFixed(2)}`]
+      ["Entered Value", "", "", `$${Math.round(enteredValue).toLocaleString('en-US')}`],
+      [data.htsCode || "", "Base HTS Code Duty", "0.00%", `$${Math.round(baseHtsDutyAmount).toLocaleString('en-US')}`]
     ];
     
     // Add Chapter 99 duties if applicable
@@ -317,14 +317,30 @@ export default function ProductInputPage() {
           duty.code,
           duty.description,
           `${(duty.rate * 100).toFixed(1)}%`,
-          `$${dutyAmount.toFixed(2)}`
+          `$${Math.round(dutyAmount).toLocaleString('en-US')}`
         ]);
       });
     }
     
+    // Calculate percentage sum for HMF row (sum of rows 3-6)
+    const basePercentage = 0; // HTS Code Duty
+    let chapter99Percentage = 0;
+    if (isChina && data.htsCode) {
+      const dutyRates = {
+        "3401.19.00.00": [0.20, 0.10, 0.075], // 37.5%
+        "5603.92.00.70": [0.20, 0.10, 0.25], // 55%
+        "3401.11.50.00": [0.20, 0.10, 0.25], // 55%
+        "5603.12.00.10": [0.20, 0.10, 0.25], // 55%
+        "5603.14.90.10": [0.20, 0.10, 0.25] // 55%
+      };
+      const rates = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
+      chapter99Percentage = rates.reduce((sum, rate) => sum + rate, 0) * 100; // Convert to percentage
+    }
+    const totalPercentageSum = basePercentage + chapter99Percentage;
+    
     tableData.push(
-      ["HMF", "Harbor Maintenance Fee", "", `$${hmfFee.toFixed(2)}`],
-      ["MPF", "Merchandise Processing Fee", "", `$${mpfFee.toFixed(2)}`]
+      ["HMF", "Harbor Maintenance Fee", "", `$${Math.round(hmfFee).toLocaleString('en-US')}`],
+      ["MPF", "Merchandise Processing Fee", "", `$${Math.round(mpfFee).toLocaleString('en-US')}`]
     );
     
     // Draw table
@@ -365,6 +381,7 @@ export default function ProductInputPage() {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 0, 0);
     doc.text("Total Duties", 22, yPos + 3);
+    doc.text(`${totalPercentageSum.toFixed(2)}%`, 120, yPos + 3);
     doc.text(`$${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 188, yPos + 3, { align: 'right' });
     
     // Highlighted Duty Per Item
@@ -438,7 +455,7 @@ export default function ProductInputPage() {
       const currentIndex = prev.findIndex(s => s.id === sectionId);
       const nextIndex = currentIndex + 1;
       
-      return prev.map((section, index) => {
+      const updated = prev.map((section, index) => {
         if (section.id === sectionId) {
           // Mark the current section as completed and collapsed
           return { ...section, isCompleted: true, isCollapsed: true };
@@ -448,6 +465,35 @@ export default function ProductInputPage() {
         }
         return section;
       });
+
+      // Scroll to the next section header after a delay to allow DOM update
+      if (nextIndex < prev.length) {
+        const nextSectionId = prev[nextIndex].id;
+        setTimeout(() => {
+          const nextSectionHeaderElement = document.getElementById(`section-header-${nextSectionId}`);
+          if (nextSectionHeaderElement) {
+            // Calculate header height to avoid it covering the section
+            const stickyHeader = document.querySelector('header') || document.querySelector('nav');
+            const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 80; // fallback to 80px
+            
+            // Scroll to element and account for sticky header
+            nextSectionHeaderElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            });
+            
+            // Add offset for sticky header plus small buffer
+            setTimeout(() => {
+              window.scrollBy(0, -(headerHeight + 20));
+            }, 300);
+          } else {
+            console.warn(`Section header element not found: section-header-${nextSectionId}`);
+          }
+        }, 200);
+      }
+
+      return updated;
     });
   };
 
@@ -625,9 +671,11 @@ export default function ProductInputPage() {
                       : "bg-white/50 dark:bg-slate-800/50 border border-slate-300/50 dark:border-slate-700/50"
                   )}
                   data-testid={`section-${section.id}`}
+                  data-section-id={section.id}
                 >
                   {/* Section Header */}
                   <div
+                    id={`section-header-${section.id}`}
                     className={cn(
                       "flex items-center justify-between p-6 cursor-pointer transition-colors duration-200",
                       section.isCompleted 
@@ -1357,9 +1405,19 @@ export default function ProductInputPage() {
                     setTimeout(() => {
                       const resultsElement = document.getElementById('results-section');
                       if (resultsElement) {
-                        resultsElement.scrollIntoView({ behavior: 'smooth' });
+                        // Calculate header height to avoid it covering the results
+                        const stickyHeader = document.querySelector('header') || document.querySelector('nav');
+                        const headerHeight = stickyHeader ? stickyHeader.offsetHeight : 80; // fallback to 80px
+                        
+                        // Scroll to results and account for sticky header
+                        resultsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        
+                        // Add offset for sticky header plus small buffer
+                        setTimeout(() => {
+                          window.scrollBy(0, -(headerHeight + 20));
+                        }, 300);
                       }
-                    }, 100);
+                    }, 200);
                   }}
                   className="bg-gradient-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-white font-bold text-lg py-4 px-12 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-primary/25"
                   data-testid="button-calculate-tlc"
@@ -1571,7 +1629,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits.toLocaleString()}</td>
                                 </tr>
                                 
                                 {/* ROW 2 - Entered Value */}
@@ -1579,7 +1637,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Entered Value</td>
                                   <td className="py-3"></td>
                                   <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue).toLocaleString('en-US')}</td>
                                 </tr>
                                 
                                 {/* ROW 3 - HTS Code Duty */}
@@ -1587,7 +1645,7 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{htsCode}</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{getHtsDescription(htsCode)}</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.00%</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(baseHtsDutyAmount).toLocaleString('en-US')}</td>
                                 </tr>
                                 
                                 {/* ROW 4-6 - Chapter 99 Duty (Line Items 1-3) for China */}
@@ -1596,7 +1654,7 @@ export default function ProductInputPage() {
                                     <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.code}</td>
                                     <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.description}</td>
                                     <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</td>
-                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * (item.percentage / 100)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue * (item.percentage / 100)).toLocaleString('en-US')}</td>
                                   </tr>
                                 ))}
                                 
@@ -1604,15 +1662,15 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.125%</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * 0.00125).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue * 0.00125).toLocaleString('en-US')}</td>
                                 </tr>
                                 
                                 {/* ROW 8 - MPF (Merchandise Processing Fee) */}
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.3464%</td>
+                                  <td className="py-3"></td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
                                     const mpfCalculated = enteredValue * 0.003464;
                                     const mpfMin = 33.58;
@@ -1620,7 +1678,7 @@ export default function ProductInputPage() {
                                     let mpfFinal = mpfCalculated;
                                     if (mpfCalculated < mpfMin) mpfFinal = mpfMin;
                                     if (mpfCalculated > mpfMax) mpfFinal = mpfMax;
-                                    return mpfFinal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    return Math.round(mpfFinal).toLocaleString('en-US');
                                   })()}</td>
                                 </tr>
                                 
@@ -1629,12 +1687,10 @@ export default function ProductInputPage() {
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duties</td>
                                   <td className="py-3"></td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">{(() => {
-                                    const basePercentage = 0;
-                                    const chapter99Percentage = isChinaCountry ? chapter99Codes.reduce((sum, item) => sum + item.percentage, 0) : 0;
-                                    const hmfPercentage = 0.125;
-                                    const mpfPercentage = 0.3464;
-                                    const totalPercentage = basePercentage + chapter99Percentage + hmfPercentage + mpfPercentage;
-                                    return totalPercentage.toFixed(4) + '%';
+                                    const basePercentage = 0; // Row 3 - HTS Code Duty
+                                    const chapter99Percentage = isChinaCountry ? chapter99Codes.reduce((sum, item) => sum + item.percentage, 0) : 0; // Rows 4-6
+                                    const totalPercentage = basePercentage + chapter99Percentage;
+                                    return totalPercentage.toFixed(2) + '%';
                                   })()}</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${(() => {
                                     const hmfFee = enteredValue * 0.00125;
@@ -1645,7 +1701,7 @@ export default function ProductInputPage() {
                                     if (mpfCalculated < mpfMin) mpfFee = mpfMin;
                                     if (mpfCalculated > mpfMax) mpfFee = mpfMax;
                                     const totalWithFees = totalCustomsAndDuties + hmfFee + mpfFee;
-                                    return totalWithFees.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                                    return Math.round(totalWithFees).toLocaleString('en-US');
                                   })()}</td>
                                 </tr>
                               </tbody>

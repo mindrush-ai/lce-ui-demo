@@ -9,54 +9,47 @@ This is a forked version of the original cost management platform, customized to
 ## Development Commands
 
 - `npm run dev` - Start development server with hot reload
-- `npm run build` - Build for production (frontend + backend)
-- `npm start` - Start production server
+- `npm run build` - Build for production (static React SPA)
+- `npm run preview` - Preview production build locally
 - `npm run check` - Run TypeScript type checking
-- `npm run db:push` - Push database schema changes to PostgreSQL
 
 ## Architecture Overview
 
-This is a full-stack B2B cost management platform for calculating Total Landed Costs (TLC) with the following structure:
+This is a static React SPA for calculating Total Landed Costs (TLC), customized for The Honest Company demo:
 
 ### Tech Stack
 - **Frontend**: React 18 + TypeScript, Wouter routing, Shadcn/ui components, Tailwind CSS
-- **Backend**: Express.js + TypeScript with session-based authentication
-- **Database**: PostgreSQL with Drizzle ORM for type-safe operations
-- **Validation**: Zod schemas shared between client and server
-- **Build**: Vite for frontend, esbuild for backend
+- **Styling**: Tailwind CSS with next-themes for dark/light mode
+- **Forms**: React Hook Form with Zod validation
+- **PDF Export**: jsPDF for professional cost breakdowns
+- **Build**: Vite with static deployment optimization
 
 ### Project Structure
-- `client/` - React frontend application
-- `server/` - Express.js backend API
-- `shared/` - Common TypeScript types and Zod validation schemas
-- `migrations/` - Drizzle database migrations
+- `client/` - React SPA source code
+- `shared/` - TypeScript types and Zod validation schemas
+- `dist/` - Production build output (static files)
+- `attached_assets/` - Design assets and screenshots
 
-### Authentication System
-- Session-based authentication using express-session with MemoryStore
-- User registration with two-step signup (credentials + company info)
-- Authentication state managed via useAuth hook with TanStack Query
-- Routes are conditionally rendered based on authentication status
+### Key Architecture Patterns
+- Client-side only validation and calculations (no backend dependencies)
+- Form state management with React Hook Form and persistence across sections
+- Responsive design with mobile-first approach and dark/light theme support
 
 ### Key Components
 
 **Product Input System** (`client/src/pages/product-input.tsx`):
 - Multi-section form with collapsible completed sections
 - Section 1: Product details (Item Number, Name, HTS Code, Country, Unit Cost)
-- Section 2: Item details (Number of wine cases)
+- Section 2: Item details (Number of cases/units for personal care products)
 - Section 3: Shipment details (Container, Incoterms, Ports, Freight)
 - Dynamic freight rate calculation (index rates or custom input)
 - Complete TLC calculation with customs duty business logic
+- **Enhanced UX**: Smooth section transitions with proper scroll positioning that avoids sticky header overlap
 
-**Database Schema** (`shared/schema.ts`):
-- Users table with email/password authentication
-- Companies table linked to users
-- Product validation schemas with comprehensive field validation
-- Authentication schemas for login/signup flows
-
-**Backend Routes** (`server/routes.ts`):
-- `/api/auth/*` - Authentication endpoints
-- `/api/user` - User profile management
-- Database operations via Drizzle ORM
+**Validation Schemas** (`shared/schema.ts`):
+- Product input validation with comprehensive field validation
+- Form schemas for each section with proper error handling
+- TypeScript types shared across components
 
 ### Business Logic
 
@@ -78,8 +71,9 @@ This is a full-stack B2B cost management platform for calculating Total Landed C
 - Form state persists across sections until submission
 - Results display with auto-scroll and responsive design
 - Static deployment ready for Cloudflare Pages, Netlify, or Vercel
-- The Honest Company branding integration (forked from MGX Beverage Group)
-- Business logic adapted from wine calculations to wipes/personal care products
+- The Honest Company branding integration (forked from wine industry platform)
+- Business logic adapted for personal care products (wipes, diapers, etc.)
+- **Scroll Behavior**: Enhanced UX with header-aware scroll positioning for section transitions and results display
 
 ### Key Features
 
@@ -109,8 +103,13 @@ This is a full-stack B2B cost management platform for calculating Total Landed C
 - Built files in `dist/` directory ready for upload
 - Compatible with all major static hosting platforms
 
-# Build and Deployment Commands
+### Build and Deployment Commands
 After making changes, always run:
 - `npm run check` - Verify TypeScript compilation
 - `npm run build` - Generate production static files
 - `npm run preview` - Test production build locally
+
+### Path Aliases
+- `@/*` - Maps to `client/src/*`
+- `@shared/*` - Maps to `shared/*`
+- `@assets/*` - Maps to `attached_assets/*`
