@@ -1,15 +1,19 @@
-# MGX TLC Platform Design Guide
+# The Honest Company TLC Platform Design Guide
 
 ## Overview
-This design guide documents the visual design system for the MGX Beverage Group Total Landed Cost (TLC) platform. It provides guidelines for maintaining consistency across the application's UI components, typography, colors, and user interactions.
+This design guide documents the visual design system for The Honest Company Total Landed Cost (TLC) platform. This is a static React application optimized for calculating landed costs for wipes and personal care products. It provides guidelines for maintaining consistency across the application's UI components, typography, colors, and user interactions.
 
 ## Brand Identity
 
 ### Logo Usage
-- **Primary Logo**: `tfi-2024-logo.svg` (MGX Beverage Group branding)
-- **Usage**: Centered in headers with hover scale effect (105%)
-- **Size**: `h-20 w-auto` standard, responsive scaling
+- **Primary Logo**: `tfi-2024-logo.svg` (Trade Facilitators, Inc. branding)
+- **Usage**: Absolutely centered in headers with hover scale effect (105%)
+- **Responsive Sizing**: 
+  - Mobile: `h-10 w-auto` (40px height)
+  - Tablet: `h-16 w-auto` (64px height) 
+  - Desktop: `h-20 w-auto` (80px height)
 - **Shadow**: `drop-shadow-md` for elevation
+- **Positioning**: `absolute left-1/2 transform -translate-x-1/2`
 
 ### Brand Colors
 - **Primary Brand**: Deep blue theme representing trust and professionalism
@@ -97,6 +101,16 @@ font-family: 'Poppins', system-ui, sans-serif;
 ## Layout & Spacing
 
 ### Container System
+**Header/Footer Containers:**
+```css
+.max-w-6xl {
+  max-width: 72rem; /* 1152px */
+  margin: 0 auto;
+  padding: 0 1rem; /* px-4 sm:px-6 lg:px-8 */
+}
+```
+
+**Content Containers:**
 ```css
 .container {
   max-width: 1200px;
@@ -105,11 +119,23 @@ font-family: 'Poppins', system-ui, sans-serif;
 }
 ```
 
+**Responsive Padding:**
+- Mobile: `px-4` (16px)
+- Small: `px-6` (24px) 
+- Large: `px-8` (32px)
+
 ### Responsive Breakpoints
-- **Mobile**: < 640px
-- **Tablet**: 640px - 768px
-- **Desktop**: > 768px
-- **Large Desktop**: > 1024px
+**Tailwind CSS Standard Breakpoints:**
+- **Mobile**: < 640px (base styles, mobile-first approach)
+- **Small (sm)**: 640px+ (small tablets and up)
+- **Medium (md)**: 768px+ (tablets and up)  
+- **Large (lg)**: 1024px+ (laptops and up)
+- **Extra Large (xl)**: 1280px+ (desktop and up)
+
+**Application Usage:**
+- Header responsive scaling uses `sm` (640px) and `md` (768px) breakpoints
+- Text visibility controls use `md` (768px) for "Total Landed Cost Engine"
+- Form layouts transition to two-column at `lg` (1024px)
 
 ### Border Radius
 ```css
@@ -183,10 +209,34 @@ font-family: 'Poppins', system-ui, sans-serif;
 ### Navigation
 
 #### Header Structure
-- Fixed height with backdrop blur
-- Logo centered with brand text left, actions right
-- Theme toggle and logout functionality
-- Responsive design with mobile adaptations
+- Fixed position with backdrop blur (`backdrop-blur-sm`)
+- Three-column layout: brand text (left), centered logo, actions (right)
+- Theme toggle and navigation functionality (Home icon or Start Calculator button)
+- Fully responsive design with mobile-first adaptations
+
+#### Responsive Header System
+**Mobile (< 640px):**
+- Small logo: `h-10` (40px height)
+- Compact text: `text-xl` for "TLC"
+- Hidden secondary text: "Total Landed Cost Engine" hidden until medium screens
+- Condensed spacing: `space-x-2` between action buttons
+- Smaller icons: `w-4 h-4` for theme toggle
+- Abbreviated button text: "Start" instead of "Start Calculator"
+- Reduced padding: `py-4`
+
+**Tablet (640px - 768px):**
+- Medium logo: `h-16` (64px height) 
+- Standard text: `text-2xl` for "TLC"
+- Full button text: "Start Calculator" displays
+- Standard spacing: `space-x-4`
+- Standard icons: `w-5 h-5`
+- Medium padding: `py-8`
+
+**Desktop (768px+):**
+- Large logo: `h-20` (80px height)
+- Full branding: "Total Landed Cost Engine" visible (`hidden md:inline`)
+- Complete button text and full spacing
+- Full padding and standard interactions
 
 ## Interactive States
 
@@ -275,10 +325,11 @@ font-family: 'Poppins', system-ui, sans-serif;
 - **ChevronDown/ChevronRight**: Navigation and collapsible sections
 - **Check**: Success states and form validation
 - **Moon/Sun**: Theme toggle
+- **Home**: Navigation back to home page (replaces text-based "Back to Home")
 - **Package/Archive**: Product and shipping context
-- **LogOut**: Authentication actions
 - **AlertTriangle/XCircle**: Error and warning states
 - **Calculator/BarChart3/Clock/Shield**: Feature representations
+- **Download**: Export and PDF generation functionality
 
 ### Icon Sizing
 - **Standard**: `h-4 w-4` (16px)
@@ -371,29 +422,75 @@ font-family: 'Poppins', system-ui, sans-serif;
 - Responsive design
 - Accessibility compliance
 
-## Recent Changes
+## New Features
 
-### UI Refinements - 21st Iteration (Completed)
-- **Date**: August 25, 2025
-- **Commit**: `e40d819` - UI Refinements - 21st Iteration: Replace text-blue-500 with custom hex color #0E4A7E
-- **Status**: Successfully committed
-- **Change**: Replaced all instances of `text-blue-500` Tailwind class with custom hex color `#0E4A7E`
-- **Scope**: Updated labels, icons, interactive elements, and accent colors across all pages
-- **Implementation**: Used inline `style={{color: '#0E4A7E'}}` for consistent custom color application
-- **Fixes**: Resolved duplicate className attributes in product-input.tsx
-- **Files Modified**:
-  - `client/src/pages/product-input.tsx`
-  - `client/src/pages/signup.tsx`
-  - `client/src/pages/login.tsx`
-  - `client/src/pages/home.tsx`
-  - `client/src/components/signup/signup-step-2.tsx`
-  - `DESIGN_GUIDE.md` (new file)
+### PDF Export System (Current)
+- **Date**: August 28, 2025
+- **Status**: Implemented
+- **Features**:
+  - **jsPDF Integration**: Client-side PDF generation with professional styling
+  - **The Honest Company Branding**: Custom header with company information
+  - **Detailed Breakdown**: Complete cost analysis with itemized calculations
+  - **Export Buttons**: Top and bottom placement for user convenience
+  - **Automatic Naming**: Timestamped filename generation
+  - **Responsive Layout**: PDF adapts to different data configurations
+- **Implementation**:
+  ```tsx
+  // PDF Export Function
+  const exportToPDF = () => {
+    const pdf = new jsPDF('portrait', 'mm', 'a4');
+    // Professional formatting with company branding
+    // Detailed calculation breakdown
+    // Automatic file naming
+  };
+  ```
 
-### Previous UI Refinements - Iterations 19-20
-- **Last Commit**: `b7a2a62` - Update documentation for UI refinements iterations 19-20
-- **Previous Commit**: `0f3a496` - Update UI branding and text colors across all pages
-- **Status**: These changes are committed and documented
+### Landing Page Implementation (Current)
+- **Date**: August 28, 2025
+- **Status**: Implemented
+- **Features**:
+  - **Professional Marketing**: Hero section with compelling value proposition
+  - **Feature Showcase**: Cards highlighting key platform benefits
+  - **The Honest Company Branding**: Adapted content and messaging
+  - **Responsive Design**: Mobile-first approach with smooth transitions
+  - **Theme Integration**: Full light/dark mode support
+- **Route**: `/` (default landing page)
+
+### Static Architecture Migration (Completed)
+- **Date**: August 28, 2025
+- **Status**: Completed
+- **Changes**:
+  - **Database Removal**: Eliminated PostgreSQL and Drizzle ORM dependencies
+  - **Authentication Removal**: Removed session-based auth system
+  - **Server Elimination**: Converted to static React SPA
+  - **Business Logic Preservation**: Maintained all TLC calculation logic
+  - **Deployment Ready**: Optimized for Cloudflare Pages, Netlify, Vercel
+
+### Responsive Header System (Completed)
+- **Date**: August 28, 2025
+- **Status**: Implemented and refined
+- **Changes**:
+  - **Container Standardization**: Updated to `max-w-6xl` across all components
+  - **Responsive Logo Scaling**: Progressive sizing (`h-10` → `h-16` → `h-20`)
+  - **Icon Navigation**: Clean Home icon replacing text-based navigation
+  - **Adaptive Typography**: "Total Landed Cost Engine" hidden until medium screens
+  - **Mobile Optimization**: Condensed spacing and button text for small screens
+  - **Clickable Branding**: TLC text links to home page for intuitive navigation
+
+## Implementation Updates
+
+### Business Logic Adaptation
+- **Product Focus**: Adapted from wine calculations to wipes/personal care products
+- **Container Logic**: Specialized for consumer goods packaging
+- **Duty Calculations**: Updated for HTS Code 3401.11.00.00 (wipes)
+- **Freight Rates**: China-specific shipping calculations
+
+### Component Architecture
+- **Static Deployment**: No server-side dependencies
+- **Client-side Validation**: Zod schemas for form validation
+- **Theme System**: Persistent light/dark mode with system detection
+- **Responsive Design**: Mobile-first implementation with consistent breakpoints
 
 ---
 
-This design guide should be referenced when implementing new features or modifying existing components to ensure visual and functional consistency across the MGX TLC platform.
+This design guide should be referenced when implementing new features or modifying existing components to ensure visual and functional consistency across The Honest Company TLC platform.

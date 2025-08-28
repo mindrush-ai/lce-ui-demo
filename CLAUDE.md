@@ -74,14 +74,43 @@ This is a full-stack B2B cost management platform for calculating Total Landed C
 
 ### Development Notes
 
-- Shared validation schemas ensure consistency between frontend and backend
-- Authentication redirects properly handle login/logout state
+- Client-side validation ensures data integrity without backend dependency
 - Form state persists across sections until submission
 - Results display with auto-scroll and responsive design
-- Theme support (light/dark) throughout the application
+- Static deployment ready for Cloudflare Pages, Netlify, or Vercel
 - The Honest Company branding integration (forked from MGX Beverage Group)
+- Business logic adapted from wine calculations to wipes/personal care products
 
-### Environment Setup
-- Requires `DATABASE_URL` environment variable for PostgreSQL connection
-- Session secret configured via `SESSION_SECRET` environment variable
-- Development runs on port 5000 (configurable via `PORT` env var)
+### Key Features
+
+**PDF Export System**:
+- Professional PDF generation using jsPDF
+- The Honest Company branding and styling
+- Detailed cost breakdown with itemized calculations
+- Responsive export buttons (top and bottom of results)
+- Automatic filename generation with timestamp
+
+**Responsive Design Implementation**:
+- Container system: `max-w-6xl` for consistent layout
+- Logo sizing: `h-10 sm:h-16 md:h-20` responsive scaling
+- Typography: Mobile-first approach with proper breakpoints
+- Header: Clickable brand text with center-aligned logo
+- Navigation: Icon-only home button for clean interface
+
+**Theme System**:
+- Light/dark mode toggle with smooth transitions
+- System preference detection and persistence
+- Consistent color scheme across all components
+- Professional styling adapted for The Honest Company
+
+### Deployment
+- Static site optimized for CDN deployment
+- No server-side dependencies or environment variables required
+- Built files in `dist/` directory ready for upload
+- Compatible with all major static hosting platforms
+
+# Build and Deployment Commands
+After making changes, always run:
+- `npm run check` - Verify TypeScript compilation
+- `npm run build` - Generate production static files
+- `npm run preview` - Test production build locally

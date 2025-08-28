@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, LogOut, AlertTriangle, XCircle } from "lucide-react";
+import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, AlertTriangle, XCircle, Download, Home } from "lucide-react";
 import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
+import jsPDF from "jspdf";
 
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,6 @@ import { useTheme } from "@/hooks/use-theme";
 import { Link, useLocation } from "wouter";
 import { countries } from "@/lib/countries";
 import { cn } from "@/lib/utils";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 
 // System Variables - Hardcoded for this version
 const CONTAINER_UTILIZATION = 0.90;
@@ -73,7 +73,7 @@ export default function ProductInputPage() {
     defaultValues: {
       itemNumber: "",
       nameId: "",
-      htsCode: "",
+      htsCode: undefined,
       countryOfOrigin: "",
       unitCost: 0,
       masterPackLength: 0,
@@ -81,7 +81,7 @@ export default function ProductInputPage() {
       masterPackHeight: 0,
       masterPackWeight: 0,
       itemsPerMasterPack: 0,
-      containerSize: "",
+      containerSize: undefined,
       incoterms: "",
       originPort: "",
       destinationPort: "",
@@ -112,31 +112,318 @@ export default function ProductInputPage() {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
-  const handleLogout = async () => {
-    try {
-      await apiRequest("POST", "/api/auth/logout");
+  const handleBackToHome = () => {
+    setLocation("/");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    const data = form.getValues();
+    
+    // Get form data
+    const unitCost = data.unitCost || 0;
+    const freightCost = data.freightCost || 0;
+    const masterPackLength = data.masterPackLength || 0;
+    const masterPackWidth = data.masterPackWidth || 0;
+    const masterPackHeight = data.masterPackHeight || 0;
+    const masterPackWeight = data.masterPackWeight || 0;
+    const itemsPerMasterPack = data.itemsPerMasterPack || 0;
+    
+    // Container volumes in cubic meters
+    const containerVolumes = {
+      "20-feet": 30,
+      "40-feet": 60,
+      "40-feet-high-cube": 70,
+      "45-feet": 80,
+    };
+    
+    const containerVolume = containerVolumes[data.containerSize as keyof typeof containerVolumes] || 60;
+    const utilizationRate = CONTAINER_UTILIZATION;
+    const usableVolume = containerVolume * utilizationRate;
+    
+    // Calculate master pack volume in cubic meters
+    const masterPackVolumeCm = masterPackLength * masterPackWidth * masterPackHeight;
+    const masterPackVolumeM3 = masterPackVolumeCm / 1000000;
+    
+    // Maximum master packs that fit
+    const maxMasterPacks = masterPackVolumeM3 > 0 ? Math.floor(usableVolume / masterPackVolumeM3) : 0;
+    const numberOfUnits = maxMasterPacks * itemsPerMasterPack;
+    const enteredValue = numberOfUnits * unitCost;
+    
+    // Duty calculations for China imports
+    const isChina = data.countryOfOrigin === "CN";
+    let baseHtsDutyAmount = 0; // All HTS codes are duty-free base
+    
+    // Chapter 99 duties for China
+    let chapter99DutyAmount = 0;
+    if (isChina) {
+      const dutyRates = {
+        "3401.19.00.00": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.15", description: "Section 301 List 4A", rate: 0.075 }
+        ],
+        "5603.92.00.70": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "3401.11.50.00": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "5603.12.00.10": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "5603.14.90.10": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ]
+      };
       
-      // Invalidate auth queries to refresh authentication state
-      await queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      const htsCodeDuties = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
+      chapter99DutyAmount = htsCodeDuties.reduce((sum, duty) => sum + (enteredValue * duty.rate), 0);
+    }
+    
+    // Additional fees
+    const hmfFee = enteredValue * 0.00125;
+    const mpfCalculated = enteredValue * 0.003464;
+    const mpfFee = Math.min(Math.max(mpfCalculated, 33.58), 651.50);
+    
+    const totalCustomsAndDuties = baseHtsDutyAmount + chapter99DutyAmount + hmfFee + mpfFee;
+    const dutyPerItem = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
+    const freightPerItem = numberOfUnits > 0 ? freightCost / numberOfUnits : 0;
+    const itemLandedCost = unitCost + dutyPerItem + freightPerItem;
+    
+    // Colors for styling
+    const primaryColor = [14, 74, 126]; // #0E4A7E
+    const lightBlueColor = [219, 234, 254]; // Light blue background
+    const grayColor = [107, 114, 128]; // Gray text
+    
+    // Header with logo and title
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("The Honest Company", 105, 15, { align: 'center' });
+    
+    doc.setFontSize(24);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Total Landed Cost", 105, 28, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 38, { align: 'center' });
+    
+    // Hero Box - Item Landed Cost
+    doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
+    doc.roundedRect(15, 48, 180, 30, 5, 5, 'F');
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(1);
+    doc.roundedRect(15, 48, 180, 30, 5, 5, 'S');
+    
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("ITEM LANDED COST (PER UNIT)", 105, 60, { align: 'center' });
+    
+    doc.setFontSize(28);
+    doc.text(`$${itemLandedCost.toFixed(4)}`, 105, 73, { align: 'center' });
+    
+    // Product Information Section
+    let yPos = 93;
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Product Information", 20, yPos);
+    
+    yPos += 10;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Item Number: ${data.itemNumber}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Name/Description: ${data.nameId}`, 20, yPos);
+    yPos += 6;
+    doc.text(`HTS Code: ${data.htsCode}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Country of Origin: China`, 20, yPos);
+    yPos += 6;
+    doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Container: ${data.containerSize}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Maximum Units in Container: ${numberOfUnits.toLocaleString()}`, 20, yPos);
+    
+    // Duties Section
+    yPos += 20;
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("DUTIES", 105, yPos, { align: 'center' });
+    
+    yPos += 5;
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(200, 200, 200);
+    doc.line(20, yPos, 190, yPos);
+    
+    // Duties Table
+    yPos += 10;
+    const tableData = [
+      ["Number of Units", "", "", numberOfUnits.toLocaleString()],
+      ["Entered Value", "", "", `$${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
+      [data.htsCode || "", "Base HTS Code Duty", "Free", `$${baseHtsDutyAmount.toFixed(2)}`]
+    ];
+    
+    // Add Chapter 99 duties if applicable
+    if (isChina && data.htsCode) {
+      const dutyRates = {
+        "3401.19.00.00": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.15", description: "Section 301 List 4A", rate: 0.075 }
+        ],
+        "5603.92.00.70": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "3401.11.50.00": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "5603.12.00.10": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ],
+        "5603.14.90.10": [
+          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
+          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
+          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
+        ]
+      };
       
-      toast({
-        title: "Logged out",
-        description: "You have been logged out successfully.",
-      });
-      
-      // Redirect to login page (force a full page reload to ensure clean state)
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 300);
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast({
-        title: "Logout Failed",
-        description: "Failed to logout. Please try again.",
-        variant: "destructive",
+      const htsCodeDuties = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
+      htsCodeDuties.forEach((duty) => {
+        const dutyAmount = enteredValue * duty.rate;
+        tableData.push([
+          duty.code,
+          duty.description,
+          `${(duty.rate * 100).toFixed(1)}%`,
+          `$${dutyAmount.toFixed(2)}`
+        ]);
       });
     }
+    
+    tableData.push(
+      ["HMF", "Harbor Maintenance Fee", "", `$${hmfFee.toFixed(2)}`],
+      ["MPF", "Merchandise Processing Fee", "", `$${mpfFee.toFixed(2)}`]
+    );
+    
+    // Draw table
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    
+    tableData.forEach((row, index) => {
+      // Alternate row background
+      if (index % 2 === 0) {
+        doc.setFillColor(248, 250, 252);
+        doc.rect(20, yPos - 3, 170, 8, 'F');
+      }
+      
+      doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+      doc.text(row[0], 22, yPos + 2);
+      doc.text(row[1], 55, yPos + 2);
+      doc.text(row[2], 120, yPos + 2);
+      
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(0, 0, 0);
+      doc.text(row[3], 188, yPos + 2, { align: 'right' });
+      
+      doc.setFont('helvetica', 'normal');
+      
+      // Draw row separator
+      doc.setDrawColor(230, 230, 230);
+      doc.line(20, yPos + 4, 190, yPos + 4);
+      
+      yPos += 8;
+    });
+    
+    // Total row with thicker line
+    doc.setLineWidth(1);
+    doc.setDrawColor(100, 100, 100);
+    doc.line(20, yPos - 1, 190, yPos - 1);
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(0, 0, 0);
+    doc.text("Total Duties", 22, yPos + 3);
+    doc.text(`$${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 188, yPos + 3, { align: 'right' });
+    
+    // Highlighted Duty Per Item
+    yPos += 15;
+    doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'S');
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Duty Per Item", 25, yPos + 8);
+    doc.text(`$${dutyPerItem.toFixed(4)}`, 185, yPos + 8, { align: 'right' });
+    
+    // Freight Costs Section
+    yPos += 25;
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("FREIGHT COSTS", 105, yPos, { align: 'center' });
+    
+    yPos += 10;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+    doc.text("China to United States", 22, yPos);
+    
+    yPos += 8;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+    doc.text("Total Freight Costs", 22, yPos);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`$${freightCost.toLocaleString()}`, 188, yPos, { align: 'right' });
+    
+    yPos += 8;
+    doc.setLineWidth(0.5);
+    doc.setDrawColor(200, 200, 200);
+    doc.line(22, yPos, 188, yPos);
+    
+    yPos += 6;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("Freight Per Item", 22, yPos);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`$${freightPerItem.toFixed(4)}`, 188, yPos, { align: 'right' });
+    
+    // Footer
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
+    doc.text("© 2025 The Honest Company. All rights reserved.", 105, 280, { align: 'center' });
+    
+    // Save the PDF
+    doc.save(`TLC_Calculation_${data.itemNumber || 'Report'}_${new Date().toISOString().split('T')[0]}.pdf`);
   };
+
 
   const toggleSection = (sectionId: string) => {
     setSections(prev => prev.map(section => 
@@ -269,30 +556,30 @@ export default function ProductInputPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-[#0E4A7E] dark:text-slate-100 font-sans transition-colors duration-300 relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-foreground font-sans transition-colors duration-300 relative">
       <div className="min-h-screen flex flex-col relative z-10">
         <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
             <div className="flex items-center justify-between">
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-2xl font-semibold text-[#0E4A7E]">TLC</span>
-                  <span className="text-base text-muted-foreground hidden sm:inline">Total Landed Cost Engine</span>
+                  <span className="text-xl sm:text-2xl font-semibold text-foreground">TLC</span>
+                  <span className="text-base text-muted-foreground hidden md:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
-              {/* Center - Logo Only (Larger) */}
+              {/* Center - Logo Only (Responsive) */}
               <div className="absolute left-1/2 transform -translate-x-1/2">
                 <img 
                   src={tfiLogoPath} 
                   alt="TFI Logo" 
-                  className="h-24 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
+                  className="h-10 sm:h-16 md:h-20 w-auto hover:scale-105 transition-transform duration-200 drop-shadow-md"
                 />
               </div>
               
               {/* Right Side - Actions */}
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -301,20 +588,19 @@ export default function ProductInputPage() {
                   data-testid="button-theme-toggle"
                 >
                   {theme === "dark" ? (
-                    <Sun className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Sun className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-foreground transition-colors duration-200" />
                   ) : (
-                    <Moon className="w-5 h-5 text-[#0E4A7E] dark:text-slate-400 group-hover:text-slate-800 dark:group-hover:text-slate-200 transition-colors duration-200" />
+                    <Moon className="w-4 h-4 sm:w-5 sm:h-5 text-muted-foreground group-hover:text-foreground transition-colors duration-200" />
                   )}
                 </Button>
                 
                 <Button 
                   variant="outline"
-                  onClick={handleLogout}
-                  data-testid="button-logout"
-                  className="flex items-center space-x-2"
+                  onClick={handleBackToHome}
+                  data-testid="button-back-home"
+                  className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-200"
                 >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
+                  <Home className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors duration-200" />
                 </Button>
               </div>
             </div>
@@ -1034,9 +1320,22 @@ export default function ProductInputPage() {
             {/* Results Section */}
             {showResults && (
               <div id="results-section" className="mt-12 mb-8">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-foreground mb-2">Total Landed Cost</h2>
-                  <p className="text-[#0E4A7E] dark:text-slate-400">Your calculated cost breakdown</p>
+                <div className="mb-8 flex justify-between items-start">
+                  <div>
+                    <h2 className="text-2xl font-bold text-foreground mb-2">Total Landed Cost</h2>
+                    <p className="text-[#0E4A7E] dark:text-slate-400">Your calculated cost breakdown</p>
+                  </div>
+                  
+                  {/* Export PDF Button */}
+                  <Button 
+                    onClick={exportToPDF}
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                    data-testid="button-export-pdf"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Export PDF</span>
+                  </Button>
                 </div>
 
                 <div className="space-y-6">
@@ -1377,13 +1676,26 @@ export default function ProductInputPage() {
                   </div>
 
                 </div>
+                
+                {/* Bottom Export PDF Button */}
+                <div className="mt-8 flex justify-center">
+                  <Button 
+                    onClick={exportToPDF}
+                    variant="outline"
+                    className="flex items-center space-x-2"
+                    data-testid="button-export-pdf-bottom"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Export PDF</span>
+                  </Button>
+                </div>
               </div>
             )}
           </div>
         </main>
 
         <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
-          <div className="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="text-center text-sm text-[#0E4A7E] dark:text-slate-400">
               <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
             </div>
