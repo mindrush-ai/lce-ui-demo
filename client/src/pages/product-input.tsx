@@ -276,8 +276,8 @@ export default function ProductInputPage() {
     yPos += 10;
     const tableData = [
       ["Number of Units", "", "", numberOfUnits.toLocaleString()],
-      ["Entered Value", "", "", `$${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
-      [data.htsCode || "", "Base HTS Code Duty", "Free", `$${baseHtsDutyAmount.toFixed(2)}`]
+      ["Entered Value", "", "100.00%", `$${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`],
+      [data.htsCode || "", "Base HTS Code Duty", "0.00%", `$${baseHtsDutyAmount.toFixed(2)}`]
     ];
     
     // Add Chapter 99 duties if applicable
@@ -1578,7 +1578,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Entered Value</td>
                                   <td className="py-3"></td>
-                                  <td className="py-3"></td>
+                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">100.00%</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${enteredValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
@@ -1604,7 +1604,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.125%</td>
+                                  <td className="py-3"></td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * 0.00125).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 
@@ -1612,7 +1612,7 @@ export default function ProductInputPage() {
                                 <tr className="border-b border-slate-300 dark:border-slate-600/30">
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.3464%</td>
+                                  <td className="py-3"></td>
                                   <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
                                     const mpfCalculated = enteredValue * 0.003464;
                                     const mpfMin = 33.58;
