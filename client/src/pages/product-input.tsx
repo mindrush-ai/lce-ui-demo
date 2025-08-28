@@ -867,6 +867,19 @@ export default function ProductInputPage() {
                                             if (inputValue === '') {
                                               field.onChange(0);
                                             } else {
+                                              // Check if input has more than 4 decimal places
+                                              const decimalIndex = inputValue.indexOf('.');
+                                              if (decimalIndex !== -1 && inputValue.length - decimalIndex > 5) {
+                                                // Truncate to 4 decimal places to prevent further input
+                                                const truncated = inputValue.substring(0, decimalIndex + 5);
+                                                const value = parseFloat(truncated);
+                                                if (!isNaN(value)) {
+                                                  const rounded = Math.round(value * 10000) / 10000;
+                                                  field.onChange(rounded);
+                                                }
+                                                return;
+                                              }
+                                              
                                               const value = parseFloat(inputValue);
                                               if (!isNaN(value)) {
                                                 const rounded = Math.round(value * 10000) / 10000;
@@ -979,6 +992,19 @@ export default function ProductInputPage() {
                                                   if (inputValue === '') {
                                                     field.onChange(0);
                                                   } else {
+                                                    // Check if input has more than 2 decimal places
+                                                    const decimalIndex = inputValue.indexOf('.');
+                                                    if (decimalIndex !== -1 && inputValue.length - decimalIndex > 3) {
+                                                      // Truncate to 2 decimal places to prevent further input
+                                                      const truncated = inputValue.substring(0, decimalIndex + 3);
+                                                      const value = parseFloat(truncated);
+                                                      if (!isNaN(value)) {
+                                                        const rounded = Math.round(value * 100) / 100;
+                                                        field.onChange(rounded);
+                                                      }
+                                                      return;
+                                                    }
+                                                    
                                                     const value = parseFloat(inputValue);
                                                     if (!isNaN(value)) {
                                                       const rounded = Math.round(value * 100) / 100;
@@ -1013,6 +1039,19 @@ export default function ProductInputPage() {
                                                   if (inputValue === '') {
                                                     field.onChange(0);
                                                   } else {
+                                                    // Check if input has more than 2 decimal places
+                                                    const decimalIndex = inputValue.indexOf('.');
+                                                    if (decimalIndex !== -1 && inputValue.length - decimalIndex > 3) {
+                                                      // Truncate to 2 decimal places to prevent further input
+                                                      const truncated = inputValue.substring(0, decimalIndex + 3);
+                                                      const value = parseFloat(truncated);
+                                                      if (!isNaN(value)) {
+                                                        const rounded = Math.round(value * 100) / 100;
+                                                        field.onChange(rounded);
+                                                      }
+                                                      return;
+                                                    }
+                                                    
                                                     const value = parseFloat(inputValue);
                                                     if (!isNaN(value)) {
                                                       const rounded = Math.round(value * 100) / 100;
@@ -1047,6 +1086,19 @@ export default function ProductInputPage() {
                                                   if (inputValue === '') {
                                                     field.onChange(0);
                                                   } else {
+                                                    // Check if input has more than 2 decimal places
+                                                    const decimalIndex = inputValue.indexOf('.');
+                                                    if (decimalIndex !== -1 && inputValue.length - decimalIndex > 3) {
+                                                      // Truncate to 2 decimal places to prevent further input
+                                                      const truncated = inputValue.substring(0, decimalIndex + 3);
+                                                      const value = parseFloat(truncated);
+                                                      if (!isNaN(value)) {
+                                                        const rounded = Math.round(value * 100) / 100;
+                                                        field.onChange(rounded);
+                                                      }
+                                                      return;
+                                                    }
+                                                    
                                                     const value = parseFloat(inputValue);
                                                     if (!isNaN(value)) {
                                                       const rounded = Math.round(value * 100) / 100;
@@ -1092,6 +1144,19 @@ export default function ProductInputPage() {
                                               if (inputValue === '') {
                                                 field.onChange(0);
                                               } else {
+                                                // Check if input has more than 2 decimal places
+                                                const decimalIndex = inputValue.indexOf('.');
+                                                if (decimalIndex !== -1 && inputValue.length - decimalIndex > 3) {
+                                                  // Truncate to 2 decimal places to prevent further input
+                                                  const truncated = inputValue.substring(0, decimalIndex + 3);
+                                                  const value = parseFloat(truncated);
+                                                  if (!isNaN(value)) {
+                                                    const rounded = Math.round(value * 100) / 100;
+                                                    field.onChange(rounded);
+                                                  }
+                                                  return;
+                                                }
+                                                
                                                 const value = parseFloat(inputValue);
                                                 if (!isNaN(value)) {
                                                   const rounded = Math.round(value * 100) / 100;
