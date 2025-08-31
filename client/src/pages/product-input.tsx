@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { useTheme } from "@/hooks/use-theme";
 import { Link, useLocation } from "wouter";
@@ -437,8 +438,12 @@ export default function ProductInputPage() {
     doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
     doc.text("© 2025 The Honest Company. All rights reserved.", 105, 280, { align: 'center' });
     
-    // Save the PDF
-    doc.save(`TLC_Calculation_${data.itemNumber || 'Report'}_${new Date().toISOString().split('T')[0]}.pdf`);
+    // Save the PDF with timestamp
+    const now = new Date();
+    const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+    const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
+    const timestamp = `${dateStr}_${timeStr}`;
+    doc.save(`TLC_Calculation_${data.itemNumber || 'Report'}_${timestamp}.pdf`);
   };
 
 
@@ -1588,43 +1593,25 @@ export default function ProductInputPage() {
                     </div>
                   </div>
 
-                  {/* Box 2 - Customs and Duties (Full Width) */}
-                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
-                    <h3 className="font-semibold text-foreground mb-6 text-center text-[20px]">DUTIES</h3>
+                  {/* Box 2A - Duties Per Item (Full Width) */}
+                  <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6 mb-6">
+                    <h3 className="font-semibold text-foreground mb-6 text-center text-[20px]">DUTIES - ITEM</h3>
                     <hr className="border-slate-300/50 dark:border-slate-600/50 mb-6" />
                     <div className="space-y-4">
                       {(() => {
                         const unitCost = form.getValues("unitCost") || 0;
                         const htsCode = form.getValues("htsCode") || "";
                         const countryOfOrigin = form.getValues("countryOfOrigin") || "";
-                        const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
-                        const masterPackLength = form.getValues("masterPackLength") || 0;
-                        const masterPackWidth = form.getValues("masterPackWidth") || 0;
-                        const masterPackHeight = form.getValues("masterPackHeight") || 0;
-                        const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
                         
-                        // Calculate maximum units that fit in container
-                        const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
-                        const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
-                        const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
-                        const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
-                        const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
-                        const numberOfUnits = maxMasterPacksPerContainer * itemsPerMasterPack;
-                        
-                        // China for wipes duty calculations
+                        // For single item calculations
+                        const numberOfUnits = 1; // Single item
                         const isChinaCountry = countryOfOrigin === "CN";
-                        
-                        const enteredValue = numberOfUnits * unitCost; // in USD
+                        const enteredValue = numberOfUnits * unitCost; // in USD (single item value)
                         
                         // Base HTS Code Duty calculation (all wipes are duty-free)
-                        const getBaseHtsDuty = (code: string, value: number) => {
-                          const validCodes = ["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"];
-                          return validCodes.includes(code) ? 0 : 0; // All wipes are duty-free
-                        };
+                        const baseHtsDutyAmount = 0; // All supported HTS codes are duty-free
                         
-                        const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
-                        
-                        // Chapter 99 Duty calculation for China
+                        // Chapter 99 Duty calculation for China (single item)
                         const getChapter99Codes = (htsCode: string) => {
                           switch (htsCode) {
                             case "3401.19.00.00": 
@@ -1657,23 +1644,45 @@ export default function ProductInputPage() {
                                 { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
                                 { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
                               ];
-                            default: 
+                            default:
                               return [];
                           }
                         };
                         
                         const chapter99Codes = isChinaCountry ? getChapter99Codes(htsCode) : [];
-                        let totalChapter99Duty = 0;
                         
-                        if (isChinaCountry) {
-                          chapter99Codes.forEach(item => {
-                            totalChapter99Duty += enteredValue * (item.percentage / 100);
-                          });
-                        }
+                        // Calculate HMF and MPF for single item
+                        const hmfFee = enteredValue * 0.00125;
+                        const mpfFeeContainer = (() => {
+                          const calculated = enteredValue * 0.003464;
+                          return Math.min(Math.max(calculated, 33.58), 651.50);
+                        })();
                         
-                        const totalCustomsAndDuties = baseHtsDutyAmount + totalChapter99Duty;
+                        // Calculate MPF per item (divide container MPF by total units)
+                        const mpfPerItem = (() => {
+                          const containerUnits = form.getValues("itemsPerMasterPack") || 1;
+                          const masterPackLength = form.getValues("masterPackLength") || 1;
+                          const masterPackWidth = form.getValues("masterPackWidth") || 1;
+                          const masterPackHeight = form.getValues("masterPackHeight") || 1;
+                          const containerSize = form.getValues("containerSize") || "";
+                          const CONTAINER_VOLUMES = {
+                            "20-feet": 28,
+                            "40-feet": 54,
+                            "40-feet-high-cube": 68,
+                            "45-feet": 86
+                          };
+                          const CONTAINER_UTILIZATION = 0.80;
+                          const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize as keyof typeof CONTAINER_VOLUMES] || 28;
+                          const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                          const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                          const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
+                          const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                          const totalContainerUnits = maxMasterPacksPerContainer * containerUnits;
+                          return totalContainerUnits > 0 ? mpfFeeContainer / totalContainerUnits : 0;
+                        })();
                         
-                        // HTS Code descriptions for the table
+                        const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Codes.reduce((sum, item) => sum + (enteredValue * (item.percentage / 100)), 0) + hmfFee + mpfPerItem;
+                        
                         const getHtsDescription = (code: string) => {
                           const descriptions = {
                             "3401.19.00.00": "Baby Wipes & Flushable Wipes",
@@ -1686,116 +1695,103 @@ export default function ProductInputPage() {
                         };
                         
                         return (
-                          <div className="overflow-x-auto">
-                            <table className="w-full">
-                              <tbody>
+                          <>
+                            <Table>
+                              <TableBody>
                                 {/* ROW 1 - Number of Units */}
-                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits.toLocaleString()}</td>
-                                </tr>
+                                <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits.toLocaleString()}</TableCell>
+                                </TableRow>
                                 
-                                {/* ROW 2 - Entered Value */}
-                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Entered Value</td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue).toLocaleString('en-US')}</td>
-                                </tr>
+                                {/* ROW 2 - Unit Cost */}
+                                <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Unit Cost</TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${unitCost.toFixed(4)}</TableCell>
+                                </TableRow>
                                 
                                 {/* ROW 3 - HTS Code Duty */}
-                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{htsCode}</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{getHtsDescription(htsCode)}</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.00%</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(baseHtsDutyAmount).toLocaleString('en-US')}</td>
-                                </tr>
+                                <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{htsCode}</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{getHtsDescription(htsCode)}</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">0.00%</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${baseHtsDutyAmount.toFixed(4)}</TableCell>
+                                </TableRow>
                                 
                                 {/* ROW 4-6 - Chapter 99 Duty (Line Items 1-3) for China */}
                                 {isChinaCountry && chapter99Codes.map((item, index) => (
-                                  <tr key={index} className="border-b border-slate-300 dark:border-slate-600/30">
-                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.code}</td>
-                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.description}</td>
-                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</td>
-                                    <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue * (item.percentage / 100)).toLocaleString('en-US')}</td>
-                                  </tr>
+                                  <TableRow key={index} className="border-b border-slate-300 dark:border-slate-600/30">
+                                    <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.code}</TableCell>
+                                    <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.description}</TableCell>
+                                    <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">{item.percentage.toFixed(1)}%</TableCell>
+                                    <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * (item.percentage / 100)).toFixed(4)}</TableCell>
+                                  </TableRow>
                                 ))}
                                 
                                 {/* ROW 7 - HMF (Harbor Maintenance Fee) */}
-                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${Math.round(enteredValue * 0.00125).toLocaleString('en-US')}</td>
-                                </tr>
+                                <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">HMF</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Harbor Maintenance Fee</TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(enteredValue * 0.00125).toFixed(4)}</TableCell>
+                                </TableRow>
                                 
                                 {/* ROW 8 - MPF (Merchandise Processing Fee) */}
-                                <tr className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
-                                    const mpfCalculated = enteredValue * 0.003464;
-                                    const mpfMin = 33.58;
-                                    const mpfMax = 651.50;
-                                    let mpfFinal = mpfCalculated;
-                                    if (mpfCalculated < mpfMin) mpfFinal = mpfMin;
-                                    if (mpfCalculated > mpfMax) mpfFinal = mpfMax;
-                                    return Math.round(mpfFinal).toLocaleString('en-US');
-                                  })()}</td>
-                                </tr>
+                                <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">MPF</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Merchandise Processing Fee</TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${(() => {
+                                    const calculated = enteredValue * 0.003464;
+                                    const mpfAmount = Math.min(Math.max(calculated, 33.58), 651.50);
+                                    // For single item, divide by the total container units to get per-item amount
+                                    const containerUnits = form.getValues("itemsPerMasterPack") || 1;
+                                    const masterPackLength = form.getValues("masterPackLength") || 1;
+                                    const masterPackWidth = form.getValues("masterPackWidth") || 1;
+                                    const masterPackHeight = form.getValues("masterPackHeight") || 1;
+                                    const containerSize = form.getValues("containerSize") || "";
+                                    const CONTAINER_VOLUMES = {
+                                      "20-feet": 28,
+                                      "40-feet": 54,
+                                      "40-feet-high-cube": 68,
+                                      "45-feet": 86
+                                    };
+                                    const CONTAINER_UTILIZATION = 0.80;
+                                    const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize as keyof typeof CONTAINER_VOLUMES] || 28;
+                                    const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                                    const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                                    const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
+                                    const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                                    const totalContainerUnits = maxMasterPacksPerContainer * containerUnits;
+                                    const mpfPerItem = totalContainerUnits > 0 ? mpfAmount / totalContainerUnits : 0;
+                                    return mpfPerItem.toFixed(4);
+                                  })()}</TableCell>
+                                </TableRow>
                                 
-                                {/* ROW 9 - Total (formerly ROW 7) */}
-                                <tr className="border-t-2 border-slate-400 dark:border-slate-500">
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duties</td>
-                                  <td className="py-3"></td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">{(() => {
+                                {/* ROW 9 - Total Duties for Single Item */}
+                                <TableRow className="border-t-2 border-slate-400 dark:border-slate-500">
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duty Per Item</TableCell>
+                                  <TableCell className="py-3"></TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">{(() => {
                                     const basePercentage = 0; // Row 3 - HTS Code Duty
                                     const chapter99Percentage = isChinaCountry ? chapter99Codes.reduce((sum, item) => sum + item.percentage, 0) : 0; // Rows 4-6
                                     const totalPercentage = basePercentage + chapter99Percentage;
                                     return totalPercentage.toFixed(2) + '%';
-                                  })()}</td>
-                                  <td className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${(() => {
-                                    const hmfFee = enteredValue * 0.00125;
-                                    const mpfCalculated = enteredValue * 0.003464;
-                                    const mpfMin = 33.58;
-                                    const mpfMax = 651.50;
-                                    let mpfFee = mpfCalculated;
-                                    if (mpfCalculated < mpfMin) mpfFee = mpfMin;
-                                    if (mpfCalculated > mpfMax) mpfFee = mpfMax;
-                                    const totalWithFees = totalCustomsAndDuties + hmfFee + mpfFee;
-                                    return Math.round(totalWithFees).toLocaleString('en-US');
-                                  })()}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            {/* Highlighted Duty Per Item Section */}
-                            <div className="mt-6 pt-6 border-t border-slate-300 dark:border-slate-600/50">
-                              <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
-                                <div className="flex justify-between items-center">
-                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item</span>
-                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${numberOfUnits > 0 ? (() => {
-                                    const hmfFee = enteredValue * 0.00125;
-                                    const mpfCalculated = enteredValue * 0.003464;
-                                    const mpfMin = 33.58;
-                                    const mpfMax = 651.50;
-                                    let mpfFee = mpfCalculated;
-                                    if (mpfCalculated < mpfMin) mpfFee = mpfMin;
-                                    if (mpfCalculated > mpfMax) mpfFee = mpfMax;
-                                    const totalWithFees = totalCustomsAndDuties + hmfFee + mpfFee;
-                                    return (totalWithFees / numberOfUnits).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-                                  })() : '0.00'}</span>
-                                </div>
-                                
-                              </div>
-                            </div>
-                          </div>
+                                  })()}</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toFixed(4)}</TableCell>
+                                </TableRow>
+                              </TableBody>
+                            </Table>
+                          </>
                         );
                       })()}
                     </div>
                   </div>
+
 
                   {/* Box 3 - Freight Costs */}
                   <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6">
