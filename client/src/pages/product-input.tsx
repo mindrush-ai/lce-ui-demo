@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown, ChevronRight, Check, Moon, Sun, Package, Archive, AlertTriangle, XCircle, Download, Home } from "lucide-react";
-import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 import jsPDF from "jspdf";
+import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 
 import { productInfoSchema, type ProductInfo } from "@shared/schema";
 import { Button } from "@/components/ui/button";
@@ -129,219 +129,147 @@ export default function ProductInputPage() {
     const masterPackHeight = data.masterPackHeight || 0;
     const masterPackWeight = data.masterPackWeight || 0;
     const itemsPerMasterPack = data.itemsPerMasterPack || 0;
+    const htsCode = data.htsCode || "";
+    const countryOfOrigin = data.countryOfOrigin || "";
     
-    // Container volumes in cubic meters
-    const containerVolumes = {
-      "20-feet": 30,
-      "40-feet": 60,
-      "40-feet-high-cube": 70,
-      "45-feet": 80,
-    };
+    // Container and capacity calculations
+    const containerVolumeCubicMeters = CONTAINER_VOLUMES[data.containerSize as keyof typeof CONTAINER_VOLUMES] || 0;
+    const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+    const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+    const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
+    const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+    const numberOfUnits = maxMasterPacksPerContainer * itemsPerMasterPack;
     
-    const containerVolume = containerVolumes[data.containerSize as keyof typeof containerVolumes] || 60;
-    const utilizationRate = CONTAINER_UTILIZATION;
-    const usableVolume = containerVolume * utilizationRate;
-    
-    // Calculate master pack volume in cubic meters
-    const masterPackVolumeCm = masterPackLength * masterPackWidth * masterPackHeight;
-    const masterPackVolumeM3 = masterPackVolumeCm / 1000000;
-    
-    // Maximum master packs that fit
-    const maxMasterPacks = masterPackVolumeM3 > 0 ? Math.floor(usableVolume / masterPackVolumeM3) : 0;
-    const numberOfUnits = maxMasterPacks * itemsPerMasterPack;
+    // Calculations matching web output
     const enteredValue = numberOfUnits * unitCost;
+    const isChinaCountry = countryOfOrigin === "CN";
     
-    // Duty calculations for China imports
-    const isChina = data.countryOfOrigin === "CN";
-    let baseHtsDutyAmount = 0; // All HTS codes are duty-free base
+    // Base HTS Code Duty (all are 0%)
+    const baseHtsDutyAmount = 0;
     
     // Chapter 99 duties for China
-    let chapter99DutyAmount = 0;
-    if (isChina) {
-      const dutyRates = {
-        "3401.19.00.00": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.15", description: "Section 301 List 4A", rate: 0.075 }
-        ],
-        "5603.92.00.70": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "3401.11.50.00": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "5603.12.00.10": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "5603.14.90.10": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ]
+    let chapter99Duty = 0;
+    let chapter99Codes: Array<{code: string, description: string, percentage: number}> = [];
+    
+    if (isChinaCountry) {
+      const getChapter99Codes = (code: string) => {
+        switch (code) {
+          case "3401.19.00.00": return [
+            { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+            { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+            { code: "9903.88.15", description: "Section 301 List 4A", percentage: 7.5 }
+          ];
+          case "5603.92.00.70":
+          case "3401.11.50.00":
+          case "5603.12.00.10":
+          case "5603.14.90.10": return [
+            { code: "9903.01.24", description: "IEEPA China 20%", percentage: 20.0 },
+            { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", percentage: 10.0 },
+            { code: "9903.88.03", description: "Section 301 List 3", percentage: 25.0 }
+          ];
+          default: return [];
+        }
       };
       
-      const htsCodeDuties = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
-      chapter99DutyAmount = htsCodeDuties.reduce((sum, duty) => sum + (enteredValue * duty.rate), 0);
+      chapter99Codes = getChapter99Codes(htsCode);
+      chapter99Duty = chapter99Codes.reduce((sum, item) => sum + (enteredValue * (item.percentage / 100)), 0);
     }
     
-    // Additional fees
+    // Fees
     const hmfFee = enteredValue * 0.00125;
     const mpfCalculated = enteredValue * 0.003464;
     const mpfFee = Math.min(Math.max(mpfCalculated, 33.58), 651.50);
+    const mpfPerItem = numberOfUnits > 0 ? mpfFee / numberOfUnits : 0;
     
-    const totalCustomsAndDuties = baseHtsDutyAmount + chapter99DutyAmount + hmfFee + mpfFee;
-    const dutyPerItem = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
-    const freightPerItem = numberOfUnits > 0 ? freightCost / numberOfUnits : 0;
-    const itemLandedCost = unitCost + dutyPerItem + freightPerItem;
+    // Calculate total customs and duties per item to match web display
+    const chapter99PerItem = numberOfUnits > 0 ? chapter99Duty / numberOfUnits : 0;
+    const hmfPerItemCalc = numberOfUnits > 0 ? hmfFee / numberOfUnits : 0;
+    const totalCustomsAndDutiesPerItem = baseHtsDutyAmount + chapter99PerItem + hmfPerItemCalc + mpfPerItem;
+    const freightPerUnit = numberOfUnits > 0 ? freightCost / numberOfUnits : 0;
+    const itemLandedCost = unitCost + totalCustomsAndDutiesPerItem + freightPerUnit;
     
-    // Colors for styling
+    // Colors
     const primaryColor = [14, 74, 126]; // #0E4A7E
-    const lightBlueColor = [219, 234, 254]; // Light blue background
-    const grayColor = [107, 114, 128]; // Gray text
+    const lightBlueColor = [219, 234, 254];
+    const grayColor = [107, 114, 128];
     
-    // Header with logo and title
-    doc.setFontSize(14);
+    // Header - Trade Facilitators, INC.
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("The Honest Company", 105, 15, { align: 'center' });
+    doc.text("Trade Facilitators, INC.", 105, 15, { align: 'center' });
     
+    // H2 - TOTAL LANDED COST
     doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("Total Landed Cost", 105, 28, { align: 'center' });
+    doc.text("TOTAL LANDED COST", 105, 28, { align: 'center' });
     
+    // Generated on timestamp
     doc.setFontSize(12);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 105, 38, { align: 'center' });
-    
-    // Hero Box - Item Landed Cost
-    doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
-    doc.roundedRect(15, 48, 180, 30, 5, 5, 'F');
-    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.setLineWidth(1);
-    doc.roundedRect(15, 48, 180, 30, 5, 5, 'S');
-    
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("ITEM LANDED COST (PER UNIT)", 105, 60, { align: 'center' });
-    
-    doc.setFontSize(28);
-    doc.text(`$${itemLandedCost.toFixed(4)}`, 105, 73, { align: 'center' });
+    const now = new Date();
+    const dateStr = now.toLocaleDateString();
+    const timeStr = now.toLocaleTimeString();
+    doc.text(`Generated on: ${dateStr} ${timeStr}`, 105, 38, { align: 'center' });
     
     // Product Information Section
-    let yPos = 93;
+    let yPos = 55;
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Product Information", 20, yPos);
     
-    yPos += 10;
-    doc.setFontSize(10);
+    yPos += 12;
+    doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
     doc.text(`Item Number: ${data.itemNumber}`, 20, yPos);
-    yPos += 6;
+    yPos += 7;
     doc.text(`Name/Description: ${data.nameId}`, 20, yPos);
-    yPos += 6;
-    doc.text(`HTS Code: ${data.htsCode}`, 20, yPos);
-    yPos += 6;
-    doc.text(`Country of Origin: China`, 20, yPos);
-    yPos += 6;
+    yPos += 7;
+    doc.text(`HTS Code: ${htsCode}`, 20, yPos);
+    yPos += 7;
+    doc.text(`Country of Origin: ${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin}`, 20, yPos);
+    yPos += 7;
     doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, 20, yPos);
-    yPos += 6;
+    yPos += 7;
     doc.text(`Container: ${data.containerSize}`, 20, yPos);
-    yPos += 6;
+    yPos += 7;
     doc.text(`Maximum Units in Container: ${numberOfUnits.toLocaleString()}`, 20, yPos);
     
-    // Duties Section
+    // DUTIES - ITEM Section
     yPos += 20;
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("DUTIES", 105, yPos, { align: 'center' });
+    doc.text("DUTIES - ITEM", 105, yPos, { align: 'center' });
     
-    yPos += 5;
-    doc.setLineWidth(0.5);
-    doc.setDrawColor(200, 200, 200);
-    doc.line(20, yPos, 190, yPos);
-    
-    // Duties Table
     yPos += 10;
+    
+    // Table data preparation
     const tableData = [
-      ["Number of Units", "", "", numberOfUnits.toLocaleString()],
-      ["Entered Value", "", "", `$${Math.round(enteredValue).toLocaleString('en-US')}`],
-      [data.htsCode || "", "Base HTS Code Duty", "0.00%", `$${Math.round(baseHtsDutyAmount).toLocaleString('en-US')}`]
+      ["Customs Unit of Measure", "", "", numberOfUnits.toLocaleString()],
+      ["Unit Cost", "", "", `$${unitCost.toFixed(4)}`],
+      [htsCode, "Base HTS Code Duty", "0.00%", `$${baseHtsDutyAmount.toFixed(4)}`]
     ];
     
-    // Add Chapter 99 duties if applicable
-    if (isChina && data.htsCode) {
-      const dutyRates = {
-        "3401.19.00.00": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.15", description: "Section 301 List 4A", rate: 0.075 }
-        ],
-        "5603.92.00.70": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "3401.11.50.00": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "5603.12.00.10": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ],
-        "5603.14.90.10": [
-          { code: "9903.01.24", description: "IEEPA China 20%", rate: 0.20 },
-          { code: "9903.01.25", description: "IEEPA Reciprocal All Country 10%", rate: 0.10 },
-          { code: "9903.88.03", description: "Section 301 List 3", rate: 0.25 }
-        ]
-      };
-      
-      const htsCodeDuties = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
-      htsCodeDuties.forEach((duty) => {
-        const dutyAmount = enteredValue * duty.rate;
-        tableData.push([
-          duty.code,
-          duty.description,
-          `${(duty.rate * 100).toFixed(1)}%`,
-          `$${Math.round(dutyAmount).toLocaleString('en-US')}`
-        ]);
-      });
-    }
+    // Add Chapter 99 duties if applicable (showing per-item values to match web)
+    chapter99Codes.forEach((item) => {
+      const dutyAmount = enteredValue * (item.percentage / 100);
+      const dutyPerItem = numberOfUnits > 0 ? dutyAmount / numberOfUnits : 0;
+      tableData.push([
+        item.code,
+        item.description,
+        `${item.percentage.toFixed(1)}%`,
+        `$${dutyPerItem.toFixed(4)}`
+      ]);
+    });
     
-    // Calculate percentage sum for HMF row (sum of rows 3-6)
-    const basePercentage = 0; // HTS Code Duty
-    let chapter99Percentage = 0;
-    if (isChina && data.htsCode) {
-      const dutyRates = {
-        "3401.19.00.00": [0.20, 0.10, 0.075], // 37.5%
-        "5603.92.00.70": [0.20, 0.10, 0.25], // 55%
-        "3401.11.50.00": [0.20, 0.10, 0.25], // 55%
-        "5603.12.00.10": [0.20, 0.10, 0.25], // 55%
-        "5603.14.90.10": [0.20, 0.10, 0.25] // 55%
-      };
-      const rates = dutyRates[data.htsCode as keyof typeof dutyRates] || [];
-      chapter99Percentage = rates.reduce((sum, rate) => sum + rate, 0) * 100; // Convert to percentage
-    }
-    const totalPercentageSum = basePercentage + chapter99Percentage;
-    
+    // Add fees (showing per-item values to match web)
+    const hmfPerItem = numberOfUnits > 0 ? hmfFee / numberOfUnits : 0;
     tableData.push(
-      ["HMF", "Harbor Maintenance Fee", "", `$${Math.round(hmfFee).toLocaleString('en-US')}`],
-      ["MPF", "Merchandise Processing Fee", "", `$${Math.round(mpfFee).toLocaleString('en-US')}`]
+      ["HMF", "Harbor Maintenance Fee", "", `$${hmfPerItem.toFixed(4)}`],
+      ["MPF", "Merchandise Processing Fee", "", `$${mpfPerItem.toFixed(4)}`]
     );
     
     // Draw table
@@ -357,8 +285,8 @@ export default function ProductInputPage() {
       
       doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
       doc.text(row[0], 22, yPos + 2);
-      doc.text(row[1], 55, yPos + 2);
-      doc.text(row[2], 120, yPos + 2);
+      doc.text(row[1], 70, yPos + 2);
+      doc.text(row[2], 130, yPos + 2);
       
       doc.setFont('helvetica', 'bold');
       doc.setTextColor(0, 0, 0);
@@ -373,19 +301,21 @@ export default function ProductInputPage() {
       yPos += 8;
     });
     
-    // Total row with thicker line
+    // Total duties row
     doc.setLineWidth(1);
     doc.setDrawColor(100, 100, 100);
     doc.line(20, yPos - 1, 190, yPos - 1);
+    
+    const totalPercentage = chapter99Codes.reduce((sum, item) => sum + item.percentage, 0);
     
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 0, 0);
     doc.text("Total Duties", 22, yPos + 3);
-    doc.text(`${totalPercentageSum.toFixed(2)}%`, 120, yPos + 3);
-    doc.text(`$${totalCustomsAndDuties.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 188, yPos + 3, { align: 'right' });
+    doc.text(`${totalPercentage.toFixed(2)}%`, 130, yPos + 3);
+    doc.text(`$${totalCustomsAndDutiesPerItem.toFixed(4)}`, 188, yPos + 3, { align: 'right' });
     
-    // Highlighted Duty Per Item
+    // Duty Per Item highlight box - showing the per-item total as per web version
     yPos += 15;
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
     doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
@@ -396,27 +326,27 @@ export default function ProductInputPage() {
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Duty Per Item", 25, yPos + 8);
-    doc.text(`$${dutyPerItem.toFixed(4)}`, 185, yPos + 8, { align: 'right' });
+    doc.text(`$${totalCustomsAndDutiesPerItem.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
     
-    // Freight Costs Section
+    // FREIGHT COSTS Section
     yPos += 25;
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("FREIGHT COSTS", 105, yPos, { align: 'center' });
     
-    yPos += 10;
+    yPos += 12;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text("China to United States", 22, yPos);
+    doc.text(`${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin} to United States`, 22, yPos);
     
-    yPos += 8;
+    yPos += 10;
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
     doc.text("Total Freight Costs", 22, yPos);
     doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
     doc.text(`$${freightCost.toLocaleString()}`, 188, yPos, { align: 'right' });
     
     yPos += 8;
@@ -424,26 +354,49 @@ export default function ProductInputPage() {
     doc.setDrawColor(200, 200, 200);
     doc.line(22, yPos, 188, yPos);
     
-    yPos += 6;
+    yPos += 8;
+    
+    // Freight Per Item highlight box - matching Duty Per Item styling
+    doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
+    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'F');
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'S');
+    
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("Freight Per Item", 22, yPos);
+    doc.text("Freight Per Item", 25, yPos + 6);
     doc.setTextColor(0, 0, 0);
-    doc.text(`$${freightPerItem.toFixed(4)}`, 188, yPos, { align: 'right' });
+    doc.text(`$${freightPerUnit.toFixed(4)}`, 185, yPos + 6, { align: 'right' });
     
-    // Footer
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
-    doc.text("© 2025 The Honest Company. All rights reserved.", 105, 280, { align: 'center' });
+    // Check if we need a new page (if yPos > 240, start new page)
+    yPos += 25;
+    if (yPos > 240) {
+      doc.addPage();
+      yPos = 20;
+    }
     
-    // Save the PDF with timestamp
-    const now = new Date();
-    const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
-    const timeStr = now.toTimeString().split(' ')[0].replace(/:/g, '-'); // HH-MM-SS
-    const timestamp = `${dateStr}_${timeStr}`;
-    doc.save(`TLC_Calculation_${data.itemNumber || 'Report'}_${timestamp}.pdf`);
+    // TOTAL LANDED COST - Final highlighted section
+    doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
+    doc.roundedRect(15, yPos, 180, 30, 5, 5, 'F');
+    doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(1);
+    doc.roundedRect(15, yPos, 180, 30, 5, 5, 'S');
+    
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.text("TOTAL LANDED COST", 105, yPos + 12, { align: 'center' });
+    
+    doc.setFontSize(28);
+    doc.text(`$${itemLandedCost.toFixed(2)}`, 105, yPos + 25, { align: 'center' });
+    
+    // Footer removed as per requirements
+    
+    // Save with new filename format: TLC_Calculation_<Name/Description>_GeneratedDate-Time
+    const nameDescription = (data.nameId || 'Report').replace(/[^a-zA-Z0-9]/g, '_');
+    const dateTimeStr = `${now.toISOString().split('T')[0]}-${now.toTimeString().split(' ')[0].replace(/:/g, '-')}`;
+    doc.save(`TLC_Calculation_${nameDescription}_${dateTimeStr}.pdf`);
   };
 
 
