@@ -1618,7 +1618,7 @@ export default function ProductInputPage() {
                               <TableBody>
                                 {/* ROW 1 - Number of Units */}
                                 <TableRow className="border-b border-slate-300 dark:border-slate-600/30">
-                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Number of Units</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-400 font-medium">Customs Unit of Measure</TableCell>
                                   <TableCell className="py-3"></TableCell>
                                   <TableCell className="py-3"></TableCell>
                                   <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">{numberOfUnits.toLocaleString()}</TableCell>

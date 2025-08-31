@@ -113,3 +113,10 @@ After making changes, always run:
 - `@/*` - Maps to `client/src/*`
 - `@shared/*` - Maps to `shared/*`
 - `@assets/*` - Maps to `attached_assets/*`
+
+### Recent Changes
+
+**DUTIES - ITEM Table Updates**:
+- Updated first row, first column label from "Number of Units" to "Customs Unit of Measure" in the results calculation table
+- This change provides clearer terminology that aligns with customs documentation standards
+- Located in `client/src/pages/product-input.tsx` line ~1621
