@@ -204,34 +204,30 @@ I want the following changes made to the product input page
 I want the following changes made to the output table labelled DUTIES - ITEM
 * In Row 1 Column 1, change the label to Customs Unit of Measure
 
-## PDF Re-factor - STOPPED HERE AUGUST
+## PDF Re-factor
+Let's refactor the PDF export. I want you to remove all the code that is generating the PDF export. Let me know once that is done
 
+### PDF - Refactor
+* Create a new PDF file with the following structure
+* Header
+  * H1 - Trade Facilitators, INC.
+  * H2 - TOTAL LANDED COST
+  * Normal Text - Generated on: Date and Time Stamp
+* H2 - Product Information
 
+  Item Number: <As per system>
+  Name/Description: <As per system>
+  HTS Code: <As per sys*tem>
+  Country of Origin: <As per system>
+  Unit Cost: <As per system>
+  Container: <As per system>
+  Maximum Units in Container: <As per system>
 
-
-
-
+* Replicate the output from the web (same as displayed when Calculate Total Landed Cost is clicked). Mimic the same logic and try to achieve the same UI
+* The generated PDF files should be named as TLC_Calculation_<Name/Description>_GeneratedDate-Time
 
 ## PDF Changes
-
-* Can you match the PDF output to the output on the web
-* In the first line of the PDF, it needs to say TFI instead of THE HONEST COMPANY
-
-## PDF Bugs
-* Can you move the Item Landed Cost (Case) at the end of PDF as per the web
-* Ensure the PDF is not cutting into the footer and start the 2nd page if there is a need
-* Add the time stamp on Generated on
-
-## PDF enhancement
-
-* Use two decimal points in Unit Cost
-* Make the blue shade lighter in the box Duty per Item
-* Do a box around Freight Per Item (Case) with similar formatting to Duty Per Item (Case)
-
-## PDF enhancement - 2
-
-* If possible can we fit the PDF in one page. You can reduce the font size of Total Landed Cost and remove some of the space between Product Information and DUTIES - CASE
-
-## PDF Bugs - 3
-* The FREIGHT COSTS is seperate section. That heading is coming in the Duty Per Item box, please introduce some space
-* Please add space between the Freight Per Item (Case) and ITEM LANDED COST (CASE) boxes
+* Remove the footer from the PDF
+* Start a new page if one page is not enough
+* Freight Per Item should have the same border and shading as Duty Per Item
+* Total Landed Cost also needs to be included at the end of the PDF as the final highlighted section
