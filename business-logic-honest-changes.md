@@ -167,3 +167,67 @@ Here are the duty rates configured in the system already. For every line under e
 
 ## Remove Container Utilization
 * Remove the container utilization output from the bottom, it is not needed for the end user consumption
+
+# Customer Changes - 31st Aug - LCE-47
+
+## Home Page Changes
+I want you to go look at the home page in /home/umairmunir/code/LCE/DEMOS/lce-mgx-demo.git/develop and copy it across to this codebase as well
+
+## Change the output duties table - Plan Mode
+* I would like you to output the duties table and its logic
+
+## Add an ITEM Table
+I would like you to add a table before the DUTIES table. It should have the following functionality:
+
+* Heading of the table = DUTIES - ITEM
+* I would like you to do the calcultions in this table according to one item
+
+## Change PDF File Name Format
+* Change the PDF file name to include the time stamp also
+
+## Remove the Duties Table
+
+## Duties Table Changes
+* Rename the last row column one to Total Duties
+* Add a seperate box underneath the table after a line which is Duty Per Item, you can look at the format in the /home/umairmunir/code/LCE/DEMOS/lce-mgx-demo.git/develop
+* Make the font of total duties (Last Row) the same size as the rest of the rows but bold
+* Remove the line * Does not include EXCISE TAX
+* Make the amount in the highlighted box Duty Per Item to 2 decimal points
+
+## Product Input Page Changes
+I want the following changes made to the product input page
+
+* Move the ITEM LANDED COST (PER UNIT) to the bottom before the Export PDF CTA
+* Remove the Export PDF CTA from the mid right side middle
+
+## Product Input Page Changes - DUTIES - ITEM Table
+I want the following changes made to the output table labelled DUTIES - ITEM
+* In Row 1 Column 1, change the label to Customs Unit of Measure
+
+## PDF Re-factor
+Let's refactor the PDF export. I want you to remove all the code that is generating the PDF export. Let me know once that is done
+
+### PDF - Refactor
+* Create a new PDF file with the following structure
+* Header
+  * H1 - Trade Facilitators, INC.
+  * H2 - TOTAL LANDED COST
+  * Normal Text - Generated on: Date and Time Stamp
+* H2 - Product Information
+
+  Item Number: <As per system>
+  Name/Description: <As per system>
+  HTS Code: <As per sys*tem>
+  Country of Origin: <As per system>
+  Unit Cost: <As per system>
+  Container: <As per system>
+  Maximum Units in Container: <As per system>
+
+* Replicate the output from the web (same as displayed when Calculate Total Landed Cost is clicked). Mimic the same logic and try to achieve the same UI
+* The generated PDF files should be named as TLC_Calculation_<Name/Description>_GeneratedDate-Time
+
+## PDF Changes
+* Remove the footer from the PDF
+* Start a new page if one page is not enough
+* Freight Per Item should have the same border and shading as Duty Per Item
+* Total Landed Cost also needs to be included at the end of the PDF as the final highlighted section

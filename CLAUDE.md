@@ -77,12 +77,16 @@ This is a static React SPA for calculating Total Landed Costs (TLC), customized 
 
 ### Key Features
 
-**PDF Export System**:
-- Professional PDF generation using jsPDF
-- The Honest Company branding and styling
-- Detailed cost breakdown with itemized calculations
-- Responsive export buttons (top and bottom of results)
-- Automatic filename generation with timestamp
+**PDF Export System (Refactored)**:
+- Professional PDF generation using jsPDF with Trade Facilitators, INC. branding
+- New structure: H1 "Trade Facilitators, INC.", H2 "TOTAL LANDED COST", timestamp
+- Per-item duty calculations matching current web display logic
+- DUTIES - ITEM section with per-item Chapter 99, HMF, and MPF values
+- Highlighted sections: Duty Per Item and Freight Per Item with matching styling
+- TOTAL LANDED COST as final prominent section
+- Automatic page break logic when content exceeds one page
+- Filename format: TLC_Calculation_<Name/Description>_Date-Time
+- Footer removed for cleaner presentation
 
 **Responsive Design Implementation**:
 - Container system: `max-w-6xl` for consistent layout
@@ -95,7 +99,7 @@ This is a static React SPA for calculating Total Landed Costs (TLC), customized 
 - Light/dark mode toggle with smooth transitions
 - System preference detection and persistence
 - Consistent color scheme across all components
-- Professional styling adapted for The Honest Company
+- Professional styling adapted for Trade Facilitators, INC. demo
 
 ### Deployment
 - Static site optimized for CDN deployment
@@ -113,3 +117,18 @@ After making changes, always run:
 - `@/*` - Maps to `client/src/*`
 - `@shared/*` - Maps to `shared/*`
 - `@assets/*` - Maps to `attached_assets/*`
+
+### Recent Changes
+
+**PDF Export System Refactor**:
+- Complete overhaul of PDF export functionality with Trade Facilitators, INC. branding
+- Converted from total container values to per-item calculations matching current web display
+- Enhanced layout with consistent highlighting for Duty Per Item and Freight Per Item sections
+- Added automatic page management and removed footer for cleaner presentation
+- Updated filename format to include Name/Description and timestamp
+- Located in `client/src/pages/product-input.tsx` exportToPDF function
+
+**DUTIES - ITEM Table Updates**:
+- Updated first row, first column label from "Number of Units" to "Customs Unit of Measure" in the results calculation table
+- This change provides clearer terminology that aligns with customs documentation standards
+- Located in `client/src/pages/product-input.tsx` line ~1621
