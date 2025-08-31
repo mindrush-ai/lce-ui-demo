@@ -20,8 +20,8 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             {/* Left Side - Brand Text */}
             <div className="flex items-center space-x-3">
-              <span className="text-xl sm:text-2xl font-semibold" style={{color: '#0E4A7E'}}>TLC</span>
-              <span className="text-base hidden md:inline" style={{color: '#0E4A7E'}}>Total Landed Cost Engine</span>
+              <span className="text-xl sm:text-2xl font-semibold text-[#0E4A7E] dark:text-foreground">TLC</span>
+              <span className="text-base text-[#0E4A7E] dark:text-muted-foreground hidden md:inline">Total Landed Cost Engine</span>
             </div>
             
             {/* Center - Logo Only (Responsive) */}
@@ -54,7 +54,7 @@ export default function LandingPage() {
                   className="bg-primary hover:bg-primary/90 text-white text-sm sm:text-base px-3 sm:px-4"
                   data-testid="button-start"
                 >
-                  <span className="hidden sm:inline">Start Calculator</span>
+                  <span className="hidden sm:inline">Start Engine</span>
                   <span className="sm:hidden">Start</span>
                 </Button>
               </Link>
@@ -66,43 +66,37 @@ export default function LandingPage() {
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6" style={{color: '#0E4A7E'}}>
-            DOES YOUR U.S. IMPORT PROGRAM NEED SOME
-            <span className="block" style={{color: '#0E4A7E'}}>
-              "TLC"?
-            </span>
+          <h1 className="text-4xl md:text-6xl font-bold text-[#0E4A7E] dark:text-foreground mb-2">
+            DOES YOUR U.S. IMPORT PROGRAM
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-8 max-w-4xl mx-auto" style={{color: '#0E4A7E'}}>
-            INTRODUCTION TO THE TRADE FACILITATORS, INC. TOTAL LANDED COST ENGINE
+          <h2 className="text-4xl md:text-6xl font-bold text-[#0E4A7E] dark:text-primary/80 mb-6">
+            NEED SOME "TLC"?
           </h2>
-          <Link href="/product-input">
-            <Button 
-              size="lg"
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-3"
-              data-testid="button-hero-start"
-            >
-              Get Started
-            </Button>
-          </Link>
+          <h3 className="text-2xl md:text-3xl font-semibold text-[#0E4A7E] dark:text-foreground mb-2 max-w-4xl mx-auto">
+            INTRODUCTION TO THE TRADE FACILITATORS, INC.
+          </h3>
+          <h4 className="text-2xl md:text-3xl font-semibold text-[#0E4A7E] dark:text-foreground mb-8 max-w-4xl mx-auto">
+            TOTAL LANDED COST ENGINE
+          </h4>
         </div>
 
         {/* Body Content */}
         <div className="max-w-4xl mx-auto mb-16">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
             <div className="prose dark:prose-invert max-w-none text-lg leading-relaxed space-y-6">
-              <p style={{color: '#0E4A7E'}}>
+              <p className="text-[#0E4A7E] dark:text-muted-foreground">
                 Welcome to the complimentary version of the Trade Facilitators, Inc. Total Landed Cost Engine! Designed for U.S. importers, this tool calculates a product's landed cost by summing its unit cost, applicable customs duties and item-level maritime transport costs.
               </p>
-              <p style={{color: '#0E4A7E'}}>
+              <p className="text-[#0E4A7E] dark:text-muted-foreground">
                 Please be advised that certain data points are needed to generate the total landed cost of your item. Upon inputting information that includes unit cost, country of origin, HTS #, port of loading and port of discharge, the engine will produce an easy-to-understand, product-specific landed cost.
               </p>
-              <p style={{color: '#0E4A7E'}}>
+              <p className="text-[#0E4A7E] dark:text-muted-foreground">
                 Please note that this is the "MVP" (Minimum Viable Product) version of a much more sophisticated engine that generates landed costs for all items in an importer's Product Master Data file. As such, this engine is limited to maritime transportation and allows two options for the applicable Incoterms Rule. If you'd like to learn more about the enterprise version of the Total Landed Cost Engine, write to us at contact@tradefacil.com.
               </p>
-              <p style={{color: '#0E4A7E'}}>
+              <p className="text-[#0E4A7E] dark:text-muted-foreground">
                 While TFI is confident in the underlying algorithms, formulas and APIs that enable this engine, it must be stressed that all outputs are intended for informational purposes only and in no way constitute any transportation, duty, legal or U.S. Customs & Border Protection regulatory advice. Integral to the Terms & Conditions for use of this tool, Trade Facilitators, Inc. accepts no liability related to its use.
               </p>
-              <p className="font-medium" style={{color: '#0E4A7E'}}>
+              <p className="text-[#0E4A7E] dark:text-muted-foreground font-medium">
                 If you're ready to show your U.S. import program some "Tender Loving Care", please continue below to sign-up for twelve free product classifications…
               </p>
             </div>
@@ -112,10 +106,10 @@ export default function LandingPage() {
         {/* CTA Section */}
         <div className="text-center">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold mb-4" style={{color: '#0E4A7E'}}>
+            <h2 className="text-2xl font-bold text-[#0E4A7E] dark:text-foreground mb-4">
               Ready to Calculate Your Total Landed Cost?
             </h2>
-            <p className="mb-6" style={{color: '#0E4A7E'}}>
+            <p className="text-[#0E4A7E] dark:text-muted-foreground mb-6">
               Use our professional platform for accurate landed cost calculations with comprehensive duty analysis.
             </p>
             <Link href="/product-input">
@@ -124,7 +118,7 @@ export default function LandingPage() {
                 className="bg-primary hover:bg-primary/90 text-white"
                 data-testid="button-cta-start"
               >
-                Start Calculating
+                Start Engine
               </Button>
             </Link>
           </div>
@@ -134,8 +128,8 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center text-sm text-muted-foreground">
-            <p style={{color: '#0E4A7E'}}>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
+          <div className="text-center text-sm text-[#0E4A7E] dark:text-muted-foreground">
+            <p>&copy; 2025 Trade Facilitators, Inc. All rights reserved.</p>
           </div>
         </div>
       </footer>
