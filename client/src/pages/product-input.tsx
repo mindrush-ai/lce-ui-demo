@@ -1502,96 +1502,14 @@ export default function ProductInputPage() {
             {/* Results Section */}
             {showResults && (
               <div id="results-section" className="mt-12 mb-8">
-                <div className="mb-8 flex justify-between items-start">
+                <div className="mb-8">
                   <div>
                     <h2 className="text-2xl font-bold text-foreground mb-2">Total Landed Cost</h2>
                     <p className="text-[#0E4A7E] dark:text-slate-400">Your calculated cost breakdown</p>
                   </div>
-                  
-                  {/* Export PDF Button */}
-                  <Button 
-                    onClick={exportToPDF}
-                    className="bg-gradient-to-r from-primary to-primary hover:from-primary/90 hover:to-primary/90 text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 transform hover:scale-[1.02] shadow-lg hover:shadow-primary/25 flex items-center space-x-2"
-                    data-testid="button-export-pdf"
-                  >
-                    <Download className="w-4 h-4" />
-                    <span>Export PDF</span>
-                  </Button>
                 </div>
 
                 <div className="space-y-6">
-                  {/* Box 1 - HERO Box: Item Landed Cost (Full Width) */}
-                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
-                    <div className="text-center">
-                      <h3 className="text-lg font-semibold text-foreground mb-4">ITEM LANDED COST (PER UNIT)</h3>
-                      <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
-                        {(() => {
-                          const unitCost = form.getValues("unitCost") || 0;
-                          const htsCode = form.getValues("htsCode") || "";
-                          const countryOfOrigin = form.getValues("countryOfOrigin") || "";
-                          const freightCost = form.getValues("freightCost") || 0;
-                          const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
-                          const masterPackLength = form.getValues("masterPackLength") || 0;
-                          const masterPackWidth = form.getValues("masterPackWidth") || 0;
-                          const masterPackHeight = form.getValues("masterPackHeight") || 0;
-                          const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
-                          
-                          // Container and capacity calculations
-                          const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
-                          const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
-                          const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
-                          const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000; // Convert cm³ to m³
-                          const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
-                          const maxItemsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
-                          
-                          // Use maximum container capacity as the number of units
-                          const numberOfUnits = maxItemsPerContainer;
-                          
-                          // China for wipes duty calculations
-                          const isChinaCountry = countryOfOrigin === "CN";
-                          
-                          const enteredValue = numberOfUnits * unitCost; // in USD
-                          
-                          // Base HTS Code Duty calculation (all wipes are duty-free)
-                          const getBaseHtsDuty = (code: string, value: number) => {
-                            const validCodes = ["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"];
-                            return validCodes.includes(code) ? 0 : 0; // All wipes are duty-free
-                          };
-                          
-                          const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
-                          
-                          // Chapter 99 Duty calculation (only for China)
-                          let chapter99Duty = 0;
-                          if (isChinaCountry) {
-                            const getChapter99Rate = (code: string) => {
-                              switch (code) {
-                                case "3401.19.00.00": return 0.20 + 0.10 + 0.075; // 37.5%
-                                case "5603.92.00.70": return 0.20 + 0.10 + 0.25; // 55%
-                                case "3401.11.50.00": return 0.20 + 0.10 + 0.25; // 55%
-                                case "5603.12.00.10": return 0.20 + 0.10 + 0.25; // 55%
-                                case "5603.14.90.10": return 0.20 + 0.10 + 0.25; // 55%
-                                default: return 0;
-                              }
-                            };
-                            chapter99Duty = enteredValue * getChapter99Rate(htsCode);
-                          }
-                          
-                          const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
-                          
-                          // Use the entered freight cost directly
-                          const totalFreightCosts = freightCost;
-                          
-                          // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Units) + (Freight / Number of Units)
-                          const customsDutiesPerUnit = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
-                          const freightPerUnit = numberOfUnits > 0 ? totalFreightCosts / numberOfUnits : 0;
-                          const itemLandedCost = unitCost + customsDutiesPerUnit + freightPerUnit;
-                          
-                          return numberOfUnits > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
-                        })()}
-                      </div>
-                      
-                    </div>
-                  </div>
 
                   {/* Box 2A - Duties Per Item (Full Width) */}
                   <div className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-300/50 dark:border-slate-700/50 p-6 mb-6">
@@ -1774,18 +1692,27 @@ export default function ProductInputPage() {
                                 
                                 {/* ROW 9 - Total Duties for Single Item */}
                                 <TableRow className="border-t-2 border-slate-400 dark:border-slate-500">
-                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">Total Duty Per Item</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold">Total Duties</TableCell>
                                   <TableCell className="py-3"></TableCell>
-                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-lg">{(() => {
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold">{(() => {
                                     const basePercentage = 0; // Row 3 - HTS Code Duty
                                     const chapter99Percentage = isChinaCountry ? chapter99Codes.reduce((sum, item) => sum + item.percentage, 0) : 0; // Rows 4-6
                                     const totalPercentage = basePercentage + chapter99Percentage;
                                     return totalPercentage.toFixed(2) + '%';
                                   })()}</TableCell>
-                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right text-lg">${totalCustomsAndDuties.toFixed(4)}</TableCell>
+                                  <TableCell className="py-3 text-[#0E4A7E] dark:text-slate-100 font-bold text-right">${totalCustomsAndDuties.toFixed(4)}</TableCell>
                                 </TableRow>
                               </TableBody>
                             </Table>
+                            
+                            <div className="border-t border-slate-300 dark:border-slate-600/50 pt-3 mt-4">
+                              <div className="bg-primary/10 dark:bg-primary/20 border border-primary/30 dark:border-primary/50 rounded-xl p-4">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-primary dark:text-primary/80 font-bold text-lg">Duty Per Item</span>
+                                  <span className="text-primary dark:text-primary/90 font-bold text-xl">${totalCustomsAndDuties.toFixed(2)}</span>
+                                </div>
+                              </div>
+                            </div>
                           </>
                         );
                       })()}
@@ -1852,6 +1779,81 @@ export default function ProductInputPage() {
                     </div>
                   </div>
 
+                </div>
+                
+                {/* ITEM LANDED COST (PER UNIT) - Moved to bottom */}
+                <div className="mt-8">
+                  <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 backdrop-blur-sm rounded-2xl border border-primary/30 dark:border-primary/50 p-6">
+                    <div className="text-center">
+                      <h3 className="text-lg font-semibold text-foreground mb-4">ITEM LANDED COST (PER UNIT)</h3>
+                      <div className="text-4xl font-bold text-primary dark:text-primary/90 mb-2">
+                        {(() => {
+                          const unitCost = form.getValues("unitCost") || 0;
+                          const htsCode = form.getValues("htsCode") || "";
+                          const countryOfOrigin = form.getValues("countryOfOrigin") || "";
+                          const freightCost = form.getValues("freightCost") || 0;
+                          const containerSize = form.getValues("containerSize") as keyof typeof CONTAINER_VOLUMES || "";
+                          const masterPackLength = form.getValues("masterPackLength") || 0;
+                          const masterPackWidth = form.getValues("masterPackWidth") || 0;
+                          const masterPackHeight = form.getValues("masterPackHeight") || 0;
+                          const itemsPerMasterPack = form.getValues("itemsPerMasterPack") || 0;
+                          
+                          // Container and capacity calculations
+                          const containerVolumeCubicMeters = CONTAINER_VOLUMES[containerSize] || 0;
+                          const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
+                          const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
+                          const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000; // Convert cm³ to m³
+                          const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
+                          const maxItemsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
+                          
+                          // Use maximum container capacity as the number of units
+                          const numberOfUnits = maxItemsPerContainer;
+                          
+                          // China for wipes duty calculations
+                          const isChinaCountry = countryOfOrigin === "CN";
+                          
+                          const enteredValue = numberOfUnits * unitCost; // in USD
+                          
+                          // Base HTS Code Duty calculation (all wipes are duty-free)
+                          const getBaseHtsDuty = (code: string, value: number) => {
+                            const validCodes = ["3401.19.00.00", "5603.92.00.70", "3401.11.50.00", "5603.12.00.10", "5603.14.90.10"];
+                            return validCodes.includes(code) ? 0 : 0; // All wipes are duty-free
+                          };
+                          
+                          const baseHtsDutyAmount = getBaseHtsDuty(htsCode, enteredValue);
+                          
+                          // Chapter 99 Duty calculation (only for China)
+                          let chapter99Duty = 0;
+                          if (isChinaCountry) {
+                            const getChapter99Rate = (code: string) => {
+                              switch (code) {
+                                case "3401.19.00.00": return 0.20 + 0.10 + 0.075; // 37.5%
+                                case "5603.92.00.70": return 0.20 + 0.10 + 0.25; // 55%
+                                case "3401.11.50.00": return 0.20 + 0.10 + 0.25; // 55%
+                                case "5603.12.00.10": return 0.20 + 0.10 + 0.25; // 55%
+                                case "5603.14.90.10": return 0.20 + 0.10 + 0.25; // 55%
+                                default: return 0;
+                              }
+                            };
+                            chapter99Duty = enteredValue * getChapter99Rate(htsCode);
+                          }
+                          
+                          const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty;
+                          
+                          // Use the entered freight cost directly
+                          const totalFreightCosts = freightCost;
+                          
+                          // Total Landed Cost = Unit Cost + (Customs & Duties / Number of Units) + (Freight / Number of Units)
+                          const customsDutiesPerUnit = numberOfUnits > 0 ? totalCustomsAndDuties / numberOfUnits : 0;
+                          const freightPerUnit = numberOfUnits > 0 ? totalFreightCosts / numberOfUnits : 0;
+                          const itemLandedCost = unitCost + customsDutiesPerUnit + freightPerUnit;
+                          
+                          return numberOfUnits > 0 ? `$${itemLandedCost.toFixed(2)}` : "--";
+                        })()}
+                      </div>
+                      
+                    </div>
+                  </div>
                 </div>
                 
                 {/* Bottom Export PDF Button */}
