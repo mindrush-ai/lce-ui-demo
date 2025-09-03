@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import tfiLogoPath from "@/assets/tfi-2024-logo.svg";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calculator, BarChart3, Clock, Shield, Moon, Sun } from "lucide-react";
+import { Calculator, BarChart3, Clock, Shield, Moon, Sun, LogIn, UserPlus } from "lucide-react";
 import { useTheme } from "@/hooks/use-theme";
 import { Link } from "wouter";
 
@@ -33,7 +33,7 @@ export default function LandingPage() {
               />
             </div>
             
-            {/* Right Side - Theme Toggle and Start Button */}
+            {/* Right Side - Theme Toggle and Auth Buttons */}
             <div className="flex items-center space-x-2 sm:space-x-4">
               <Button
                 variant="ghost"
@@ -49,15 +49,24 @@ export default function LandingPage() {
                 )}
               </Button>
               
-              <Link href="/product-input">
-                <Button 
-                  className="bg-primary hover:bg-primary/90 text-white text-sm sm:text-base px-3 sm:px-4"
-                  data-testid="button-start"
-                >
-                  <span className="hidden sm:inline">Start Engine</span>
-                  <span className="sm:hidden">Start</span>
-                </Button>
-              </Link>
+              <Button 
+                variant="outline"
+                size="sm"
+                className="p-2 sm:px-4"
+                data-testid="button-sign-in"
+              >
+                <LogIn className="w-4 h-4" />
+                <span className="hidden sm:inline sm:ml-2">Sign In</span>
+              </Button>
+              
+              <Button 
+                size="sm"
+                className="bg-primary hover:bg-primary/90 text-white p-2 sm:px-4"
+                data-testid="button-sign-up"
+              >
+                <UserPlus className="w-4 h-4" />
+                <span className="hidden sm:inline sm:ml-2">Sign Up</span>
+              </Button>
             </div>
           </div>
         </div>
