@@ -36,6 +36,9 @@ Make the following changes and test using Playwright
 
 * There is a UX bug in the product-input page, when we complete the inputs in Units and Dimensions section. The view jumps into the middle of next section and not the start. Use playwright if you need to capture this and fix this. Test using playwright
 
+### Iteration 6 Fixes
+
+* There is a UX bug in the product-input page, when we use the Unit Cost input and try to add more than 4 decimal points and keep pressing a single digit the value keeps on changins. Use playwright if you need to capture this and fix this. Test using playwright
 
 
 
