@@ -106,12 +106,9 @@ export default function LandingPage() {
         {/* CTA Section */}
         <div className="text-center">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#0E4A7E] dark:text-foreground mb-4">
+            <h2 className="text-2xl font-bold text-[#0E4A7E] dark:text-foreground mb-6">
               Ready to Calculate Your Total Landed Cost?
             </h2>
-            <p className="text-[#0E4A7E] dark:text-muted-foreground mb-6">
-              Use our professional platform for accurate landed cost calculations with comprehensive duty analysis.
-            </p>
             <Link href="/product-input">
               <Button 
                 size="lg"
