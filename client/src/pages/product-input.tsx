@@ -132,15 +132,16 @@ export default function ProductInputPage() {
     const htsCode = data.htsCode || "";
     const countryOfOrigin = data.countryOfOrigin || "";
     
-    // Container and capacity calculations
+    // Container and capacity calculations (for display purposes only)
     const containerVolumeCubicMeters = CONTAINER_VOLUMES[data.containerSize as keyof typeof CONTAINER_VOLUMES] || 0;
     const usableVolumeCubicMeters = containerVolumeCubicMeters * CONTAINER_UTILIZATION;
     const masterPackVolumeCubicCm = masterPackLength * masterPackWidth * masterPackHeight;
     const masterPackVolumeCubicMeters = masterPackVolumeCubicCm / 1000000;
     const maxMasterPacksPerContainer = masterPackVolumeCubicMeters > 0 ? Math.floor(usableVolumeCubicMeters / masterPackVolumeCubicMeters) : 0;
-    const numberOfUnits = maxMasterPacksPerContainer * itemsPerMasterPack;
+    const maxUnitsPerContainer = maxMasterPacksPerContainer * itemsPerMasterPack;
     
-    // Calculations matching web output
+    // For DUTIES - ITEM calculations, use single unit like web display
+    const numberOfUnits = 1; // Single item
     const enteredValue = numberOfUnits * unitCost;
     const isChinaCountry = countryOfOrigin === "CN";
     
@@ -175,18 +176,25 @@ export default function ProductInputPage() {
       chapter99Duty = chapter99Codes.reduce((sum, item) => sum + (enteredValue * (item.percentage / 100)), 0);
     }
     
-    // Fees
-    const hmfFee = enteredValue * 0.00125;
-    const mpfCalculated = enteredValue * 0.003464;
-    const mpfFee = Math.min(Math.max(mpfCalculated, 33.58), 651.50);
-    const mpfPerItem = numberOfUnits > 0 ? mpfFee / numberOfUnits : 0;
+    // Fees - Match exact web calculation logic
+    const hmfFee = enteredValue * 0.00125; // HMF on single item value (like web)
+    const mpfCalculated = enteredValue * 0.003464; // MPF also on single item value (like web)
+    const mpfFeeContainer = Math.min(Math.max(mpfCalculated, 33.58), 651.50);
+    const mpfPerItem = maxUnitsPerContainer > 0 ? mpfFeeContainer / maxUnitsPerContainer : 0;
     
-    // Calculate total customs and duties per item to match web display
-    const chapter99PerItem = numberOfUnits > 0 ? chapter99Duty / numberOfUnits : 0;
-    const hmfPerItemCalc = numberOfUnits > 0 ? hmfFee / numberOfUnits : 0;
-    const totalCustomsAndDutiesPerItem = baseHtsDutyAmount + chapter99PerItem + hmfPerItemCalc + mpfPerItem;
-    const freightPerUnit = numberOfUnits > 0 ? freightCost / numberOfUnits : 0;
-    const itemLandedCost = unitCost + totalCustomsAndDutiesPerItem + freightPerUnit;
+    // Calculate total customs and duties exactly like web display
+    const totalCustomsAndDuties = baseHtsDutyAmount + chapter99Duty + hmfFee + mpfPerItem;
+    const customsDutiesPerUnit = maxUnitsPerContainer > 0 ? totalCustomsAndDuties / maxUnitsPerContainer : 0;
+    
+    // For freight per item, use total container units like web display  
+    const freightPerUnit = maxUnitsPerContainer > 0 ? freightCost / maxUnitsPerContainer : 0;
+    
+    // For DUTIES - ITEM table, calculate duties per single unit
+    const totalDutiesForSingleItem = baseHtsDutyAmount + chapter99Duty + hmfFee + mpfPerItem;
+    const totalDutiesPerUnit = numberOfUnits > 0 ? totalDutiesForSingleItem / numberOfUnits : 0;
+    
+    // Total landed cost should use duties per single unit (matching the DUTIES - ITEM table)
+    const itemLandedCost = unitCost + totalDutiesPerUnit + freightPerUnit;
     
     // Colors
     const primaryColor = [14, 74, 126]; // #0E4A7E
@@ -200,7 +208,7 @@ export default function ProductInputPage() {
     doc.text("Trade Facilitators, INC.", 105, 15, { align: 'center' });
     
     // H2 - TOTAL LANDED COST
-    doc.setFontSize(24);
+    doc.setFontSize(20);
     doc.text("TOTAL LANDED COST", 105, 28, { align: 'center' });
     
     // Generated on timestamp
@@ -213,42 +221,55 @@ export default function ProductInputPage() {
     doc.text(`Generated on: ${dateStr} ${timeStr}`, 105, 38, { align: 'center' });
     
     // Product Information Section
-    let yPos = 55;
-    doc.setFontSize(16);
+    let yPos = 50;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Product Information", 20, yPos);
     
-    yPos += 12;
+    yPos += 10;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    doc.text(`Item Number: ${data.itemNumber}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Name/Description: ${data.nameId}`, 20, yPos);
-    yPos += 7;
-    doc.text(`HTS Code: ${htsCode}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Country of Origin: ${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Container: ${data.containerSize}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Maximum Units in Container: ${numberOfUnits.toLocaleString()}`, 20, yPos);
+    
+    // Two-column borderless table layout
+    const leftColumnX = 20;
+    const rightColumnX = 110;
+    const lineHeight = 7;
+    let currentY = yPos;
+    
+    // First column (4 items)
+    doc.text(`Item Number: ${data.itemNumber}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`Name/Description: ${data.nameId}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`HTS Code: ${htsCode}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`Country of Origin: ${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin}`, leftColumnX, currentY);
+    
+    // Second column (3 items) - start from same Y position
+    let rightColumnY = yPos;
+    doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, rightColumnX, rightColumnY);
+    rightColumnY += lineHeight;
+    doc.text(`Container: ${data.containerSize}`, rightColumnX, rightColumnY);
+    rightColumnY += lineHeight;
+    doc.text(`Maximum Units in Container: ${maxUnitsPerContainer.toLocaleString()}`, rightColumnX, rightColumnY);
+    
+    // Set yPos to the bottom of the tallest column
+    yPos = Math.max(currentY, rightColumnY);
     
     // DUTIES - ITEM Section
-    yPos += 20;
-    doc.setFontSize(16);
+    yPos += 15;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("DUTIES - ITEM", 105, yPos, { align: 'center' });
     
-    yPos += 10;
+    yPos += 8;
     
     // Table data preparation
     const tableData = [
-      ["Customs Unit of Measure", "", "", numberOfUnits.toLocaleString()],
+      ["Customs Unit of Measure", "", "", "1"],
       ["Unit Cost", "", "", `$${unitCost.toFixed(4)}`],
       [htsCode, "Base HTS Code Duty", "0.00%", `$${baseHtsDutyAmount.toFixed(4)}`]
     ];
@@ -313,29 +334,30 @@ export default function ProductInputPage() {
     doc.setTextColor(0, 0, 0);
     doc.text("Total Duties", 22, yPos + 3);
     doc.text(`${totalPercentage.toFixed(2)}%`, 130, yPos + 3);
-    doc.text(`$${totalCustomsAndDutiesPerItem.toFixed(4)}`, 188, yPos + 3, { align: 'right' });
+    doc.text(`$${totalDutiesPerUnit.toFixed(4)}`, 188, yPos + 3, { align: 'right' });
     
     // Duty Per Item highlight box - showing the per-item total as per web version
-    yPos += 15;
+    yPos += 12;
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
     doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
     doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(0.5);
     doc.roundedRect(20, yPos, 170, 12, 3, 3, 'S');
     
     doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Duty Per Item", 25, yPos + 8);
-    doc.text(`$${totalCustomsAndDutiesPerItem.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
+    doc.text(`$${totalDutiesPerUnit.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
     
     // FREIGHT COSTS Section
-    yPos += 25;
-    doc.setFontSize(16);
+    yPos += 18;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("FREIGHT COSTS", 105, yPos, { align: 'center' });
     
-    yPos += 12;
+    yPos += 10;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
@@ -356,25 +378,20 @@ export default function ProductInputPage() {
     
     yPos += 8;
     
-    // Freight Per Item highlight box - matching Duty Per Item styling
+    // Freight Per Item highlight box - matching Duty Per Item styling exactly
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
-    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'F');
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
     doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'S');
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'S');
     
-    doc.setFontSize(11);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("Freight Per Item", 25, yPos + 6);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`$${freightPerUnit.toFixed(4)}`, 185, yPos + 6, { align: 'right' });
+    doc.text("Freight Per Item", 25, yPos + 8);
+    doc.text(`$${freightPerUnit.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
     
-    // Check if we need a new page (if yPos > 240, start new page)
-    yPos += 25;
-    if (yPos > 240) {
-      doc.addPage();
-      yPos = 20;
-    }
+    // Continue on the same page
+    yPos += 18;
     
     // TOTAL LANDED COST - Final highlighted section
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
@@ -388,8 +405,8 @@ export default function ProductInputPage() {
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("TOTAL LANDED COST", 105, yPos + 12, { align: 'center' });
     
-    doc.setFontSize(28);
-    doc.text(`$${itemLandedCost.toFixed(2)}`, 105, yPos + 25, { align: 'center' });
+    doc.setFontSize(24);
+    doc.text(`$${itemLandedCost.toFixed(2)}`, 105, yPos + 22, { align: 'center' });
     
     // Footer removed as per requirements
     
