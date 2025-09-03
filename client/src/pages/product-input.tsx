@@ -208,7 +208,7 @@ export default function ProductInputPage() {
     doc.text("Trade Facilitators, INC.", 105, 15, { align: 'center' });
     
     // H2 - TOTAL LANDED COST
-    doc.setFontSize(24);
+    doc.setFontSize(20);
     doc.text("TOTAL LANDED COST", 105, 28, { align: 'center' });
     
     // Generated on timestamp
@@ -221,38 +221,51 @@ export default function ProductInputPage() {
     doc.text(`Generated on: ${dateStr} ${timeStr}`, 105, 38, { align: 'center' });
     
     // Product Information Section
-    let yPos = 55;
-    doc.setFontSize(16);
+    let yPos = 50;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("Product Information", 20, yPos);
     
-    yPos += 12;
+    yPos += 10;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    doc.text(`Item Number: ${data.itemNumber}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Name/Description: ${data.nameId}`, 20, yPos);
-    yPos += 7;
-    doc.text(`HTS Code: ${htsCode}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Country of Origin: ${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Container: ${data.containerSize}`, 20, yPos);
-    yPos += 7;
-    doc.text(`Maximum Units in Container: ${maxUnitsPerContainer.toLocaleString()}`, 20, yPos);
+    
+    // Two-column borderless table layout
+    const leftColumnX = 20;
+    const rightColumnX = 110;
+    const lineHeight = 7;
+    let currentY = yPos;
+    
+    // First column (4 items)
+    doc.text(`Item Number: ${data.itemNumber}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`Name/Description: ${data.nameId}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`HTS Code: ${htsCode}`, leftColumnX, currentY);
+    currentY += lineHeight;
+    doc.text(`Country of Origin: ${countryOfOrigin === 'CN' ? 'China' : countryOfOrigin}`, leftColumnX, currentY);
+    
+    // Second column (3 items) - start from same Y position
+    let rightColumnY = yPos;
+    doc.text(`Unit Cost: $${unitCost.toFixed(4)}`, rightColumnX, rightColumnY);
+    rightColumnY += lineHeight;
+    doc.text(`Container: ${data.containerSize}`, rightColumnX, rightColumnY);
+    rightColumnY += lineHeight;
+    doc.text(`Maximum Units in Container: ${maxUnitsPerContainer.toLocaleString()}`, rightColumnX, rightColumnY);
+    
+    // Set yPos to the bottom of the tallest column
+    yPos = Math.max(currentY, rightColumnY);
     
     // DUTIES - ITEM Section
-    yPos += 20;
-    doc.setFontSize(16);
+    yPos += 15;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("DUTIES - ITEM", 105, yPos, { align: 'center' });
     
-    yPos += 10;
+    yPos += 8;
     
     // Table data preparation
     const tableData = [
@@ -324,10 +337,11 @@ export default function ProductInputPage() {
     doc.text(`$${totalDutiesPerUnit.toFixed(4)}`, 188, yPos + 3, { align: 'right' });
     
     // Duty Per Item highlight box - showing the per-item total as per web version
-    yPos += 15;
+    yPos += 12;
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
     doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
     doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+    doc.setLineWidth(0.5);
     doc.roundedRect(20, yPos, 170, 12, 3, 3, 'S');
     
     doc.setFontSize(12);
@@ -337,13 +351,13 @@ export default function ProductInputPage() {
     doc.text(`$${totalDutiesPerUnit.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
     
     // FREIGHT COSTS Section
-    yPos += 25;
-    doc.setFontSize(16);
+    yPos += 18;
+    doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("FREIGHT COSTS", 105, yPos, { align: 'center' });
     
-    yPos += 12;
+    yPos += 10;
     doc.setFontSize(11);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(grayColor[0], grayColor[1], grayColor[2]);
@@ -364,25 +378,20 @@ export default function ProductInputPage() {
     
     yPos += 8;
     
-    // Freight Per Item highlight box - matching Duty Per Item styling
+    // Freight Per Item highlight box - matching Duty Per Item styling exactly
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
-    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'F');
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'F');
     doc.setDrawColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.roundedRect(20, yPos - 2, 170, 12, 3, 3, 'S');
+    doc.roundedRect(20, yPos, 170, 12, 3, 3, 'S');
     
-    doc.setFontSize(11);
+    doc.setFontSize(12);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    doc.text("Freight Per Item", 25, yPos + 6);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`$${freightPerUnit.toFixed(4)}`, 185, yPos + 6, { align: 'right' });
+    doc.text("Freight Per Item", 25, yPos + 8);
+    doc.text(`$${freightPerUnit.toFixed(2)}`, 185, yPos + 8, { align: 'right' });
     
-    // Check if we need a new page (if yPos > 240, start new page)
-    yPos += 25;
-    if (yPos > 240) {
-      doc.addPage();
-      yPos = 20;
-    }
+    // Continue on the same page
+    yPos += 18;
     
     // TOTAL LANDED COST - Final highlighted section
     doc.setFillColor(lightBlueColor[0], lightBlueColor[1], lightBlueColor[2]);
@@ -396,8 +405,8 @@ export default function ProductInputPage() {
     doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2]);
     doc.text("TOTAL LANDED COST", 105, yPos + 12, { align: 'center' });
     
-    doc.setFontSize(28);
-    doc.text(`$${itemLandedCost.toFixed(2)}`, 105, yPos + 25, { align: 'center' });
+    doc.setFontSize(24);
+    doc.text(`$${itemLandedCost.toFixed(2)}`, 105, yPos + 22, { align: 'center' });
     
     // Footer removed as per requirements
     
