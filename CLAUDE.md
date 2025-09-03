@@ -120,6 +120,7 @@ After making changes, always run:
 ### Path Aliases
 - `@/*` - Maps to `client/src/*`
 - `@shared/*` - Maps to `shared/*`
+- `@assets/*` - Maps to `attached_assets/*`
 
 ### Important Business Logic Files
 - `business-logic-honest.md` - Complete documentation of The Honest Company specific business logic, HTS codes, and duty calculations
