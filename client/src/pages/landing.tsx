@@ -21,7 +21,7 @@ export default function LandingPage() {
             {/* Left Side - Brand Text */}
             <div className="flex items-center space-x-3">
               <span className="text-xl sm:text-2xl font-semibold text-[#0E4A7E] dark:text-foreground">TLC</span>
-              <span className="text-base text-[#0E4A7E] dark:text-muted-foreground hidden md:inline">Total Landed Cost Engine</span>
+              <span className="text-base text-[#0E4A7E] dark:text-[#FAFAFA] hidden md:inline">Total Landed Cost Engine</span>
             </div>
             
             {/* Center - Logo Only (Responsive) */}
@@ -78,7 +78,7 @@ export default function LandingPage() {
           <h1 className="text-4xl md:text-6xl font-bold text-[#0E4A7E] dark:text-foreground mb-2">
             DOES YOUR U.S. IMPORT PROGRAM
           </h1>
-          <h2 className="text-4xl md:text-6xl font-bold text-[#0E4A7E] dark:text-primary/80 mb-6">
+          <h2 className="text-4xl md:text-6xl font-bold text-[#0E4A7E] dark:text-foreground mb-6">
             NEED SOME "TLC"?
           </h2>
           <h3 className="text-2xl md:text-3xl font-semibold text-[#0E4A7E] dark:text-foreground mb-2 max-w-4xl mx-auto">
@@ -93,19 +93,19 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto mb-16">
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
             <div className="prose dark:prose-invert max-w-none text-lg leading-relaxed space-y-6">
-              <p className="text-[#0E4A7E] dark:text-muted-foreground">
+              <p className="text-[#0E4A7E] dark:text-foreground">
                 Welcome to the complimentary version of the Trade Facilitators, Inc. Total Landed Cost Engine! Designed for U.S. importers, this tool calculates a product's landed cost by summing its unit cost, applicable customs duties and item-level maritime transport costs.
               </p>
-              <p className="text-[#0E4A7E] dark:text-muted-foreground">
+              <p className="text-[#0E4A7E] dark:text-foreground">
                 Please be advised that certain data points are needed to generate the total landed cost of your item. Upon inputting information that includes unit cost, country of origin, HTS #, port of loading and port of discharge, the engine will produce an easy-to-understand, product-specific landed cost.
               </p>
-              <p className="text-[#0E4A7E] dark:text-muted-foreground">
+              <p className="text-[#0E4A7E] dark:text-foreground">
                 Please note that this is the "MVP" (Minimum Viable Product) version of a much more sophisticated engine that generates landed costs for all items in an importer's Product Master Data file. As such, this engine is limited to maritime transportation and allows two options for the applicable Incoterms Rule. If you'd like to learn more about the enterprise version of the Total Landed Cost Engine, write to us at contact@tradefacil.com.
               </p>
-              <p className="text-[#0E4A7E] dark:text-muted-foreground">
+              <p className="text-[#0E4A7E] dark:text-foreground">
                 While TFI is confident in the underlying algorithms, formulas and APIs that enable this engine, it must be stressed that all outputs are intended for informational purposes only and in no way constitute any transportation, duty, legal or U.S. Customs & Border Protection regulatory advice. Integral to the Terms & Conditions for use of this tool, Trade Facilitators, Inc. accepts no liability related to its use.
               </p>
-              <p className="text-[#0E4A7E] dark:text-muted-foreground font-medium">
+              <p className="text-[#0E4A7E] dark:text-foreground font-medium">
                 If you're ready to show your U.S. import program some "Tender Loving Care", please continue below to sign-up for twelve free product classifications…
               </p>
             </div>
