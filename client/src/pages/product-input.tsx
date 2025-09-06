@@ -579,14 +579,14 @@ export default function ProductInputPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-foreground font-sans transition-colors duration-300 relative">
       <div className="min-h-screen flex flex-col relative z-10">
-        <header className="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm sticky top-0 z-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
             <div className="flex items-center justify-between">
               {/* Left Side - Brand Text */}
               <Link href="/">
                 <div className="flex items-center space-x-3 cursor-pointer">
-                  <span className="text-xl sm:text-2xl font-semibold" style={{color: '#0E4A7E'}}>TLC</span>
-                  <span className="text-base hidden md:inline" style={{color: '#0E4A7E'}}>Total Landed Cost Engine</span>
+                  <span className="text-xl sm:text-2xl font-semibold text-[#0E4A7E] dark:text-foreground">TLC</span>
+                  <span className="text-base text-[#0E4A7E] dark:text-[#FAFAFA] hidden md:inline">Total Landed Cost Engine</span>
                 </div>
               </Link>
               
